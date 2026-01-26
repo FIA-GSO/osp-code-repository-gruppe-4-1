@@ -1,16 +1,16 @@
 import pytest
-from app import app
+from app import app as flask_app
 
 
 @pytest.fixture()
 def configured_app():
-    app.config.update({
+    flask_app.config.update({
         "TESTING": True,
     })
 
     # other setup can go here
 
-    yield app
+    yield flask_app
 
     # clean up / reset resources here
 

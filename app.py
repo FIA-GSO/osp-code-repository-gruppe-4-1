@@ -2,7 +2,7 @@
 Marketplace GSO – Aussteller-Anmelde-Portal für die Jobmesse des Georg-Simon-Ohm-Berufskollegs
 """
 from flask import Flask, redirect, request, render_template
-from flask_login import LoginManager, login_user, UserMixin
+from flask_login import LoginManager, login_user
 from sqlalchemy.exc import NoResultFound
 
 from auth import Authenticated, generate_token
@@ -37,8 +37,8 @@ def register():
         db.add(new_token)
         db.commit()
         return f'Ihr Token ist {new_token.token}'
-    else:
-        return render_template('registration_form.html')
+
+    return render_template('registration_form.html')
 
 
 @app.route('/login/<token>')
@@ -59,7 +59,7 @@ def load_user(user_id):
         user_id = int(user_id)
         user_record = db.query(User).filter_by(id=user_id).one()
         return Authenticated(user_record)
-    except Exception as e:
+    except (ValueError, NoResultFound):
         print(f'[WARN] user id not found: {user_id}')
         return None
 
