@@ -25,6 +25,7 @@ def landing_page():
 Globaler Einstiegspunkt, insbesondere für nicht authentifizierte Nutzer
     """
     return redirect('/register')
+    return render_template('baseHomeContent.html')
 
 
 @app.route('/register', methods=['GET', 'POST'])
