@@ -1,0 +1,548 @@
+/* =========================================
+   Please notice that we generated all "base"-files so we have a starting point to implement our project
+   ========================================= */
+
+/* =========================================
+   1. RESET & GLOBALS
+   ========================================= */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    background-color: #f9f9f9;
+    line-height: 1.5;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.2s ease;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.container-width {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* =========================================
+   2. TOP BAR (Blau)
+   ========================================= */
+.top-bar {
+    background-color: #6a9bd6;
+    color: #fff;
+    font-size: 0.9rem;
+    padding: 8px 0;
+}
+
+.top-bar-inner {
+    display: flex;
+    justify-content: flex-end;
+    gap: 25px;
+}
+
+.top-bar a {
+    color: #fff;
+    font-weight: 500;
+}
+
+.top-bar a:hover {
+    text-decoration: underline;
+}
+
+/* =========================================
+   3. SITE HEADER (Weiß)
+   ========================================= */
+.site-header {
+    background-color: #fff;
+    padding: 20px 0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    position: relative;
+    z-index: 100;
+}
+
+.header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.branding img {
+    height: 65px;
+    width: auto;
+    display: block;
+}
+
+/* Navigation */
+.main-navigation .nav-list {
+    display: flex;
+    gap: 30px;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-item {
+    position: relative;
+}
+
+.nav-link,
+.nav-item a {
+    color: #555;
+    font-weight: 500;
+    font-size: 1.05rem;
+    padding: 10px 0;
+    position: relative;
+}
+
+.nav-item.has-sub > a::after {
+    content: '+';
+    margin-left: 5px;
+    font-weight: 400;
+    color: #888;
+}
+
+.nav-item.current-menu-item > a {
+    color: #333;
+    border-top: 2px solid #555;
+}
+
+.nav-item a:hover {
+    color: #000;
+}
+
+.header-socials {
+    display: flex;
+    gap: 15px;
+}
+
+.header-socials a {
+    color: #444;
+    font-size: 1.2rem;
+}
+
+.header-socials a:hover {
+    color: #6a9bd6;
+}
+
+.mobile-menu-toggle {
+    display: none;
+}
+
+/* SUB MENU STYLES (Desktop Standard) */
+.sub-menu {
+    display: none; /* Standardmäßig ausgeblendet */
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #fff;
+    min-width: 250px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    padding: 10px 0;
+    z-index: 200;
+    border-top: 2px solid #6a9bd6;
+}
+
+.sub-menu li {
+    display: block;
+}
+
+.sub-menu li a {
+    display: block;
+    padding: 10px 20px;
+    color: #555;
+    font-size: 0.95rem;
+    border-bottom: 1px solid #f0f0f0;
+    font-weight: 400;
+}
+
+.sub-menu li a:hover {
+    background-color: #f9f9f9;
+    color: #6a9bd6;
+}
+
+@media (min-width: 901px) {
+    .nav-item:hover .sub-menu {
+        display: block;
+    }
+}
+
+/* =========================================
+   4. HERO VIDEO BEREICH
+   ========================================= */
+.hero-video-wrapper {
+    position: relative;
+    width: 100%;
+    /* Höhe erhöht wie im Screenshot */
+    height: 650px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #000;
+}
+
+.hero-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
+
+.video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3); /* Etwas transparenter als vorher */
+    z-index: 2;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 3;
+    text-align: center;
+    width: 100%;
+}
+
+.hero-content h1 {
+    color: #fff;
+    font-size: 4.5rem; /* Größer wie im Screenshot */
+    font-weight: 300; /* Dünnerer Schnitt */
+    line-height: 1.1;
+    margin: 0;
+    text-shadow: 0 2px 15px rgba(0,0,0,0.5);
+    font-family: 'Segoe UI Light', 'Segoe UI', sans-serif; /* Light font */
+}
+
+/* Pause Button (Rechts unten im Video) */
+.video-control {
+    position: absolute;
+    right: 40px;
+    bottom: 50%;
+    transform: translateY(50%);
+    z-index: 4;
+    border: 2px solid rgba(255,255,255,0.3);
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1.2rem;
+    background: rgba(0,0,0,0.2);
+    cursor: pointer;
+}
+
+/* =========================================
+   5. DEPARTMENTS BAR (Blau)
+   ========================================= */
+.departments-bar {
+    background-color: #6a9bd6; /* GSO Blau */
+    color: #fff;
+    padding: 80px 0;
+    text-align: center;
+}
+
+.departments-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+}
+
+.dept-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.dept-icon {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.dept-col h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin: 0 0 15px 0;
+    letter-spacing: 1px;
+}
+
+.dept-col p {
+    font-size: 1rem;
+    line-height: 1.4;
+    margin: 0;
+}
+
+.dept-col a {
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+.dept-col a:hover {
+    color: #f0f0f0;
+}
+
+
+/* =========================================
+   6. FOOTER WRAPPER
+   ========================================= */
+.footer-wrapper {
+    background-color: #2b2b2b;
+    color: #ccc;
+    padding-top: 30px;
+}
+
+.footer-meta-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 20px;
+}
+
+.footer-links a {
+    color: #fff;
+    font-size: 0.85rem;
+    margin-right: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.footer-search {
+    position: relative;
+}
+
+.footer-search input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #777;
+    padding: 5px 25px 5px 0;
+    color: #fff;
+    font-size: 0.9rem;
+    outline: none;
+    width: 200px;
+    text-align: right;
+}
+
+.footer-search button {
+    position: absolute;
+    right: 0;
+    top: 5px;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+}
+
+.cta-banner {
+    background-color: #d15651;
+    padding: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 50px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.cta-banner h2 {
+    color: #fff;
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-outline {
+    border: 2px solid #fff;
+    color: #fff;
+    padding: 10px 25px;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+}
+
+.btn-outline:hover {
+    background-color: #fff;
+    color: #d15651;
+}
+
+.site-footer {
+    padding-bottom: 60px;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+}
+
+.footer-column h3 {
+    color: #fff;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    margin-bottom: 25px;
+    letter-spacing: 1px;
+    font-weight: 700;
+}
+
+.footer-column p,
+.footer-column li {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #bbb;
+    margin-bottom: 10px;
+}
+
+.contact-details {
+    margin-top: 20px;
+}
+
+.mail-link a {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.person-group {
+    margin-bottom: 20px;
+}
+
+.person-group strong {
+    color: #fff;
+    display: block;
+    margin-bottom: 3px;
+}
+
+.person-group p {
+    margin: 0;
+}
+
+.transport-list li {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.transport-list i {
+    color: #fff;
+    font-size: 1.2rem;
+    margin-top: 3px;
+    width: 20px;
+    text-align: center;
+}
+
+.transport-list strong {
+    color: #fff;
+}
+
+.map-links {
+    margin-top: 30px;
+}
+
+.map-links a {
+    color: #fff;
+    display: inline-block;
+    margin-bottom: 8px;
+}
+
+.map-links i {
+    margin-right: 8px;
+}
+
+/* =========================================
+   7. RESPONSIVE
+   ========================================= */
+@media (max-width: 900px) {
+    .header-inner {
+        flex-wrap: wrap;
+    }
+
+    .header-socials {
+        display: none;
+    }
+
+    .mobile-menu-toggle {
+        display: block;
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: 10px;
+        color: #333;
+    }
+
+    /* Mobile Navigation: Standardmäßig versteckt */
+    .main-navigation {
+        display: none;
+        width: 100%;
+        margin-top: 20px;
+        background: #fff;
+        border-top: 1px solid #eee;
+    }
+
+    /* Wird per JS hinzugefügt, um Menü anzuzeigen */
+    .main-navigation.active {
+        display: block;
+    }
+
+    .main-navigation .nav-list {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .nav-item {
+        width: 100%;
+        border-bottom: 1px solid #eee;
+    }
+
+    .nav-item a {
+        display: block;
+        padding: 15px 20px;
+    }
+
+    /* Mobile Sub-Menu */
+    .sub-menu {
+        position: static; /* Nicht mehr absolute positioniert */
+        box-shadow: none;
+        border-top: none;
+        background-color: #f9f9f9;
+        display: none; /* Auch mobil erst versteckt */
+        padding-left: 20px; /* Einrückung */
+    }
+
+    /* Klasse um Submenu mobil aufzuklappen (via JS) */
+    .nav-item.dropdown-active .sub-menu {
+        display: block;
+    }
+
+    /* Das Plus-Zeichen drehen, wenn offen */
+    .nav-item.has-sub.dropdown-active > a::after {
+        content: '-';
+    }
+}
+
+    .hero-content h1 { font-size: 2.5rem; }
+    .departments-grid { grid-template-columns: 1fr; gap: 60px; }
+    .video-control { display: none; }
+    .cta-banner { flex-direction: column; text-align: center; gap: 20px; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .footer-meta-top { flex-direction: column; gap: 20px; }
+    .footer-search input { text-align: center; }

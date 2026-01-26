@@ -1,0 +1,155 @@
+<!-- Please notice that we generated all "base"-files so we have a starting point to implement our project -->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Georg-Simon-Ohm-Berufskolleg Köln</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/baseStyle.css') }}">
+    <link rel="icon" type="image/x-icon" href="https://www.gso-koeln.de/wp-content/uploads/2019/10/ICON-GSO_URL.png">
+</head>
+<body>
+
+    <div class="top-bar">
+        <div class="container-width top-bar-inner">
+            <a href="#">Stundenplan</a>
+            <a href="#">Moodle</a>
+            <a href="#">Office 365</a>
+        </div>
+    </div>
+
+    <header class="site-header">
+        <div class="container-width header-inner">
+
+            <div class="branding">
+                <a href="#">
+                    <img src="https://www.gso-koeln.de/wp-content/uploads/2020/06/cropped-LOGO-GSO_neu.png" alt="GSO Logo">
+                </a>
+            </div>
+
+            <nav class="main-navigation">
+                <ul class="nav-list">
+                    <li class="nav-item current-menu-item"><a href="#">Home</a></li>
+                    <li class="nav-item has-sub"><a href="#">Schule</a></li>
+                    <li class="nav-item has-sub"><a href="#">Bildungsgänge</a></li>
+                    <li class="nav-item has-sub"><a href="#">Europa</a></li>
+
+                    <li class="nav-item has-sub">
+                        <a href="#">Service</a>
+                        <ul class="sub-menu">
+                            <li><a href="#">Einschulungstermine für das Schuljahr 2025/26</a></li>
+                            <li><a href="#">Kontakt</a></li>
+                            <li><a href="#">Anmeldung</a></li>
+                            <li><a href="#">Termine im Schuljahr 25/26</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="header-socials">
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            </div>
+
+            <div class="mobile-menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero-video-wrapper">
+        <video autoplay muted loop playsinline class="hero-video">
+            <source src="https://www.gso-koeln.de/wp-content/uploads/2020/11/20201106_GSO-Loop_Herbst-Impressionen_1920x900.mp4" type="video/mp4">
+            Ihr Browser unterstützt dieses Video-Format nicht.
+        </video>
+        <div class="video-overlay"></div>
+        <div class="hero-content container-width">
+            <h1>Georg-Simon-Ohm-<br>Berufskolleg</h1>
+        </div>
+        <div class="video-control">
+            <i class="fas fa-pause"></i>
+        </div>
+    </section>
+
+    <section class="departments-bar">
+        <div class="container-width">
+            <div class="departments-grid">
+                <div class="dept-col">
+                    <div class="dept-icon"><i class="fas fa-laptop"></i></div>
+                    <h2>IT</h2>
+                    <p>Unsere schulischen Angebote im Bereich <a href="#">Elektrotechnik und Informationstechnik.</a></p>
+                </div>
+                <div class="dept-col">
+                    <div class="dept-icon"><i class="fas fa-film"></i></div>
+                    <h2>MEDIEN</h2>
+                    <p>Unsere schulischen Angebote im Bereich <a href="#">Medien und Veranstaltungstechnik.</a></p>
+                </div>
+                <div class="dept-col">
+                    <div class="dept-icon"><i class="fas fa-graduation-cap"></i></div>
+                    <h2>(FACH-)ABI</h2>
+                    <p>Unsere schulischen Angebote die zum <a href="#">Abitur oder zur Fachhochschulreife führen.</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="footer-wrapper">
+        <div class="container-width footer-meta-top">
+            <div class="footer-links">
+                <a href="#">DATENSCHUTZERKLÄRUNG</a>
+                <a href="#">IMPRESSUM</a>
+            </div>
+            <div class="footer-search">
+                <form action="#">
+                    <input type="text" placeholder="Suchen ...">
+                    <button type="submit"><i class="fas fa-search"></i></button>
+                </form>
+            </div>
+        </div>
+
+        <div class="container-width">
+            <div class="cta-banner">
+                <h2>SIE HABEN SICH SCHON FÜR UNS ENTSCHIEDEN?</h2>
+                <a href="#" class="btn-outline">ZUR ANMELDUNG</a>
+            </div>
+        </div>
+
+        <footer class="site-footer">
+            <div class="container-width">
+                <div class="footer-grid">
+                    <div class="footer-column">
+                        <h3>ADRESSE UND KONTAKT</h3>
+                        <p>Georg-Simon-Ohm-Berufskolleg<br>Westerwaldstraße 92<br>51105 Köln</p>
+                        <div class="contact-details">
+                            <p>Telefon: 0221 83913-0<br>Telefax: 0221 83913-28</p>
+                            <p class="mail-link"><i class="far fa-envelope"></i> <a href="mailto:gso.buero@stadt-koeln.de">gso.buero@stadt-koeln.de</a></p>
+                            <p style="margin-top: 15px;">Montag – Donnerstag 08.00-15.00 Uhr<br>Freitag 08.00-11.00 Uhr</p>
+                        </div>
+                    </div>
+                    <div class="footer-column">
+                        <h3>ANSPRECHPARTNER</h3>
+                        <div class="person-group"><strong>Schulleiter:</strong><p>OStD Bertram Wolf</p></div>
+                        <div class="person-group"><strong>stellv. Schulleiter:</strong><p>StD Volker Stern</p></div>
+                        <div class="person-group"><strong>Sekretariat:</strong><p>Frau Goepel<br>Frau Lacin<br>Frau Meier</p></div>
+                    </div>
+                    <div class="footer-column">
+                        <h3>DER WEG ZU UNS</h3>
+                        <ul class="transport-list">
+                            <li><i class="fas fa-train"></i> <div><strong>Linien S12, S19, RB25</strong><br>Haltestelle Trimbornstraße</div></li>
+                            <li><i class="fas fa-bus"></i> <div><strong>Linie 159</strong><br>Haltestelle Sauerlandstraße</div></li>
+                            <li><i class="fas fa-bus"></i> <div><strong>Linie 153</strong><br>Haltestelle Esserstraße</div></li>
+                        </ul>
+                        <div class="map-links">
+                            <a href="#" target="_blank"><i class="fas fa-map"></i> Route mit <u>Google Maps</u></a><br>
+                            <a href="#" target="_blank"><i class="fas fa-map"></i> Route mit <u>OpenStreetMap</u></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/baseScript.js') }}"></script>
+</body>
+</html>

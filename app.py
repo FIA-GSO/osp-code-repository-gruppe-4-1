@@ -3,6 +3,7 @@ Marketplace GSO – Aussteller-Anmelde-Portal für die Jobmesse des Georg-Simon-
 """
 from flask import Flask
 
+
 app = Flask(__name__)
 
 
