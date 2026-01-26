@@ -43,6 +43,11 @@ def test_login_stupid(client):
     assert response.status == '200 OK' and '<input' in response.text
 
 
+def test_login_manual(client):
+    response = client.post('/login', data=dict(token='eb1696dd-a9b5-4527-8768-71b91151aa19'))
+    assert response.status == '200 OK' and 'Laeuft! Passt!' in response.text
+
+
 def test_register(client):
     response = client.post('/register', data=dict(name=f"Siegma.IT UG", contact_person="Siegmar Gabriel", email=f"siggi+{int(time())}@t-online.de"))
     assert response.status == '200 OK'
