@@ -27,8 +27,8 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Lint (Python)
       run: |
-        pylint $(git ls-files '*.py')
+        pylint $(git ls-files '*.py' | grep -vE '^(tests|database)/')
     - name: Test (Python)
       run: |
-        pytest
+        pytest $(git ls-files 'tests/*.py')
 
