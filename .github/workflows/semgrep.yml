@@ -1,0 +1,24 @@
+name: JavaScript
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  semgrep:
+
+    runs-on: ubuntu-latest
+    container:
+      image: semgrep/semgrep
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Lint (JS/TS)
+      run: |
+        semgrep scan --config auto
+

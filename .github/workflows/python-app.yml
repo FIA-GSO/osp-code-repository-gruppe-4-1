@@ -1,4 +1,4 @@
-name: Flask serving JS/TS
+name: Python
 
 on:
   push:
@@ -10,11 +10,9 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  Python:
 
     runs-on: ubuntu-latest
-    container:
-      image: semgrep/semgrep
 
     steps:
     - uses: actions/checkout@v4
@@ -33,6 +31,4 @@ jobs:
     - name: Test (Python)
       run: |
         pytest
-    - name: Lint (JS/TS)
-      run: |
-        semgrep scan --config auto
+
