@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Georg-Simon-Ohm-Berufskolleg Köln</title>
+    <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/baseStyle.css') }}">
     <link rel="icon" type="image/x-icon" href="https://www.gso-koeln.de/wp-content/uploads/2019/10/ICON-GSO_URL.png">
@@ -58,41 +58,8 @@
         </div>
     </header>
 
-    <section class="hero-video-wrapper">
-        <video autoplay muted loop playsinline class="hero-video">
-            <source src="https://www.gso-koeln.de/wp-content/uploads/2020/11/20201106_GSO-Loop_Herbst-Impressionen_1920x900.mp4" type="video/mp4">
-            Ihr Browser unterstützt dieses Video-Format nicht.
-        </video>
-        <div class="video-overlay"></div>
-        <div class="hero-content container-width">
-            <h1>Georg-Simon-Ohm-<br>Berufskolleg</h1>
-        </div>
-        <div class="video-control">
-            <i class="fas fa-pause"></i>
-        </div>
-    </section>
-
-    <section class="departments-bar">
-        <div class="container-width">
-            <div class="departments-grid">
-                <div class="dept-col">
-                    <div class="dept-icon"><i class="fas fa-laptop"></i></div>
-                    <h2>IT</h2>
-                    <p>Unsere schulischen Angebote im Bereich <a href="#">Elektrotechnik und Informationstechnik.</a></p>
-                </div>
-                <div class="dept-col">
-                    <div class="dept-icon"><i class="fas fa-film"></i></div>
-                    <h2>MEDIEN</h2>
-                    <p>Unsere schulischen Angebote im Bereich <a href="#">Medien und Veranstaltungstechnik.</a></p>
-                </div>
-                <div class="dept-col">
-                    <div class="dept-icon"><i class="fas fa-graduation-cap"></i></div>
-                    <h2>(FACH-)ABI</h2>
-                    <p>Unsere schulischen Angebote die zum <a href="#">Abitur oder zur Fachhochschulreife führen.</a></p>
-                </div>
-            </div>
-        </div>
-    </section>
+    {% block content %}
+    {% endblock %}
 
     <div class="footer-wrapper">
         <div class="container-width footer-meta-top">
