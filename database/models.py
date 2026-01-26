@@ -35,6 +35,7 @@ class Token(base):
 
     user = relationship("User", back_populates="tokens")
 
+
 class Booking(base):
     __tablename__ = 'bookings'
 
@@ -43,6 +44,8 @@ class Booking(base):
     duration = mapped_column(Integer, nullable=False)
 
     user = relationship("User", back_populates="bookings")
+
+
 
 # Datenbankverbindung
 engine = create_engine('sqlite:///database/marketplace.sqlite')

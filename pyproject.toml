@@ -1,0 +1,15 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "gso-marketplace-grp-4"
+version = "0.1.0-dev"
+
+[tool.pytest]
+addopts = ["--import-mode=importlib", "--cov=.", "--cov-fail-under=90"]
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[tool.coverage.run]
+omit = ["tests/*","database/*"]
