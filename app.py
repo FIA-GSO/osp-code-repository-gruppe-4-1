@@ -41,8 +41,10 @@ def register():
     return render_template('registration_form.html')
 
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login_page():
+    if request.method == 'POST':
+        return login(request.form.get('token'))
     return render_template('login_form.html')
 
 
@@ -62,7 +64,7 @@ def load_user(user_id):
         user_id = int(user_id)
         user_record = db.query(User).filter_by(id=user_id).one()
         return Authenticated(user_record)
-    except (ValueError, NoResultFound):
+    except (TypeError, ValueError, NoResultFound):
         print(f'[WARN] user id not found: {user_id}')
         return None
 

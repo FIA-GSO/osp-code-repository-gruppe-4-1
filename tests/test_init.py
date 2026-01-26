@@ -1,6 +1,8 @@
+from time import time
+
 import pytest
 import random
-from app import app as flask_app
+from app import app as flask_app, load_user
 
 
 @pytest.fixture()
@@ -42,7 +44,7 @@ def test_login_stupid(client):
 
 
 def test_register(client):
-    response = client.post('/register', data=dict(name=f"Siegma.IT UG", contact_person="Siegmar Gabriel", email="siggi@t-online.de"))
+    response = client.post('/register', data=dict(name=f"Siegma.IT UG", contact_person="Siegmar Gabriel", email=f"siggi+{int(time())}@t-online.de"))
     assert response.status == '200 OK'
 
 
@@ -54,3 +56,18 @@ def test_registration_form(client):
 def test_index(client):
     response = client.get('/')
     assert response.status == '302 FOUND' and "Redirect" in response.text
+
+
+def test_invalid_user_bogus_id_negative_int_string():
+    """load_user must not throw but meekly return None"""
+    assert load_user('-1337') is None
+
+
+def test_invalid_user_bogus_id_random_string():
+    """load_user must not throw but meekly return None"""
+    assert load_user('schnitzel') is None
+
+
+def test_invalid_user_bogus_id_none():
+    """load_user must not throw but meekly return None"""
+    assert load_user(None) is None
