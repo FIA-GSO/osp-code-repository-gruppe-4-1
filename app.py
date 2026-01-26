@@ -24,8 +24,7 @@ def landing_page():
     """
 Globaler Einstiegspunkt, insbesondere für nicht authentifizierte Nutzer
     """
-    return redirect('/register')
-    return render_template('baseHomeContent.html')
+    return redirect('/login')
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -42,16 +41,19 @@ def register():
     return render_template('registration_form.html')
 
 
+@app.route('/login')
+def login_page():
+    return render_template('login_form.html')
+
+
 @app.route('/login/<token>')
 def login(token):
-    if token is None:
-        return render_template('login_form.html')
     try:
         token = db.query(Token).filter_by(token=token).one()
         login_user(Authenticated(token.user))
         return 'Laeuft! Passt!'
     except NoResultFound:
-        return 'Nope, das war wohl nichts'
+        return 'Nope, das war wohl nichts', 403
 
 
 @login_manager.user_loader
