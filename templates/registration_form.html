@@ -1,0 +1,10 @@
+{% extends "baseTemplate.html" %}
+
+{% block content %}
+<form action="/register" method="POST">
+    <input type="text" name="name" placeholder="Firmenname" />
+    <input type="text" name="contact_person" placeholder="Ansprechpartner Ihrerseits" />
+    <input type="email" name="email" placeholder="Ihre E-Mail-Adresse" />
+    <input type="submit" value="Registrieren" />
+</form>
+{% endblock %}

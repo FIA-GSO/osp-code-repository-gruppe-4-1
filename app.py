@@ -13,6 +13,7 @@ app = Flask(__name__)
 app.secret_key = 'de5f8d879a742af4533d19af9c5f52f34a4f15e385e96c23227a0e6a67afd40c'
 
 login_manager = LoginManager()
+login_manager.login_view = 'login'
 login_manager.init_app(app)
 
 db = session()
@@ -31,19 +32,21 @@ def register():
     if request.method == 'POST':
         new_user = User(**request.form)
         db.add(new_user)
+        db.commit()
         new_token = Token(token=generate_token(), user_id=new_user.id)
         db.add(new_token)
         db.commit()
-        return 'Ihr Token ist {new_token.token}'
+        return f'Ihr Token ist {new_token.token}'
     else:
         return render_template('registration_form.html')
 
 
 @app.route('/login/<token>')
 def login(token):
+    if token is None:
+        return render_template('login_form.html')
     try:
         token = db.query(Token).filter_by(token=token).one()
-        print(f'[DEBUG] token = {token}, user = {token.user}')
         login_user(Authenticated(token.user))
         return 'Laeuft! Passt!'
     except NoResultFound:
