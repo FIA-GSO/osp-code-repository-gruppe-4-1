@@ -27,7 +27,7 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Lint (Python)
       run: |
-        pylint --ignore tests --ignore database --fail-under 8 $(git ls-files '*.py')
+        pylint --ignore-paths tests,database --fail-under 8 $(git ls-files '*.py')
     - name: Test (Python)
       run: |
         pytest $(git ls-files 'tests/*.py')
