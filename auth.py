@@ -1,3 +1,7 @@
+"""
+Authentifikations-Helfer-Funktionen und Adapter für flask_login
+"""
+
 import uuid
 from typing import Generic, TypeVar
 
