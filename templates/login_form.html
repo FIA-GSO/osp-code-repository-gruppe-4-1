@@ -1,13 +1,16 @@
-{% extends "baseLayout.html" %}
+{% extends "marketplaceLandingpage.html" %}
 
 {% block title %}Georg-Simon-Ohm-Berufskolleg Köln – Marketplace: Anmeldung{% endblock %}
 
-{% block content %}
+{% block sub_content %}
 
-<form action="/login" method="POST">
-    <label for="token_input">Ihr Zugangscode: </label>
-    <input type="text" name="token" id="token_input" placeholder="abcdefab-1234-5678-9012-34567890abcd.." />
-    <input type="submit" value="Anmelden" />
+<form action="/login" method="POST" class="loginForm">
+    <div class="formGroup">
+        <label for="token_input">Ihr Zugangscode</label>
+        <input type="text" name="token" id="token_input" placeholder="z.B. abcdefab-1234..." required />
+    </div>
+
+    <input type="submit" value="Anmelden" class="btn btn-primary" />
 </form>
 <br>
 <a href="/register"><button>Registrieren</button></a>

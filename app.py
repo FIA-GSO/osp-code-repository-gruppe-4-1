@@ -25,11 +25,10 @@ def landing_page():
     """
 Globaler Einstiegspunkt, insbesondere für nicht authentifizierte Nutzer
     """
-    if current_user.is_authenticated:
-        return redirect('/dashboard')
-    return redirect('/login')
+    return render_template('baseLayout.html')
 
 
+@app.route('/marketplace')
 @app.route('/dashboard')
 @login_required
 def dashboard():
@@ -84,9 +83,9 @@ def login(token):
     try:
         token = db.query(Token).filter_by(token=token).one()
         login_user(Authenticated(token.user))
-        return landing_page()
+        return redirect('/marketplace')
     except NoResultFound:
-        return 'Nope, das war wohl nichts', 403
+        return render_template('slim.html', content='Nope, das war wohl nichts'), 403
 
 
 @login_manager.user_loader
