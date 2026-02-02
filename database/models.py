@@ -1,10 +1,10 @@
 from datetime import datetime, timedelta
-from sqlalchemy import Integer, String, Boolean, DateTime, create_engine, ForeignKey
-from sqlalchemy.orm import sessionmaker, mapped_column, declarative_base, relationship
+from sqlalchemy import Integer, String, Boolean, DateTime, ForeignKey, UniqueConstraint
+from sqlalchemy.orm import mapped_column, declarative_base, relationship
 
-base = declarative_base()
+Schema = declarative_base()
 
-class User(base):
+class User(Schema):
     __tablename__ = 'users'
 
     id = mapped_column(Integer, primary_key=True)
@@ -21,7 +21,7 @@ class User(base):
     tokens = relationship("Token", back_populates="user")
     bookings = relationship("Booking", back_populates="user")
 
-class Token(base):
+class Token(Schema):
     __tablename__ = 'tokens'
 
     token = mapped_column(String, primary_key=True)
@@ -36,18 +36,19 @@ class Token(base):
     user = relationship("User", back_populates="tokens")
 
 
-class Booking(base):
+class Booking(Schema):
     __tablename__ = 'bookings'
 
     id = mapped_column(Integer, primary_key=True)
+
     user_id = mapped_column(Integer, ForeignKey('users.id'), nullable=False)
+    event_year = mapped_column(Integer, nullable=False, default=datetime.now().year)
     duration = mapped_column(Integer, nullable=False)
 
+    chairs_needed = mapped_column(Integer, nullable=False, default=0)
+    tables_needed = mapped_column(Integer, nullable=False, default=0)
+    remarks = mapped_column(String, nullable=True)
+    presentation = mapped_column(String, nullable=True)
+
     user = relationship("User", back_populates="bookings")
-
-
-
-# Datenbankverbindung
-engine = create_engine('sqlite:///database/marketplace.sqlite')
-base.metadata.create_all(engine)
-session = sessionmaker(bind=engine)
+    UniqueConstraint('user_id', 'event_year')

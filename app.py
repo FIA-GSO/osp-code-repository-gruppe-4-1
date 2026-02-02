@@ -1,13 +1,16 @@
 """
 Marketplace GSO – Aussteller-Anmelde-Portal für die Jobmesse des Georg-Simon-Ohm-Berufskollegs
 """
+
+from typing import Optional
+
 from flask import Flask, redirect, request, render_template
-from flask_login import LoginManager, login_user
+from flask_login import LoginManager, login_user, current_user, login_required
 from sqlalchemy.exc import NoResultFound
 
 from auth import Authenticated, generate_token
-from database.models import session, Token, User
-
+from database.models import Token, User
+from db import db, get_bookings
 
 app = Flask(__name__)
 app.secret_key = 'de5f8d879a742af4533d19af9c5f52f34a4f15e385e96c23227a0e6a67afd40c'
@@ -16,19 +19,40 @@ login_manager = LoginManager()
 login_manager.login_view = 'login'
 login_manager.init_app(app)
 
-db = session()
-
 
 @app.route('/')
 def landing_page():
     """
 Globaler Einstiegspunkt, insbesondere für nicht authentifizierte Nutzer
     """
+    if current_user.is_authenticated:
+        return redirect('/dashboard')
     return redirect('/login')
+
+
+@app.route('/dashboard')
+@login_required
+def dashboard():
+    """
+Startseite für eingeloggte Nutzer: Anzeige der aktuellen Teilnahme-Buchung,
+bzw. aller aktuellen Buchungen f. Admins.
+    :return:
+    """
+    if current_user.is_admin:
+        template = 'admin_dashboard.html'
+        bookings = get_bookings()
+    else:
+        template = 'user_dashboard.html'
+        bookings = get_bookings(user_id=current_user.id)
+    return render_template(template, user=current_user, bookings=bookings)
 
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    """
+    Registrierungs-Formular und -Logik
+    :return:
+    """
     if request.method == 'POST':
         new_user = User(**request.form)
         db.add(new_user)
@@ -43,6 +67,9 @@ def register():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login_page():
+    """
+    Log-In-Formular und -Logik
+    """
     if request.method == 'POST':
         return login(request.form.get('token'))
     return render_template('login_form.html')
@@ -50,16 +77,24 @@ def login_page():
 
 @app.route('/login/<token>')
 def login(token):
+    """
+    (Nur) Login-Logik
+    :param token:
+    """
     try:
         token = db.query(Token).filter_by(token=token).one()
         login_user(Authenticated(token.user))
-        return 'Laeuft! Passt!'
+        return landing_page()
     except NoResultFound:
         return 'Nope, das war wohl nichts', 403
 
 
 @login_manager.user_loader
-def load_user(user_id):
+def load_user(user_id) -> Optional[Authenticated[User]]:
+    """
+    flask_login braucht dieses Loader-Plugin
+    :param user_id:
+    """
     try:
         user_id = int(user_id)
         user_record = db.query(User).filter_by(id=user_id).one()
