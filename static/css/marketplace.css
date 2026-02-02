@@ -25,6 +25,7 @@ body {
   font-weight: 700;
   margin-bottom: 0.5rem;
   letter-spacing: 1px;
+  text-transform: uppercase;
 }
 
 .subHeadline {
