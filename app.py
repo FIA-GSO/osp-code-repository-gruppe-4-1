@@ -18,16 +18,18 @@ login_manager = LoginManager()
 login_manager.login_view = 'login'
 login_manager.init_app(app)
 
-
 @app.route('/')
 def landing_page():
     """
 Globaler Einstiegspunkt, insbesondere für nicht authentifizierte Nutzer
     """
-    if current_user.is_authenticated:
-        return redirect('/dashboard')
-    return redirect('/login')
+    return render_template('baseLayout.html')
 
+@app.route('/marketplace')
+def marketplaceLandingpage():
+    if current_user.is_authenticated == False:
+        return render_template('/login_form.html')
+    return redirect('/to_a_route_that_make_sense') # To-Do sobald die seite fertig ist auf dei eingeloggte user geschickt werden, auf diese weiterleiten
 
 @app.route('/dashboard')
 def dashboard():
