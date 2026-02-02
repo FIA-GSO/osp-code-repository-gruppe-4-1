@@ -68,9 +68,9 @@ def test_registration_form(client):
     assert is_ok(response) and '<input' in response.text
 
 
-def test_index(client):
+def test_index_is_just_a_page(client):
     response = client.get('/')
-    assert response.status == '302 FOUND'
+    assert response.status_code == 200
 
 
 def test_invalid_user_bogus_id_negative_int_string():
