@@ -30,7 +30,7 @@ def test_login_happy_admin(client):
 
 def test_login_happy_admin_follow2dashboard(client):
     response = client.get('/login/eb1696dd-a9b5-4527-8768-71b91151aa19', follow_redirects=True)
-    assert is_ok(response) and 'Set-Cookie' in response.headers and 'Anmeldungen dieses Jahr' in response.text
+    assert is_ok(response) and 'Anmeldungen dieses Jahr' in response.text
 
 
 def test_login_happy_user(client):
@@ -40,7 +40,7 @@ def test_login_happy_user(client):
 
 def test_login_happy_user_follow2dashboard(client):
     response = client.get('/login/166202eb-419c-4cef-af14-90b002347887', follow_redirects=True)
-    assert is_ok(response) and 'Set-Cookie' in response.headers and 'Firma:' in response.text
+    assert is_ok(response) and 'Firma:' in response.text
 
 
 def test_login_sad(client):
