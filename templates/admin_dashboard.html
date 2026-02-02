@@ -10,7 +10,7 @@ Hallo {{ user.name }}!
 Anmeldungen dieses Jahr:
 <ul>
     {% for booking in bookings %}
-        <li>{{ booking.User.name }}, {{ booking.duration }} Tage, {{ booking.User.contact_person }}</li>
+        <li>{{ booking.user.name }}, {{ booking.duration }} Tage, {{ booking.user.contact_person }}</li>
     {% endfor %}
 </ul>
 

@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from sqlalchemy import Integer, String, Boolean, DateTime, ForeignKey
+from sqlalchemy import Integer, String, Boolean, DateTime, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import mapped_column, declarative_base, relationship
 
 Schema = declarative_base()
@@ -40,8 +40,15 @@ class Booking(Schema):
     __tablename__ = 'bookings'
 
     id = mapped_column(Integer, primary_key=True)
+
     user_id = mapped_column(Integer, ForeignKey('users.id'), nullable=False)
+    event_year = mapped_column(Integer, nullable=False, default=datetime.now().year)
     duration = mapped_column(Integer, nullable=False)
 
-    user = relationship("User", back_populates="bookings")
+    chairs_needed = mapped_column(Integer, nullable=False, default=0)
+    tables_needed = mapped_column(Integer, nullable=False, default=0)
+    remarks = mapped_column(String, nullable=True)
+    presentation = mapped_column(String, nullable=True)
 
+    user = relationship("User", back_populates="bookings")
+    UniqueConstraint('user_id', 'event_year')
