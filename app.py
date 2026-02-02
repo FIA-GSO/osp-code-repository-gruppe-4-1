@@ -16,7 +16,7 @@ app = Flask(__name__)
 app.secret_key = 'de5f8d879a742af4533d19af9c5f52f34a4f15e385e96c23227a0e6a67afd40c'
 
 login_manager = LoginManager()
-login_manager.login_view = 'login'
+login_manager.login_view = 'login_page'
 login_manager.init_app(app)
 
 
