@@ -1,11 +1,12 @@
 import uuid
+from typing import Generic, TypeVar
 
-from database.models import User
+User = TypeVar('User')
 
 
-class Authenticated:
+class Authenticated(Generic[User]):
     """
-Ein schmaller Wrapper um einen Nutzerdatensatz, der flask_logins Anforderungen erfüllt
+Ein schmaler Wrapper um einen Nutzerdatensatz, der flask_logins Anforderungen erfüllt
     """
     def __init__(self, user_record: User):
         self.record = user_record
@@ -14,7 +15,19 @@ Ein schmaller Wrapper um einen Nutzerdatensatz, der flask_logins Anforderungen e
         self.is_anonymous = False
 
     def get_id(self):
+        """
+        Wird von flask_login gebraucht.
+        :return: str die User-ID, stimmt mit der Tabellen-ID überein (zufällig)
+        """
         return str(self.record.id)
+
+    def __getattr__(self, attr):
+        return getattr(self.record, attr)
+
+    # Yeah, no, that doesn't work xD
+    # the ctor will trigger an infinite loop
+    # def __setattr__(self, attr, value):
+    #     return setattr(self.record, attr, value)
 
 
 def generate_token():

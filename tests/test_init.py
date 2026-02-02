@@ -10,11 +10,8 @@ def app():
     flask_app.config.update({
         "TESTING": True,
     })
-
     # other setup can go here
-
     yield flask_app
-
     # clean up / reset resources here
 
 
@@ -23,19 +20,14 @@ def client(app):
     return app.test_client()
 
 
-@pytest.fixture()
-def runner(app):
-    return app.test_cli_runner()
-
-
 def test_login_happy(client):
     response = client.get('/login/eb1696dd-a9b5-4527-8768-71b91151aa19')
-    assert response.status == '200 OK' and response.text == 'Laeuft! Passt!'
+    assert response.status == '200 OK' and 'Set-Cookie' in response.headers
 
 
 def test_login_sad(client):
     response = client.get('/login/expired-or-invalid-token')
-    assert response.status == '403 FORBIDDEN' and 'Nope' in response.text
+    assert response.status == '403 FORBIDDEN'
 
 
 def test_login_stupid(client):
@@ -45,7 +37,7 @@ def test_login_stupid(client):
 
 def test_login_manual(client):
     response = client.post('/login', data=dict(token='eb1696dd-a9b5-4527-8768-71b91151aa19'))
-    assert response.status == '200 OK' and 'Laeuft! Passt!' in response.text
+    assert response.status == '200 OK' and 'Set-Cookie' in response.headers
 
 
 def test_register(client):

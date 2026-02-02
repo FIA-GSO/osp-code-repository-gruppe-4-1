@@ -1,0 +1,17 @@
+{% extends "baseLayout.html" %}
+
+{% block title %}Georg-Simon-Ohm-Berufskolleg Köln – Marketplace: Dashboard{% endblock %}
+
+{% block content %}
+
+Hallo {{ user.name }}!
+<br>
+
+Anmeldungen dieses Jahr:
+<ul>
+    {% for booking in bookings %}
+        <li>{{ booking.User.name }}, {{ booking.duration }} Tage, {{ booking.User.contact_person }}</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

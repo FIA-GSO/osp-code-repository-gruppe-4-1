@@ -1,13 +1,15 @@
 """
 Marketplace GSO – Aussteller-Anmelde-Portal für die Jobmesse des Georg-Simon-Ohm-Berufskollegs
 """
+from typing import Optional
+
 from flask import Flask, redirect, request, render_template
-from flask_login import LoginManager, login_user
+from flask_login import LoginManager, login_user, current_user
 from sqlalchemy.exc import NoResultFound
 
 from auth import Authenticated, generate_token
-from database.models import session, Token, User
-
+from database.models import Token, User
+from db import db
 
 app = Flask(__name__)
 app.secret_key = 'de5f8d879a742af4533d19af9c5f52f34a4f15e385e96c23227a0e6a67afd40c'
@@ -16,15 +18,23 @@ login_manager = LoginManager()
 login_manager.login_view = 'login'
 login_manager.init_app(app)
 
-db = session()
-
 
 @app.route('/')
 def landing_page():
     """
 Globaler Einstiegspunkt, insbesondere für nicht authentifizierte Nutzer
     """
+    if current_user.is_authenticated:
+        return redirect('/dashboard')
     return redirect('/login')
+
+
+@app.route('/dashboard')
+def dashboard():
+    if current_user.is_admin:
+        return render_template('admin_dashboard.html', user=current_user, bookings=get_bookings())
+    else:
+        return render_template('user_dashboard.html', user=current_user, bookings=get_bookings(user_id=current_user.id))
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -53,13 +63,13 @@ def login(token):
     try:
         token = db.query(Token).filter_by(token=token).one()
         login_user(Authenticated(token.user))
-        return 'Laeuft! Passt!'
+        return landing_page()
     except NoResultFound:
         return 'Nope, das war wohl nichts', 403
 
 
 @login_manager.user_loader
-def load_user(user_id):
+def load_user(user_id) -> Optional[Authenticated[User]]:
     try:
         user_id = int(user_id)
         user_record = db.query(User).filter_by(id=user_id).one()
