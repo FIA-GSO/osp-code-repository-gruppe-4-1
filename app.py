@@ -1,7 +1,7 @@
 """
 Marketplace GSO – Aussteller-Anmelde-Portal für die Jobmesse des Georg-Simon-Ohm-Berufskollegs
 """
-
+from datetime import datetime
 from typing import Optional
 
 from flask import Flask, redirect, request, render_template
@@ -37,12 +37,17 @@ Startseite für eingeloggte Nutzer: Anzeige der aktuellen Teilnahme-Buchung,
 bzw. aller aktuellen Buchungen f. Admins.
     :return:
     """
+    this_year = datetime.now().year
     if current_user.is_admin:
         template = 'admin_dashboard.html'
-        bookings = get_bookings()
+        bookings = get_bookings(event_year=this_year)
     else:
         template = 'user_dashboard.html'
-        bookings = get_bookings(user_id=current_user.id)
+        all_bookings = get_bookings(user_id=current_user.id)
+        bookings = dict(
+            past=[b for b in all_bookings if b.event_year < this_year],
+            current=[b for b in all_bookings if b.event_year == this_year]
+        )
     return render_template(template, user=current_user, bookings=bookings)
 
 
