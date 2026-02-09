@@ -1,9 +1,3 @@
-/* =========================================
-   MARKETPLACE & EVENT REGISTRATION CSS
-   Combined File
-   ========================================= */
-
-/* --- 1. VARIABLEN & GLOBALS --- */
 :root {
   --gso-red: #d15651;
   --gso-blue: #6a9bd6;
@@ -23,14 +17,13 @@
 }
 
 body {
-  font-family: 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Segoe UI hinzugefügt für Modernität */
+  font-family: 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   background-color: var(--bg-color);
   margin: 0;
   color: var(--text-color);
   line-height: 1.5;
 }
 
-/* --- 2. HEADER BEREICH --- */
 .headlineBox {
   background-color: var(--gso-red);
   color: white;
@@ -55,14 +48,12 @@ body {
   text-transform: uppercase;
 }
 
-/* --- 3. LAYOUT CONTAINER & CARDS --- */
 .mainContainer {
   padding: 0 1rem 2rem 1rem;
   display: flex;
   justify-content: center;
 }
 
-/* Standard Login Card */
 .loginCard {
   background: white;
   padding: 2rem;
@@ -75,19 +66,16 @@ body {
   gap: 1.5rem;
 }
 
-/* Register Card (etwas breiter) */
 .registerCard {
   max-width: 600px;
 }
 
-/* --- 4. EVENT FORMULAR (NEU) --- */
-/* Spezifisches Styling für das Event-Formular */
 .event-form {
   background-color: white;
-  max-width: 700px; /* Breiter für das Event Layout */
+  max-width: 700px;
   width: 100%;
   margin: 0 auto;
-  padding: 2.5rem; /* Großzügiges Padding */
+  padding: 2.5rem;
   border-radius: 8px;
   box-shadow: var(--card-shadow);
   display: flex;
@@ -103,7 +91,7 @@ body {
   color: var(--text-color);
 }
 
-/* Überschriften im Event Form */
+
 .event-form h3 {
   margin: 1.5rem 0 1rem 0;
   font-size: 1.1rem;
@@ -114,9 +102,9 @@ body {
   letter-spacing: 0.5px;
 }
 
-/* --- 5. FORMULAR ELEMENTE (GLOBAL & OVERRIDES) --- */
 
-/* Titel & Labels */
+
+
 .formSectionTitle {
     margin: 0.5rem 0 1rem 0;
     font-size: 1.1rem;
@@ -148,7 +136,7 @@ label,
   display: block;
 }
 
-/* Input Felder - Global */
+
 input[type="text"],
 input[type="password"],
 input[type="email"],
@@ -166,11 +154,11 @@ textarea {
   box-sizing: border-box;
 }
 
-/* Event Form Specific Input Overrides (Höher, luftiger) */
+
 .event-form input[type="text"],
 .event-form input[type="number"],
 .event-form textarea {
-  height: 48px; /* Feste Höhe wie im Screenshot */
+  height: 48px;
   padding: 10px 15px;
   border: 1px solid var(--input-border);
   color: #495057;
@@ -183,7 +171,7 @@ textarea {
   resize: vertical;
 }
 
-/* Focus States */
+
 input:focus,
 textarea:focus {
   border-color: var(--gso-blue);
@@ -191,14 +179,14 @@ textarea:focus {
   box-shadow: 0 0 0 3px rgba(106, 155, 214, 0.2);
 }
 
-/* Sektionen im Event Form */
+
 .form-section {
   margin-bottom: 1.5rem;
 }
 
-/* --- 6. SPEZIFISCHE EVENT BLÖCKE --- */
 
-/* Tagesauswahl (Graue Box) */
+
+
 .day-selection {
   background-color: #f8f9fa;
   border: 1px solid #e9ecef;
@@ -228,7 +216,7 @@ textarea:focus {
   font-style: italic;
 }
 
-/* Radio Buttons */
+
 .radio-options {
   display: flex;
   align-items: center;
@@ -251,7 +239,7 @@ textarea:focus {
   cursor: pointer;
 }
 
-/* Info Listen */
+
 .info-row {
   margin-bottom: 0.5rem;
 }
@@ -269,7 +257,7 @@ textarea:focus {
   line-height: 1.4;
 }
 
-/* Inline Inputs (Tische & Stühle - Graue Box) */
+
 .inline-inputs {
   display: flex;
   flex-direction: column;
@@ -298,7 +286,7 @@ textarea:focus {
   height: 48px !important;
 }
 
-/* Footer Text */
+
 .footer-text {
   font-size: 0.9rem;
   color: var(--text-muted);
@@ -317,7 +305,7 @@ textarea:focus {
   text-decoration: underline;
 }
 
-/* --- 7. BUTTONS --- */
+
 .form-actions {
   margin-top: 2rem;
 }
@@ -364,7 +352,7 @@ textarea:focus {
   background-color: #eef5fc;
 }
 
-/* --- 8. EXTRAS (CHECKBOX & TOOLTIP) --- */
+
 .checkboxWrapper {
     display: flex;
     align-items: flex-start;
@@ -415,7 +403,7 @@ textarea:focus {
   padding: 0 10px;
 }
 
-/* Tooltip Styles */
+
 .info-wrapper {
   position: relative;
   display: inline-flex;
@@ -475,10 +463,10 @@ textarea:focus {
 }
 
 
-/* --- 9. MEDIA QUERIES (DESKTOP) --- */
+
 @media (min-width: 768px) {
 
-  /* Layout Global */
+
   .headlineBox {
     text-align: left;
     padding-left: 10%;
@@ -488,7 +476,7 @@ textarea:focus {
     padding-top: 2rem;
   }
 
-  /* Grid System */
+
   .formRow {
       flex-direction: row;
       gap: 1rem;
@@ -498,9 +486,9 @@ textarea:focus {
   .thirdWidth { width: 30%; }
   .twoThirdWidth { width: 70%; }
 
-  /* Event Form Layout Anpassungen */
+
   .event-form {
-    padding: 3rem; /* Noch etwas mehr Platz auf Desktop */
+    padding: 3rem;
   }
 
   .day-selection {
@@ -529,10 +517,10 @@ textarea:focus {
   }
 }
 
-/* --- 10. MEDIA QUERIES (MOBILE FIXES) --- */
+
 @media (max-width: 600px) {
 
-  /* Tooltip Mobile Adjustment */
+
   .info-wrapper .tooltip-text {
     left: auto;
     transform: none;
