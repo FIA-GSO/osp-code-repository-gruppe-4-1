@@ -11,6 +11,8 @@ from sqlalchemy.exc import NoResultFound
 from auth import Authenticated, generate_token
 from database.models import Token, User, Booking
 from db import db, get_bookings
+from input import validate_booking
+from triggers import notify_admins
 from utils import NotificationType, Notification
 
 app = Flask(__name__)
@@ -26,7 +28,7 @@ def landing_page():
     """
 Globaler Einstiegspunkt, insbesondere für nicht authentifizierte Nutzer
     """
-    return render_template('baseLayout.html')
+    return render_template('baseHomeContent.html')
 
 
 @app.route('/marketplace')
@@ -81,16 +83,22 @@ def register():
     return render_template('registration_form.html')
 
 
-@login_required
 @app.route('/register', methods=['GET', 'POST'])
+@login_required
 def register_for_event():
+    """
+    Anmeldung zu einem Event: Formular & Logik
+    """
     if request.method != 'POST':
-        return render_template('baseLayout.html')
+        return render_template('event_registration_form.html')
 
     try:
-        new_booking = Booking(**request.form)
+        this_year = datetime.now().year
+        new_booking = validate_booking(**request.form, user_id=current_user.record.id, event_year=this_year)
         db.add(new_booking)
         db.commit()
+
+        notify_admins(new_booking)
 
         return redirect('/dashboard')
 
@@ -106,15 +114,6 @@ def login_page():
     if request.method == 'POST':
         return login(request.form.get('token'))
     return render_template('login_form.html')
-
-
-@app.route('/event/registration', methods=['GET'])
-@login_required
-def event_registration_page():
-    """
-    Anmeldungsformular zu einem Event
-    """
-    return render_template('event_registration_form.html')
 
 
 @app.route('/login/<token>')

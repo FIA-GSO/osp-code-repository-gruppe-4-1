@@ -64,6 +64,23 @@ def test_register(client):
 
 
 def test_registration_form(client):
+    response = client.get('/join')
+    assert is_ok(response) and '<input' in response.text
+
+
+def test_register_for_event_not_logged_in(client):
+    response = client.post('/register', data=dict(tables_needed=1, chairs_needed=2))
+    assert response.status_code == 302
+
+
+def test_register_for_event_logged_in(client):
+    _ = client.get('/login/166202eb-419c-4cef-af14-90b002347887')
+    response = client.post('/register', data=dict(tables_needed=1, chairs_needed=2))
+    assert is_ok(response)
+
+
+def test_event_registration_form(client):
+    _ = client.get('/login/166202eb-419c-4cef-af14-90b002347887')
     response = client.get('/register')
     assert is_ok(response) and '<input' in response.text
 

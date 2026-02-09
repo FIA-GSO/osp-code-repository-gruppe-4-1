@@ -14,8 +14,8 @@
             <small class="day-note">(Aufbau zwischen 09.00 Uhr und 10.30 Uhr)</small>
         </div>
         <div class="radio-options">
-            <label class="radio-label"><input type="radio" name="teilnahme_tag1" value="ja"> Ja</label>
-            <label class="radio-label"><input type="radio" name="teilnahme_tag1" value="nein"> Nein</label>
+            <label class="radio-label"><input type="radio" name="first_day" value="yes"> Ja</label>
+            <label class="radio-label"><input type="radio" name="first_day" value="no"> Nein</label>
         </div>
     </div>
 
@@ -26,8 +26,8 @@
             <small class="day-note">(Aufbau zwischen 07.30 Uhr und 08.30 Uhr)</small>
         </div>
         <div class="radio-options">
-            <label class="radio-label"><input type="radio" name="teilnahme_tag2" value="ja"> Ja</label>
-            <label class="radio-label"><input type="radio" name="teilnahme_tag2" value="nein"> Nein</label>
+            <label class="radio-label"><input type="radio" name="second_day" value="yes"> Ja</label>
+            <label class="radio-label"><input type="radio" name="second_day" value="no"> Nein</label>
         </div>
     </div>
 
@@ -47,16 +47,16 @@
         <label for="bemerkungen">
             <span class="label-text">Bemerkungen</span> (ggf. Wünsche, besondere Standaufbauten, etc):
         </label>
-        <textarea id="bemerkungen" name="bemerkungen" rows="3"></textarea>
+        <textarea id="bemerkungen" name="remarks" rows="3"></textarea>
     </div>
 
     <div class="form-section inline-inputs">
       <span>Wir benötigen</span>
       <div class="input-wrapper">
-        <label>Tische:</label><input type="number" name="anzahl_tische" min="0" placeholder="0" class="number-input">
+        <label>Tische:</label><input type="number" name="tables_needed" min="0" placeholder="0" class="number-input">
       </div>
       <div class="input-wrapper">
-        <label>Stühle:</label><input type="number" name="anzahl_stuehle" min="0" placeholder="0" class="number-input">
+        <label>Stühle:</label><input type="number" name="chairs_needed" min="0" placeholder="0" class="number-input">
       </div>
     </div>
 
@@ -64,7 +64,7 @@
         <label for="fachvortrag">
             <span class="label-text">Fachvortrag</span> (ggf. Thema/Dauer):
         </label>
-        <input type="text" id="fachvortrag" name="fachvortrag">
+        <input type="text" id="fachvortrag" name="presentation">
     </div>
 
     <div class="form-section footer-text">
