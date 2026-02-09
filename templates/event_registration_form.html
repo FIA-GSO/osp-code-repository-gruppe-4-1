@@ -1,0 +1,84 @@
+{% extends "marketplace.html" %}
+
+{% block title %}Georg-Simon-Ohm-Berufskolleg Köln - Marketplace{% endblock %}
+
+{% block sub_content %}
+  <form action="#" method="POST" class="event-form">
+
+    <div class="form-intro">Wir werden an den folgenden Tagen mit einem Informationsstand teilnehmen:</div>
+
+    <div class="form-section day-selection">
+        <div class="day-info">
+            <div class="day-label">Tag 1:</div>
+            <span class="day-time">Zeitraum: 11.00 - 16.00 Uhr</span>
+            <small class="day-note">(Aufbau zwischen 09.00 Uhr und 10.30 Uhr)</small>
+        </div>
+        <div class="radio-options">
+            <label class="radio-label"><input type="radio" name="teilnahme_tag1" value="ja"> Ja</label>
+            <label class="radio-label"><input type="radio" name="teilnahme_tag1" value="nein"> Nein</label>
+        </div>
+    </div>
+
+    <div class="form-section day-selection">
+        <div class="day-info">
+            <div class="day-label">Tag 2:</div>
+            <span class="day-time">Zeitraum: 09.00 - 13.00 Uhr</span>
+            <small class="day-note">(Aufbau zwischen 07.30 Uhr und 08.30 Uhr)</small>
+        </div>
+        <div class="radio-options">
+            <label class="radio-label"><input type="radio" name="teilnahme_tag2" value="ja"> Ja</label>
+            <label class="radio-label"><input type="radio" name="teilnahme_tag2" value="nein"> Nein</label>
+        </div>
+    </div>
+
+    <div class="form-section info-block">
+        <h3>Standinformationen</h3>
+        <div class="info-row">
+            <span class="label-text">Standort:</span> Westerwaldstr. 92, 51105 Köln, Sporthalle
+        </div>
+        <ul class="info-list">
+            <li>Abmessung der Standfläche: ca. 3 x 3 m</li>
+            <li>Stromanschluss (für z.B. Beamer/Laptop) vorhanden. Darüber hinausgehenden Leistungsbedarf bitte unten angeben.</li>
+            <li>WLAN-Zugang vorhanden.</li>
+        </ul>
+    </div>
+
+    <div class="form-section">
+        <label for="bemerkungen">
+            <span class="label-text">Bemerkungen</span> (ggf. Wünsche, besondere Standaufbauten, etc):
+        </label>
+        <textarea id="bemerkungen" name="bemerkungen" rows="3"></textarea>
+    </div>
+
+    <div class="form-section inline-inputs">
+      <span>Wir benötigen</span>
+      <div class="input-wrapper">
+        <label>Tische:</label><input type="number" name="anzahl_tische" min="0" placeholder="0" class="number-input">
+      </div>
+      <div class="input-wrapper">
+        <label>Stühle:</label><input type="number" name="anzahl_stuehle" min="0" placeholder="0" class="number-input">
+      </div>
+    </div>
+
+    <div class="form-section">
+        <label for="fachvortrag">
+            <span class="label-text">Fachvortrag</span> (ggf. Thema/Dauer):
+        </label>
+        <input type="text" id="fachvortrag" name="fachvortrag">
+    </div>
+
+    <div class="form-section footer-text">
+        <div class="info-row">
+            <span class="label-text">Kosten:</span> Die Standfläche steht Ihnen kostenfrei zur Verfügung. Über eine Spende an unseren Förderverein würden wir uns freuen.
+        </div>
+        <div class="info-row">
+            <span class="label-text">Koordination:</span> Andreas Feser (<a href="mailto:fe@gso-koeln.de">fe@gso-koeln.de</a>)
+        </div>
+    </div>
+
+    <div class="form-actions">
+        <button type="submit" class="btn-submit">Anmeldung absenden</button>
+    </div>
+
+</form>
+{% endblock %}
