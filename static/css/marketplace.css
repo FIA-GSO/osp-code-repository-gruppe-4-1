@@ -1,18 +1,38 @@
-/* --- Globale Einstellungen --- */
+/* =========================================
+   MARKETPLACE & EVENT REGISTRATION CSS
+   Combined File
+   ========================================= */
+
+/* --- 1. VARIABLEN & GLOBALS --- */
+:root {
+  --gso-red: #d15651;
+  --gso-blue: #6a9bd6;
+  --gso-blue-hover: #5a8bc6;
+  --text-color: #333;
+  --text-muted: #666;
+  --bg-color: #f4f4f4;
+  --border-color: #ccc;
+  --input-border: #ced4da;
+  --input-focus: #6a8ecf;
+  --card-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  --radius: 4px;
+}
+
 * {
   box-sizing: border-box;
 }
 
 body {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  background-color: #f4f4f4;
+  font-family: 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Segoe UI hinzugefügt für Modernität */
+  background-color: var(--bg-color);
   margin: 0;
-  color: #333;
+  color: var(--text-color);
+  line-height: 1.5;
 }
 
-/* --- Header Bereich --- */
+/* --- 2. HEADER BEREICH --- */
 .headlineBox {
-  background-color: #d15651; /* GSO Rot */
+  background-color: var(--gso-red);
   color: white;
   padding: 2rem 1.5rem;
   text-align: center;
@@ -35,19 +55,19 @@ body {
   text-transform: uppercase;
 }
 
-/* --- Layout Container --- */
+/* --- 3. LAYOUT CONTAINER & CARDS --- */
 .mainContainer {
   padding: 0 1rem 2rem 1rem;
   display: flex;
   justify-content: center;
 }
 
-/* Die Karte (Standard Design) */
+/* Standard Login Card */
 .loginCard {
   background: white;
   padding: 2rem;
   border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  box-shadow: var(--card-shadow);
   width: 100%;
   max-width: 450px;
   display: flex;
@@ -55,18 +75,52 @@ body {
   gap: 1.5rem;
 }
 
-/* NEU: Spezielle Klasse für Registrierung (darf breiter sein) */
+/* Register Card (etwas breiter) */
 .registerCard {
   max-width: 600px;
 }
 
-/* --- Formular Styles --- */
+/* --- 4. EVENT FORMULAR (NEU) --- */
+/* Spezifisches Styling für das Event-Formular */
+.event-form {
+  background-color: white;
+  max-width: 700px; /* Breiter für das Event Layout */
+  width: 100%;
+  margin: 0 auto;
+  padding: 2.5rem; /* Großzügiges Padding */
+  border-radius: 8px;
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  box-sizing: border-box;
+}
 
-/* Zwischenüberschriften */
+.form-intro {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+  color: var(--text-color);
+}
+
+/* Überschriften im Event Form */
+.event-form h3 {
+  margin: 1.5rem 0 1rem 0;
+  font-size: 1.1rem;
+  color: var(--gso-red);
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* --- 5. FORMULAR ELEMENTE (GLOBAL & OVERRIDES) --- */
+
+/* Titel & Labels */
 .formSectionTitle {
     margin: 0.5rem 0 1rem 0;
     font-size: 1.1rem;
-    color: #d15651;
+    color: var(--gso-red);
     border-bottom: 1px solid #eee;
     padding-bottom: 0.5rem;
 }
@@ -78,42 +132,239 @@ body {
   width: 100%;
 }
 
-/* NEU: Grid-System für Reihen (Mobile First: erst mal untereinander) */
 .formRow {
     display: flex;
     flex-direction: column;
     gap: 0;
 }
 
-label {
+label,
+.day-label,
+.label-text {
   font-weight: 600;
-  margin-bottom: 0.4rem;
-  color: #333;
-  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-color);
+  font-size: 0.95rem;
+  display: block;
 }
 
-/* WICHTIG: Design auf alle Input-Typen anwenden! */
+/* Input Felder - Global */
 input[type="text"],
 input[type="password"],
 input[type="email"],
 input[type="number"],
-input[type="tel"] {
+input[type="tel"],
+textarea {
   padding: 0.8rem;
   font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
   width: 100%;
-  transition: border-color 0.3s;
+  transition: border-color 0.3s, box-shadow 0.3s;
   background: #fff;
+  font-family: inherit;
+  box-sizing: border-box;
 }
 
-input:focus {
-  border-color: #6a9bd6;
+/* Event Form Specific Input Overrides (Höher, luftiger) */
+.event-form input[type="text"],
+.event-form input[type="number"],
+.event-form textarea {
+  height: 48px; /* Feste Höhe wie im Screenshot */
+  padding: 10px 15px;
+  border: 1px solid var(--input-border);
+  color: #495057;
+}
+
+.event-form textarea {
+  height: auto;
+  min-height: 120px;
+  padding-top: 12px;
+  resize: vertical;
+}
+
+/* Focus States */
+input:focus,
+textarea:focus {
+  border-color: var(--gso-blue);
   outline: none;
   box-shadow: 0 0 0 3px rgba(106, 155, 214, 0.2);
 }
 
-/* --- Checkbox Styling (NEU) --- */
+/* Sektionen im Event Form */
+.form-section {
+  margin-bottom: 1.5rem;
+}
+
+/* --- 6. SPEZIFISCHE EVENT BLÖCKE --- */
+
+/* Tagesauswahl (Graue Box) */
+.day-selection {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.day-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.day-time {
+  display: block;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.day-note {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+  font-style: italic;
+}
+
+/* Radio Buttons */
+.radio-options {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 5px;
+}
+
+.radio-options label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 0;
+  cursor: pointer;
+  font-weight: normal;
+}
+
+.radio-options input[type="radio"] {
+  transform: scale(1.3);
+  margin: 0;
+  cursor: pointer;
+}
+
+/* Info Listen */
+.info-row {
+  margin-bottom: 0.5rem;
+}
+
+.info-list {
+  padding-left: 20px;
+  list-style-type: disc;
+  color: #555;
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+}
+
+.info-list li {
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+}
+
+/* Inline Inputs (Tische & Stühle - Graue Box) */
+.inline-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background-color: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: var(--radius);
+  border: 1px solid #e9ecef;
+}
+
+.input-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.inline-inputs span {
+    align-self: center;
+    font-weight: 500;
+}
+
+.number-input {
+  width: 80px !important;
+  text-align: center;
+  height: 48px !important;
+}
+
+/* Footer Text */
+.footer-text {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  border-top: 1px solid #eee;
+  padding-top: 1.5rem;
+  margin-top: 1rem;
+}
+
+.footer-text a {
+  color: var(--gso-blue);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.footer-text a:hover {
+  text-decoration: underline;
+}
+
+/* --- 7. BUTTONS --- */
+.form-actions {
+  margin-top: 2rem;
+}
+
+.btn,
+.btn-submit {
+  display: inline-block;
+  width: 100%;
+  padding: 0.9rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: center;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.2s, transform 0.1s;
+  font-family: inherit;
+  color: white;
+}
+
+.btn:active,
+.btn-submit:active {
+  transform: scale(0.98);
+}
+
+.btn-primary,
+.btn-submit {
+  background-color: var(--gso-blue);
+}
+
+.btn-primary:hover,
+.btn-submit:hover {
+  background-color: var(--gso-blue-hover);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--gso-blue);
+  border: 2px solid var(--gso-blue);
+}
+
+.btn-secondary:hover {
+  background-color: #eef5fc;
+}
+
+/* --- 8. EXTRAS (CHECKBOX & TOOLTIP) --- */
 .checkboxWrapper {
     display: flex;
     align-items: flex-start;
@@ -127,7 +378,7 @@ input:focus {
 
 .checkboxWrapper input[type="checkbox"] {
     margin-top: 4px;
-    transform: scale(1.3); /* Checkbox etwas größer */
+    transform: scale(1.3);
     cursor: pointer;
 }
 
@@ -146,46 +397,6 @@ input:focus {
     margin-top: 2px;
 }
 
-/* --- Buttons --- */
-.btn {
-  display: inline-block;
-  width: 100%;
-  padding: 0.9rem;
-  font-size: 1rem;
-  font-weight: 600;
-  text-align: center;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  text-decoration: none;
-  transition: background-color 0.2s, transform 0.1s;
-  font-family: inherit; /* Wichtig für input buttons */
-}
-
-.btn:active {
-  transform: scale(0.98);
-}
-
-.btn-primary {
-  background-color: #6a9bd6;
-  color: white;
-}
-
-.btn-primary:hover {
-  background-color: #5a8bc6;
-}
-
-.btn-secondary {
-  background-color: transparent;
-  color: #6a9bd6;
-  border: 2px solid #6a9bd6;
-}
-
-.btn-secondary:hover {
-  background-color: #eef5fc;
-}
-
-/* --- Trenner --- */
 .separator {
   display: flex;
   align-items: center;
@@ -204,29 +415,7 @@ input:focus {
   padding: 0 10px;
 }
 
-/* --- Desktop Anpassungen (Media Queries) --- */
-@media (min-width: 768px) {
-  .headlineBox {
-    text-align: left;
-    padding-left: 10%;
-  }
-
-  .mainContainer {
-    padding-top: 2rem;
-  }
-
-  /* Hier passiert die Magie für Desktop: Reihen werden horizontal */
-  .formRow {
-      flex-direction: row;
-      gap: 1rem;
-  }
-
-  /* Breiten-Helfer */
-  .halfWidth { width: 50%; }
-  .thirdWidth { width: 30%; }
-  .twoThirdWidth { width: 70%; }
-}
-
+/* Tooltip Styles */
 .info-wrapper {
   position: relative;
   display: inline-flex;
@@ -268,7 +457,6 @@ input:focus {
   pointer-events: none;
 }
 
-/* Kleiner Pfeil am unteren Rand des Tooltips */
 .tooltip-text::after {
   content: "";
   position: absolute;
@@ -286,26 +474,76 @@ input:focus {
   visibility: visible;
 }
 
-@media (max-width: 600px) {
 
-  .info-wrapper .tooltip-text {
-    /* Zentrierung aufheben */
-    left: auto;
-    transform: none;
+/* --- 9. MEDIA QUERIES (DESKTOP) --- */
+@media (min-width: 768px) {
 
-    /* Rechts am Icon verankern */
-    right: -10px; /* -10px sorgt dafür, dass er bündig mit dem Rand abschließt */
-
-    /* Optional: Breite etwas anpassen, damit er gut lesbar ist */
-    width: 220px;
-    max-width: 80vw; /* Verhindert, dass er breiter als der Bildschirm wird */
+  /* Layout Global */
+  .headlineBox {
+    text-align: left;
+    padding-left: 10%;
   }
 
-  /* Den kleinen Pfeil müssen wir jetzt auch verschieben,
-     damit er wieder auf das Icon zeigt */
+  .mainContainer {
+    padding-top: 2rem;
+  }
+
+  /* Grid System */
+  .formRow {
+      flex-direction: row;
+      gap: 1rem;
+  }
+
+  .halfWidth { width: 50%; }
+  .thirdWidth { width: 30%; }
+  .twoThirdWidth { width: 70%; }
+
+  /* Event Form Layout Anpassungen */
+  .event-form {
+    padding: 3rem; /* Noch etwas mehr Platz auf Desktop */
+  }
+
+  .day-selection {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .radio-options {
+    margin-top: 0;
+    justify-content: flex-end;
+  }
+
+  .inline-inputs {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .input-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+}
+
+/* --- 10. MEDIA QUERIES (MOBILE FIXES) --- */
+@media (max-width: 600px) {
+
+  /* Tooltip Mobile Adjustment */
+  .info-wrapper .tooltip-text {
+    left: auto;
+    transform: none;
+    right: -10px;
+    width: 220px;
+    max-width: 80vw;
+  }
+
   .info-wrapper .tooltip-text::after {
-    left: auto;     /* Zentrierung des Pfeils aufheben */
-    right: 18px;    /* Pfeil positionieren, damit er über dem Icon steht */
+    left: auto;
+    right: 18px;
     margin-left: 0;
   }
 }
