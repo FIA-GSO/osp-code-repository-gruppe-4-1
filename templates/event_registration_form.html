@@ -3,31 +3,32 @@
 {% block title %}Georg-Simon-Ohm-Berufskolleg Köln - Marketplace{% endblock %}
 
 {% block sub_content %}
-  <form action="#" method="POST" class="event-form">
+  <form action="/event/registration" method="POST" class="event-form">
 
     <div class="form-intro">Wir werden an den folgenden Tagen mit einem Informationsstand teilnehmen:</div>
+    <span>(Mit * gekennzeichnete Felder sind Pflichfelder)</span>
 
     <div class="form-section day-selection">
         <div class="day-info">
-            <div class="day-label">Tag 1:</div>
+            <div class="day-label">Tag 1: *</div>
             <span class="day-time">Zeitraum: 11.00 - 16.00 Uhr</span>
             <small class="day-note">(Aufbau zwischen 09.00 Uhr und 10.30 Uhr)</small>
         </div>
         <div class="radio-options">
-            <label class="radio-label"><input type="radio" name="first_day" value="yes"> Ja</label>
-            <label class="radio-label"><input type="radio" name="first_day" value="no"> Nein</label>
+            <label class="radio-label"><input type="radio" name="teilnahme_tag1" value="ja" required> Ja</label>
+            <label class="radio-label"><input type="radio" name="teilnahme_tag1" value="nein" required> Nein</label>
         </div>
     </div>
 
     <div class="form-section day-selection">
         <div class="day-info">
-            <div class="day-label">Tag 2:</div>
+            <div class="day-label">Tag 2: *</div>
             <span class="day-time">Zeitraum: 09.00 - 13.00 Uhr</span>
             <small class="day-note">(Aufbau zwischen 07.30 Uhr und 08.30 Uhr)</small>
         </div>
         <div class="radio-options">
-            <label class="radio-label"><input type="radio" name="second_day" value="yes"> Ja</label>
-            <label class="radio-label"><input type="radio" name="second_day" value="no"> Nein</label>
+            <label class="radio-label"><input type="radio" name="teilnahme_tag2" value="ja" required> Ja</label>
+            <label class="radio-label"><input type="radio" name="teilnahme_tag2" value="nein" required> Nein</label>
         </div>
     </div>
 
@@ -51,12 +52,12 @@
     </div>
 
     <div class="form-section inline-inputs">
-      <span>Wir benötigen</span>
+      <span>Wir benötigen: *</span>
       <div class="input-wrapper">
-        <label>Tische:</label><input type="number" name="tables_needed" min="0" placeholder="0" class="number-input">
+        <label>Tische:</label><input type="number" name="anzahl_tische" min="0" placeholder="Anzahl" class="number-input" required>
       </div>
       <div class="input-wrapper">
-        <label>Stühle:</label><input type="number" name="chairs_needed" min="0" placeholder="0" class="number-input">
+        <label>Stühle:</label><input type="number" name="anzahl_stuehle" min="0" placeholder="Anzahl" class="number-input" required>
       </div>
     </div>
 
@@ -77,8 +78,9 @@
     </div>
 
     <div class="form-actions">
-        <button type="submit" class="btn-submit">Anmeldung absenden</button>
+        <button type="submit" class="btn-submit" disabled>Anmeldung absenden</button>
     </div>
 
 </form>
+<script src="{{ url_for('static', filename='js/event_registration_form.js') }}"></script>
 {% endblock %}
