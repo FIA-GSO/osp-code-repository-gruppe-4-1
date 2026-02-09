@@ -78,6 +78,7 @@ def login_page():
         return login(request.form.get('token'))
     return render_template('login_form.html')
 
+
 @app.route('/event/registration', methods=['GET'])
 @login_required
 def event_registration_page():
@@ -85,6 +86,7 @@ def event_registration_page():
     Anmeldungsformular zu einem Event
     """
     return render_template('event_registration_form.html')
+
 
 @app.route('/login/<token>')
 def login(token):
