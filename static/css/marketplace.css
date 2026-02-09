@@ -336,6 +336,19 @@ textarea:focus {
   transform: scale(0.98);
 }
 
+.btn-submit:disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+  border: 1px solid #999;
+  opacity: 0.7;
+}
+
+.btn-submit:disabled:hover {
+  background-color: #cccccc;
+  transform: none;
+}
+
 .btn-primary,
 .btn-submit {
   background-color: var(--gso-blue);
