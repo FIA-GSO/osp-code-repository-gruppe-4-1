@@ -3,7 +3,7 @@
 {% block title %}Georg-Simon-Ohm-Berufskolleg Köln - Marketplace{% endblock %}
 
 {% block sub_content %}
-  <form action="/register" method="POST" class="event-form">
+  <form action="#" method="POST" class="event-form">
 
     <div class="form-intro">Wir werden an den folgenden Tagen mit einem Informationsstand teilnehmen:</div>
     <span>(Mit * gekennzeichnete Felder sind Pflichfelder)</span>
@@ -27,7 +27,7 @@
             <small class="day-note">(Aufbau zwischen 07.30 Uhr und 08.30 Uhr)</small>
         </div>
         <div class="radio-options">
-            <label class="radio-label"><input type="radio" name="second_day" value="ja" required> Ja</label>
+            <label class="radio-label"><input type="radio" name="second_day" value="yes" required> Ja</label>
             <label class="radio-label"><input type="radio" name="second_day" value="no" required> Nein</label>
         </div>
     </div>
@@ -57,7 +57,7 @@
         <label>Tische:</label><input type="number" name="tables_needed" min="0" placeholder="Anzahl" class="number-input" required>
       </div>
       <div class="input-wrapper">
-        <label>Stühle:</label><input type="number" name="chairs_needed" min="0" placeholder="Anzahl" class="number-input" required>
+        <label>Stühle:</label><input type="number" name="anzahl_stuehle" min="0" placeholder="Anzahl" class="number-input" required>
       </div>
     </div>
 
