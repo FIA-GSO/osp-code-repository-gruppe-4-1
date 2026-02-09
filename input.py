@@ -12,5 +12,7 @@ def validate_booking(**kwargs) -> Booking:
     :raises: ValidationError
     """
     kwargs['first'] = kwargs['first_day'] == 'yes'
+    del kwargs['first_day']
     kwargs['second'] = kwargs['second_day'] == 'yes'
+    del kwargs['second_day']
     return Booking(**kwargs)
