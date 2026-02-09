@@ -10,6 +10,7 @@ class User(Schema):
 
     id = mapped_column(Integer, primary_key=True)
     name = mapped_column(String, nullable=False)
+    industry = mapped_column(String, nullable=True)
     contact_person = mapped_column(String, nullable=True)
     phone = mapped_column(String, nullable=True)
     email = mapped_column(String, nullable=False, unique=True)
