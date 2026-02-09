@@ -5,7 +5,7 @@ from typing import Any
 
 from werkzeug.datastructures import MultiDict
 
-from database.models import Booking, BookingStatus
+from database.models import Booking
 
 
 def validate_booking(**kwargs) -> Booking:
