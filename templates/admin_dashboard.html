@@ -22,39 +22,43 @@
   <section class="dash-card filter-card">
     <h3 class="card-title">Filter</h3>
 
-    <form class="filter-grid" method="GET" action="#">
+    <form class="filter-grid" method="GET" action="{{ url_for('dashboard') }}">
+
       <div class="filter-group">
         <label for="filter-status">Status</label>
-        <select id="filter-status" name="status" class="admin-select">
-          <option value="all">Alle anzeigen</option>
-          <option value="pending">Offen (Wartend)</option>
-          <option value="accepted">Bestätigt</option>
-          <option value="rejected">Abgelehnt</option>
+        <select id="filter-status" name="status" class="admin-select" onchange="this.form.submit()">
+          <option value="all" {% if request.args.get('status') == 'all' or not request.args.get('status') %}selected{% endif %}>Alle anzeigen</option>
+          <option value="open" {% if request.args.get('status') == 'open' %}selected{% endif %}>Offen (Wartend)</option>
+          <option value="confirmed" {% if request.args.get('status') == 'confirmed' %}selected{% endif %}>Bestätigt</option>
+          <option value="rejected" {% if request.args.get('status') == 'rejected' %}selected{% endif %}>Abgelehnt</option>
         </select>
       </div>
 
       <div class="filter-group">
         <label for="filter-day">Teilnahmetag</label>
-        <select id="filter-day" name="day" class="admin-select">
-          <option value="all">Alle Tage</option>
-          <option value="first">Freitag (Tag 1)</option>
-          <option value="second">Samstag (Tag 2)</option>
-          <option value="both">Beide Tage</option>
+        <select id="filter-day" name="day" class="admin-select" onchange="this.form.submit()">
+          <option value="all" {% if request.args.get('day') == 'all' or not request.args.get('day') %}selected{% endif %}>Alle Tage</option>
+          <option value="tag1" {% if request.args.get('day') == 'tag1' %}selected{% endif %}>Freitag (Tag 1)</option>
+          <option value="tag2" {% if request.args.get('day') == 'tag2' %}selected{% endif %}>Samstag (Tag 2)</option>
+          <option value="both" {% if request.args.get('day') == 'both' %}selected{% endif %}>Beide Tage</option>
         </select>
       </div>
 
       <div class="filter-group">
         <label for="filter-industry">Branche</label>
-        <select id="filter-industry" name="industry" class="admin-select">
-          <option value="all">Alle Branchen</option>
-          <option value="it">IT & Software</option>
-          <option value="finance">Wirtschaft & Verwaltung</option>
-          <option value="craft">Handwerk</option>
-          </select>
+        <select id="filter-industry" name="industry" class="admin-select" onchange="this.form.submit()">
+          <option value="all" {% if request.args.get('industry') == 'all' or not request.args.get('industry') %}selected{% endif %}>Alle Branchen</option>
+          <option value="it" {% if request.args.get('industry') == 'it' %}selected{% endif %}>IT & Software</option>
+          <option value="finance" {% if request.args.get('industry') == 'finance' %}selected{% endif %}>Wirtschaft & Verwaltung</option>
+          <option value="craft" {% if request.args.get('industry') == 'craft' %}selected{% endif %}>Handwerk</option>
+        </select>
       </div>
 
       <div class="filter-actions">
-        <button type="submit" class="btn btn-filter">Filtern</button>
+
+        <a href="{{ url_for('dashboard') }}" class="btn-small-outline">
+            Reset
+        </a>
       </div>
     </form>
   </section>
