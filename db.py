@@ -23,4 +23,13 @@ def get_bookings(**filters):
     :param filters:
     :return:
     """
-    return db.query(Booking).filter_by(**filters).all()
+    return map(decorate, db.query(Booking).filter_by(**filters).all())
+
+def decorate(booking):
+    """
+    Berechnet die Dauer einer Buchung und hängt sie als Attribut an die Instanz an.
+    :param booking:
+    :return:
+    """
+    booking.duration = booking.first + booking.second
+    return booking
