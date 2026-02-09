@@ -1,17 +1,125 @@
 {% extends "baseLayout.html" %}
 
-{% block title %}Georg-Simon-Ohm-Berufskolleg Köln – Marketplace: Dashboard{% endblock %}
+{% block title %}Admin Dashboard – GSO Marketplace{% endblock %}
 
 {% block content %}
 
-Hallo {{ user.name }}!
-<br>
+{% set booking_list = bookings|list %}
 
-Anmeldungen dieses Jahr:
-<ul>
-    {% for booking in bookings %}
-        <li>{{ booking.user.name }}, {{ booking.duration }} Tage, {{ booking.user.contact_person }}</li>
-    {% endfor %}
-</ul>
+<div class="full-width-banner">
+  <div class="banner-inner">
+    <h1>Admin Dashboard</h1>
+  </div>
+</div>
+
+<div class="dashboard-container">
+
+  <div class="dashboard-intro">
+    <h2 class="welcome-title">Übersicht Anmeldungen</h2>
+    <p class="welcome-sub">Verwalten Sie hier alle Anmeldungen von Firmen.</p>
+  </div>
+
+  <section class="dash-card filter-card">
+    <h3 class="card-title">Filter</h3>
+
+    <form class="filter-grid" method="GET" action="#">
+      <div class="filter-group">
+        <label for="filter-status">Status</label>
+        <select id="filter-status" name="status" class="admin-select">
+          <option value="all">Alle anzeigen</option>
+          <option value="open">Offen (Wartend)</option>
+          <option value="confirmed">Bestätigt</option>
+          <option value="rejected">Abgelehnt</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="filter-day">Teilnahmetag</label>
+        <select id="filter-day" name="day" class="admin-select">
+          <option value="all">Alle Tage</option>
+          <option value="tag1">Freitag (Tag 1)</option>
+          <option value="tag2">Samstag (Tag 2)</option>
+          <option value="both">Beide Tage</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="filter-industry">Branche</label>
+        <select id="filter-industry" name="industry" class="admin-select">
+          <option value="all">Alle Branchen</option>
+          <option value="it">IT & Software</option>
+          <option value="finance">Wirtschaft & Verwaltung</option>
+          <option value="craft">Handwerk</option>
+          </select>
+      </div>
+
+      <div class="filter-actions">
+        <button type="submit" class="btn btn-filter">Filtern</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="dash-card results-card">
+    <div class="header-row">
+      <h3 class="card-title" style="margin-bottom:0; border:none;">Anmeldungen ({{ booking_list|length }})</h3>
+      <button class="btn-small-outline">Export CSV</button>
+    </div>
+
+    <div class="table-responsive">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Firma</th>
+            <th>Ansprechpartner</th>
+            <th>Branche</th>
+            <th>Tage</th>
+            <th>Status</th>
+            <th class="text-right">Aktionen</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for booking in booking_list %}
+          <tr>
+            <td data-label="Firma" class="fw-bold">{{ booking.user.name }}</td>
+
+            <td data-label="Ansprechpartner">{{ booking.user.contact_person }}</td>
+
+            <td data-label="Branche">{{ booking.user.industry if booking.user.industry else "-" }}</td>
+
+            <td data-label="Dauer">{{ booking.duration }} Tag(e)</td>
+
+            <td data-label="Status">
+              <span class="status-badge status-{{ booking.status.name|lower }}">
+                {{ booking.status.value }}
+              </span>
+            </td>
+
+            <td data-label="Aktionen" class="text-right action-cell">
+              <a href="/admin/booking/{{ booking.id }}" class="btn-icon" title="Details ansehen">
+                👁️
+              </a>
+              <a href="/admin/booking/{{ booking.id }}/edit" class="btn-icon" title="Bearbeiten">
+                ✏️
+              </a>
+              <form action="/admin/booking/{{ booking.id }}/status/confirmed" method="POST" style="display:inline;">
+                <button type="submit" class="btn-icon btn-approve" title="Anmeldung bestätigen">
+                    ✔️
+                </button>
+              </form>
+
+              <form action="/admin/booking/{{ booking.id }}/status/rejected" method="POST" style="display:inline;" onsubmit="return confirm('Möchten Sie diese Anmeldung wirklich ablehnen?');">
+                <button type="submit" class="btn-icon btn-reject" title="Anmeldung ablehnen">
+                    ❌
+                </button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
 
 {% endblock %}
