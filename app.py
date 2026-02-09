@@ -11,7 +11,7 @@ from sqlalchemy.exc import NoResultFound
 from auth import Authenticated, generate_token
 from database.models import Token, User, Booking
 from db import db, get_bookings
-from input import validate_booking
+from input import validate_booking, transform_filters
 from triggers import notify_admins
 from utils import NotificationType, Notification
 
@@ -43,7 +43,7 @@ bzw. aller aktuellen Buchungen f. Admins.
     this_year = datetime.now().year
     if current_user.is_admin:
         template = 'admin_dashboard.html'
-        bookings = get_bookings(event_year=this_year)
+        bookings = get_bookings(**transform_filters(request.args), event_year=this_year)
     else:
         template = 'user_dashboard.html'
         all_bookings = get_bookings(user_id=current_user.id)
