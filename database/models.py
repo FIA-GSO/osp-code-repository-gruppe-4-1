@@ -1,5 +1,6 @@
+import enum
 from datetime import datetime, timedelta
-from sqlalchemy import Integer, String, Boolean, DateTime, ForeignKey, UniqueConstraint
+from sqlalchemy import Integer, String, Boolean, DateTime, Enum, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import mapped_column, declarative_base, relationship
 
 Schema = declarative_base()
@@ -35,6 +36,10 @@ class Token(Schema):
 
     user = relationship("User", back_populates="tokens")
 
+class BookingStatus(enum.Enum):
+    pending = "Wartend"
+    accepted = "Bestätigt"
+    rejected = "Abgelehnt"
 
 class Booking(Schema):
     __tablename__ = 'bookings'
@@ -44,6 +49,7 @@ class Booking(Schema):
     user_id = mapped_column(Integer, ForeignKey('users.id'), nullable=False)
     event_year = mapped_column(Integer, nullable=False, default=datetime.now().year)
     duration = mapped_column(Integer, nullable=False)
+    status = mapped_column(Enum(BookingStatus), nullable=False, default=BookingStatus.pending)
 
     chairs_needed = mapped_column(Integer, nullable=False, default=0)
     tables_needed = mapped_column(Integer, nullable=False, default=0)
