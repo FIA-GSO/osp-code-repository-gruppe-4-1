@@ -6,18 +6,55 @@
 
 Firma: {{ user.name }}
 
-{% if current in bookings %}
+{% if bookings.current %}
 <br>
-Aktuelle Anmeldung: {{ bookings.current }}
+Aktuelle Anmeldung:
+<table>
+    <tr><td>Jahr: </td><td>{{ bookings.current.event_year }}</td></tr>
+    <tr><td>Dauer (Tage): </td><td>{{ bookings.current.duration }}</td></tr>
+    <tr><td>Benötigte Stühle: </td><td>{{ bookings.current.chairs_needed }}</td></tr>
+    <tr><td>Benötigte Tische: </td><td>{{ bookings.current.tables_needed }}</td></tr>
+    <tr><td>Vortrag: </td><td>{{ bookings.current.presentation }}</td></tr>
+    <tr><td>Bemerkung: </td><td>{{ bookings.current.remarks }}</td></tr>
+    <tr><td>Status: </td><td>{{ bookings.current.status.value }}</td></tr>
+</table>
+{% else %}
+<br>
+Keine aktuelle Anmeldung.
+<a  href="/event/registration" class="btn btn-primary">Zur Anmeldung</a>
 {% endif %}
 
-{% if past in bookings %}
+{% if bookings.past %}
 <br>
 Vergangene Anmeldungen:
-    {% for booking in bookings.past %}
+    <table>
+        <thead>
+            <tr>
+                <th>Jahr</th>
+                <th>Dauer (Tage)</th>
+                <th>Benötigte Stühle</th>
+                <th>Benötigte Tische</th>
+                <th>Vortrag</th>
+                <th>Bemerkung</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for booking in bookings.past %}
+            <tr>
+                <td>{{ booking.event_year }}</td>
+                <td>{{ booking.duration }}</td>
+                <td>{{ booking.chairs_needed }}</td>
+                <td>{{ booking.tables_needed }}</td>
+                <td>{{ booking.presentation if booking.presentation else "Keine Angabe" }}</td>
+                <td>{{ booking.remarks if booking.remarks else "Keine Angabe" }}</td>
+                <td>{{ booking.status.value }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
         {{ booking }}
         <br>
-    {% endfor%}
 {% endif %}
 
 {% endblock %}

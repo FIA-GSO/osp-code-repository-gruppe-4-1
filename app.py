@@ -44,10 +44,11 @@ bzw. aller aktuellen Buchungen f. Admins.
     else:
         template = 'user_dashboard.html'
         all_bookings = get_bookings(user_id=current_user.id)
-        bookings = dict(
-            past=[b for b in all_bookings if b.event_year < this_year],
-            current=[b for b in all_bookings if b.event_year == this_year]
-        )
+        current = [b for b in all_bookings if b.event_year == this_year]
+        bookings = {
+            "past": [b for b in all_bookings if b.event_year < this_year],
+            "current": current.pop() if len(current) > 0 else None,
+        }
     return render_template(template, user=current_user, bookings=bookings)
 
 
