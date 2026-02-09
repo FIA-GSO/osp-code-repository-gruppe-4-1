@@ -10,41 +10,41 @@
         <h3 class="formSectionTitle">Firmendaten</h3>
 
         <div class="formGroup">
-            <label for="name">Firmenname</label>
+            <label for="name">Firmenname *</label>
             <input type="text" name="name" id="name" placeholder="Firmenname" required />
         </div>
 
         <div class="formGroup">
-            <label for="contact_person">Ansprechpartner</label>
+            <label for="contact_person">Ansprechpartner *</label>
             <input type="text" name="contact_person" id="contact_person" placeholder="Name" required />
         </div>
 
         <div class="formRow">
             <div class="formGroup halfWidth">
-                <label for="email">E-Mail-Adresse</label>
+                <label for="email">E-Mail-Adresse *</label>
                 <input type="email" name="email" id="email" placeholder="email@adresse.de" required />
             </div>
             <div class="formGroup halfWidth">
                 <label for="phone">Telefonnummer</label>
-                <input type="tel" name="phone" id="phone" placeholder="Telefonnummer" />
+                <input type="tel" name="phone" id="phone" placeholder="Telefonnummer"/>
             </div>
         </div>
 
         <h3 class="formSectionTitle">Anschrift</h3>
 
         <div class="formGroup">
-            <label for="street">Straße & Hausnummer</label>
-            <input type="text" name="street" id="street" placeholder="Straße, Hausnummer" />
+            <label for="street">Straße & Hausnummer *</label>
+            <input type="text" name="street" id="street" placeholder="Straße, Hausnummer" required/>
         </div>
 
         <div class="formRow">
             <div class="formGroup thirdWidth">
-                <label for="zip">PLZ</label>
-                <input type="text" name="zip" id="zip" placeholder="PLZ" />
+                <label for="zip">PLZ *</label>
+                <input type="text" name="zip" id="zip" placeholder="PLZ" required/>
             </div>
             <div class="formGroup twoThirdWidth">
-                <label for="city">Stadt</label>
-                <input type="text" name="city" id="city" placeholder="Stadt" />
+                <label for="city">Stadt *</label>
+                <input type="text" name="city" id="city" placeholder="Stadt" required/>
             </div>
         </div>
 
@@ -52,8 +52,20 @@
             <input type="checkbox" id="support_association" name="support_association" />
             <label for="support_association">
                 Sind Sie bereits Mitglied im Förderverein?
-                <span class="smallInfo">(Unterstützen Sie uns und profitieren von exklusiven Vorteilen)</span>
+                <span class="smallInfo">Mitglieder profitieren von exklusiven Vorteilen.</span>
             </label>
+
+            <span class="info-wrapper" tabindex="0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="info-icon">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+
+                <span class="tooltip-text">
+                    Wenn Sie noch kein Mitglied sind können Sie sich nach der Registrierung anmelden
+                </span>
+            </span>
         </div>
 
         <input type="submit" value="Jetzt Registrieren" class="btn btn-primary" />

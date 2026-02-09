@@ -226,3 +226,86 @@ input:focus {
   .thirdWidth { width: 30%; }
   .twoThirdWidth { width: 70%; }
 }
+
+.info-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 5px;
+}
+
+.info-wrapper:focus {
+  outline: none;
+}
+
+.info-icon {
+  color: #666;
+  transition: color 0.2s;
+}
+
+.info-icon:hover {
+  color: #007bff;
+}
+
+.tooltip-text {
+  width: 200px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px;
+  font-size: 12px;
+  font-weight: normal;
+
+  position: absolute;
+  z-index: 10;
+  bottom: 135%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+  pointer-events: none;
+}
+
+/* Kleiner Pfeil am unteren Rand des Tooltips */
+.tooltip-text::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
+}
+
+.info-wrapper:hover .tooltip-text,
+.info-wrapper:focus .tooltip-text {
+  opacity: 1;
+  visibility: visible;
+}
+
+@media (max-width: 600px) {
+
+  .info-wrapper .tooltip-text {
+    /* Zentrierung aufheben */
+    left: auto;
+    transform: none;
+
+    /* Rechts am Icon verankern */
+    right: -10px; /* -10px sorgt dafür, dass er bündig mit dem Rand abschließt */
+
+    /* Optional: Breite etwas anpassen, damit er gut lesbar ist */
+    width: 220px;
+    max-width: 80vw; /* Verhindert, dass er breiter als der Bildschirm wird */
+  }
+
+  /* Den kleinen Pfeil müssen wir jetzt auch verschieben,
+     damit er wieder auf das Icon zeigt */
+  .info-wrapper .tooltip-text::after {
+    left: auto;     /* Zentrierung des Pfeils aufheben */
+    right: 18px;    /* Pfeil positionieren, damit er über dem Icon steht */
+    margin-left: 0;
+  }
+}
