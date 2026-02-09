@@ -59,7 +59,7 @@ def test_login_manual(client):
 
 
 def test_register(client):
-    response = client.post('/register', data=dict(name=f"Siegma.IT UG", contact_person="Siegmar Gabriel", email=f"siggi+{int(time())}@t-online.de"))
+    response = client.post('/join', data=dict(name=f"Siegma.IT UG", contact_person="Siegmar Gabriel", email=f"siggi+{int(time())}@t-online.de"))
     assert is_ok(response)
 
 

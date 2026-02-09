@@ -61,6 +61,12 @@
         </div>
     </header>
 
+    {% for notif in session['notifications'] %}
+        <div class="notification notification-{{ notif.type }}">
+            {{ notif.message }}
+        </div>
+    {% endfor %}
+
     {% block content %}
     {% endblock %}
 
