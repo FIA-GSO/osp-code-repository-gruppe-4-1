@@ -25,19 +25,19 @@
         <div class="container-width header-inner">
 
             <div class="branding">
-                <a href="#">
+                <a href="/">
                     <img src="https://www.gso-koeln.de/wp-content/uploads/2020/06/cropped-LOGO-GSO_neu.png" alt="GSO Logo">
                 </a>
             </div>
 
             <nav class="main-navigation">
                 <ul class="nav-list">
-                    <li class="nav-item current-menu-item"><a href="#">Home</a></li>
+                    <li class="nav-item {% block homenav %}{% endblock %}"><a href="/">Home</a></li>
                     <li class="nav-item has-sub"><a href="#">Schule</a></li>
                     <li class="nav-item has-sub"><a href="#">Bildungsgänge</a></li>
                     <li class="nav-item has-sub"><a href="#">Europa</a></li>
 
-                    <li class="nav-item has-sub">
+                    <li class="nav-item has-sub {% block servicenav %}current-menu-item{% endblock %}">
                         <a href="#">Service</a>
                         <ul class="sub-menu">
                             <li><a href="#">Einschulungstermine für das Schuljahr 2025/26</a></li>
