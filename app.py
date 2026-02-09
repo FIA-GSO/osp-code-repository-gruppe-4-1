@@ -124,6 +124,7 @@ def login(token):
     """
     try:
         token = db.query(Token).filter_by(token=token).one()
+        session.clear()
         login_user(Authenticated(token.user))
         return redirect('/marketplace')
     except NoResultFound:

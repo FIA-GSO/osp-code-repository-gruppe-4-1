@@ -1,8 +1,12 @@
+""""""
+
 from dataclasses import dataclass
 
 
-# @pretend_enum
 class NotificationType:
+    """
+    Ein Pseudo-Enum an Hinweistypen.
+    """
     error = "error"
     warning = "warning"
     info = "info"
@@ -11,5 +15,8 @@ class NotificationType:
 
 @dataclass
 class Notification:
+    """
+    Eine Benachrichtigung für den Nutzer (Record-/Datenklasse)
+    """
     type: str
     message: str
