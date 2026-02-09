@@ -30,7 +30,7 @@ def test_login_happy_admin(client):
 
 def test_login_happy_admin_follow2dashboard(client):
     response = client.get('/login/eb1696dd-a9b5-4527-8768-71b91151aa19', follow_redirects=True)
-    assert is_ok(response) and 'Anmeldungen dieses Jahr' in response.text
+    assert is_ok(response) and 'Admin Dashboard' in response.text
 
 
 def test_login_happy_user(client):
