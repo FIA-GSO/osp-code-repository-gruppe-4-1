@@ -67,6 +67,7 @@
     <div class="header-row">
       <h3 class="card-title" style="margin-bottom:0; border:none;">Anmeldungen ({{ booking_list|length }})</h3>
       <button class="btn-small-outline">Export CSV</button>
+        <button class="btn-small-outline" onclick="exportCSV()">Export CSV</button>
     </div>
 
     <div class="table-responsive">
@@ -125,5 +126,7 @@
   </section>
 
 </div>
+
+<script src="{{ url_for('static', filename='js/dashboard_export.js') }}"></script>
 
 {% endblock %}
