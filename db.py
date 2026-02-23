@@ -33,3 +33,19 @@ def decorate(booking):
     """
     booking.duration = booking.first + booking.second
     return booking
+
+def calculate_furniture_totals(**filters):
+    """
+    Berechnet die Gesamtanzahl der benötigten Tische und Stühle aus allen gefilterten Buchungen.
+    :param filters: Optional filters für die Buchungsabfrage (z.B. event_year=2026)
+    :return: Dictionary mit total_chairs und total_tables
+    """
+    bookings = db.query(Booking).filter_by(**filters).all()
+
+    total_chairs = sum(booking.chairs_needed for booking in bookings)
+    total_tables = sum(booking.tables_needed for booking in bookings)
+
+    return {
+        'total_chairs': total_chairs,
+        'total_tables': total_tables
+    }
