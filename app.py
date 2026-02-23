@@ -45,7 +45,7 @@ bzw. aller aktuellen Buchungen f. Admins.
         template = 'admin_dashboard.html'
         bookings = get_bookings(**transform_filters(request.args), event_year=this_year)
     else:
-        template = 'booking_details.html'
+        template = 'user_dashboard.html'
         all_bookings = get_bookings(user_id=current_user.id)
         current = [b for b in all_bookings if b.event_year == this_year]
         bookings = {
