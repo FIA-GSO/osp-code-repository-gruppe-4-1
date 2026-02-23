@@ -1,6 +1,7 @@
 """
 Marketplace GSO – Aussteller-Anmelde-Portal für die Jobmesse des Georg-Simon-Ohm-Berufskollegs
 """
+import os
 from datetime import datetime
 from typing import Optional
 
@@ -8,7 +9,6 @@ from flask import Flask, Response, redirect, request, render_template, session
 from flask_login import LoginManager, login_user, current_user, login_required
 from sqlalchemy.exc import NoResultFound
 
-import os
 from auth import Authenticated, generate_token
 from database.models import Token, User, Booking, BookingStatus
 from db import db, get_bookings, calculate_furniture_totals
@@ -73,7 +73,9 @@ def edit_booking(booking_id: int, action: str):
         return login_manager.unauthorized()
 
     if action in ['confirm', 'reject']:
-        db.query(Booking).filter_by(id=booking_id).update({'status': BookingStatus.accepted if action == 'confirm' else BookingStatus.rejected})
+        db.query(Booking).filter_by(id=booking_id).update(
+            {'status': BookingStatus.accepted if action == 'confirm' else BookingStatus.rejected}
+        )
         db.commit()
         return redirect(request.referrer) # ToDo: report success or failure
     else:
@@ -148,7 +150,10 @@ def export(export_type):
         return render_template('error.html', error='Unauthorized'), 403
 
     if export_type not in ['csv']:
-        return render_template('error.html', error=f'Export-Format {export_type} ist noch nicht implementiert'), 501
+        return render_template(
+            'error.html',
+            error=f'Export-Format {export_type} ist noch nicht implementiert'
+        ), 501
 
     this_year = datetime.now().year
     bookings = get_bookings(event_year=this_year, **transform_filters(request.args))
@@ -161,21 +166,30 @@ def export(export_type):
     response = None
 
     if export_type == 'csv':
-        csv_string = f"Firma;Ansprechpartner;Branche;Anzahl Tage;Tag 1;Tag 2;Status;Stühle;Tische{os.linesep}"
+        csv_string = (f"Firma;Ansprechpartner;Branche;Anzahl Tage;"
+                      f"Tag 1;Tag 2;Status;Stühle;Tische{os.linesep}")
         for booking in bookings:
-            csv_string += booking.user.name + ';'
-            csv_string += booking.user.contact_person + ';'
-            csv_string += (booking.user.industry if booking.user.industry else '-') + ';'
-            csv_string += str(sum([booking.first, booking.second])) + ';'
-            csv_string += ("Ja" if booking.first else "Nein") + ';'
-            csv_string += ("Ja" if booking.second else "Nein") + ';'
-            csv_string += booking.status.value + ';'
-            csv_string += str(booking.chairs_needed) + ';'
-            csv_string += str(booking.tables_needed) + os.linesep
+            csv_string += (f"{booking.user.name};"
+                           f"{booking.user.contact_person};"
+                           f"{(booking.user.industry if booking.user.industry else '-')};"
+                           f"{sum([booking.first, booking.second])};"
+                           f"{("Ja" if booking.first else "Nein")};"
+                           f"{("Ja" if booking.second else "Nein")};"
+                           f"{booking.status.value};"
+                           f"{booking.chairs_needed};"
+                           f"{booking.tables_needed};"
+                           f"{os.linesep};")
 
         csv_string += os.linesep
-        csv_string += f"Benötigte Möbel am ersten Tag:;{furniture['first_day']['total_chairs']};{"Stühle" if furniture['first_day']['total_chairs'] > 1 else "Stuhl"};{furniture['first_day']['total_tables']};{"Tische" if furniture['first_day']['total_tables'] > 1 else "Tisch"}{os.linesep}"
-        csv_string += f"Benötigte Möbel am zweiten Tag:;{furniture['second_day']['total_chairs']};{"Stühle" if furniture['second_day']['total_chairs'] > 1 else "Stuhl"};{furniture['second_day']['total_tables']};{"Tische" if furniture['second_day']['total_tables'] > 1 else "Tisch"}"
+        csv_string += (f"Benötigte Möbel am ersten Tag:;{furniture['first_day']['total_chairs']};"
+                       f"{"Stühle" if furniture['first_day']['total_chairs'] > 1 else "Stuhl"};"
+                       f"{furniture['first_day']['total_tables']};"
+                       f"{"Tische" if furniture['first_day']['total_tables'] > 1 else "Tisch"}"
+                       f"{os.linesep}")
+        csv_string += (f"Benötigte Möbel am zweiten Tag:;{furniture['second_day']['total_chairs']};"
+                       f"{"Stühle" if furniture['second_day']['total_chairs'] > 1 else "Stuhl"};"
+                       f"{furniture['second_day']['total_tables']};"
+                       f"{"Tische" if furniture['second_day']['total_tables'] > 1 else "Tisch"}")
 
         response = Response(csv_string, content_type="text/csv; charset=utf-8")
         response.headers["Content-Disposition"] = "attachment; filename=export.csv"
@@ -204,7 +218,10 @@ def login(token):
         login_user(Authenticated(token.user))
         return redirect('/marketplace')
     except NoResultFound:
-        return render_template('error.html', error='Nope, das war wohl nichts (ungültiges Token)'), 403
+        return render_template(
+            'error.html',
+            error='Nope, das war wohl nichts (ungültiges Token)'
+        ), 403
 
 
 @login_manager.user_loader
