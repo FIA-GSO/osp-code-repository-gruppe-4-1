@@ -39,6 +39,6 @@ def test_transform_filters_actual_filters():
     assert result == {'status': 'accepted', 'first': True, 'second': True}
 
 
-def test_transform_filters_actual_filters_2():
+def test_transform_filters_actual_filters_strip_industry():
     result = transform_filters({'status': 'accepted', 'day': 'both', 'industry': 'cybersec'})
-    assert result == {'status': 'accepted', 'first': True, 'second': True, 'industry': 'cybersec'}
+    assert result == {'status': 'accepted', 'first': True, 'second': True}
