@@ -2,10 +2,16 @@
 Eingabe-Validations und -Transformations-Werkzeuge hier
 """
 from typing import Any
-
 from werkzeug.datastructures import MultiDict
-
 from database.models import Booking
+
+
+class ValidationError(Exception):
+    pass
+
+
+class ConstraintViolation(ValidationError):
+    pass
 
 
 def validate_booking(**kwargs) -> Booking:
@@ -15,10 +21,10 @@ def validate_booking(**kwargs) -> Booking:
     :return: fertig bestücktes Booking-Objekt zum Einfügen in DB
     :raises: ValidationError
     """
-    kwargs['first'] = kwargs['first_day'] == 'yes'
-    del kwargs['first_day']
-    kwargs['second'] = kwargs['second_day'] == 'yes'
-    del kwargs['second_day']
+    kwargs['first'] = kwargs.pop('first_day', 'no') == 'yes'
+    kwargs['second'] = kwargs.pop('second_day', 'no') == 'yes'
+    if not kwargs['first'] and not kwargs['second']:
+        raise ConstraintViolation('Sie müssen an mindestens einem Tag teilnehmen!')
     return Booking(**kwargs)
 
 

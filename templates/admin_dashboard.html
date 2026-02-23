@@ -105,13 +105,13 @@
               <a href="/admin/booking/{{ booking.id }}/edit" class="btn-icon" title="Bearbeiten">
                 ✏️
               </a>
-              <form action="/admin/booking/{{ booking.id }}/status/confirmed" method="POST" style="display:inline;">
+              <form action="/admin/booking/{{ booking.id }}/confirm" method="POST" style="display:inline;">
                 <button type="submit" class="btn-icon btn-approve" title="Anmeldung bestätigen">
                     ✔️
                 </button>
               </form>
 
-              <form action="/admin/booking/{{ booking.id }}/status/rejected" method="POST" style="display:inline;" onsubmit="return confirm('Möchten Sie diese Anmeldung wirklich ablehnen?');">
+              <form action="/admin/booking/{{ booking.id }}/reject" method="POST" style="display:inline;" onsubmit="return confirm('Möchten Sie diese Anmeldung wirklich ablehnen?');">
                 <button type="submit" class="btn-icon btn-reject" title="Anmeldung ablehnen">
                     ❌
                 </button>

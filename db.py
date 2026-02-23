@@ -23,7 +23,7 @@ def get_bookings(**filters):
     :param filters:
     :return:
     """
-    return map(decorate, db.query(Booking).filter_by(**filters).all())
+    return [decorate(booking) for booking in db.query(Booking).filter_by(**filters).all()]
 
 def decorate(booking):
     """
