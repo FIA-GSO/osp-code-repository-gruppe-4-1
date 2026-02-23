@@ -1,5 +1,5 @@
 function exportCSV() {
-    const formElement = document.getElementsByClassName('filter-grid')[0].cloneNode();
+    const formElement = document.getElementsByClassName('filter-grid')[0].cloneNode(true);
     formElement.method = 'POST';
     formElement.action = '/dashboard/export/csv';
 
