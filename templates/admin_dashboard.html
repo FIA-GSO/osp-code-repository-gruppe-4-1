@@ -63,11 +63,13 @@
     </form>
   </section>
 
-  <section class="dash-card results-card">
+  <section id="bookings" class="dash-card results-card">
     <div class="header-row">
       <h3 class="card-title" style="margin-bottom:0; border:none;">Anmeldungen ({{ booking_list|length }})</h3>
-      <button class="btn-small-outline">Export CSV</button>
+      <div class="no-print">
+        <button class="btn-small-outline" onclick="printElement('bookings')">Drucken</button>
         <button class="btn-small-outline" onclick="exportCSV()">Export CSV</button>
+      </div>
     </div>
 
     <div class="table-responsive">
@@ -79,7 +81,7 @@
             <th>Branche</th>
             <th>Tage</th>
             <th>Status</th>
-            <th class="text-right">Aktionen</th>
+            <th class="text-right no-print">Aktionen</th>
           </tr>
         </thead>
         <tbody>
@@ -99,7 +101,7 @@
               </span>
             </td>
 
-            <td data-label="Aktionen" class="text-right action-cell">
+            <td data-label="Aktionen" class="text-right action-cell no-print">
               <a href="/admin/booking/{{ booking.id }}" class="btn-icon" title="Details ansehen">
                 👁️
               </a>
