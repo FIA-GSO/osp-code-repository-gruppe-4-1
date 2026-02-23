@@ -55,18 +55,7 @@ bzw. aller aktuellen Buchungen f. Admins.
         }
     return render_template(template, user=current_user, bookings=bookings)
 
-
-@app.route('/admin/booking/<int:booking_id>', methods=['GET'])
-@login_required
-def show_booking(booking_id: int):
-    if not current_user.is_admin:
-        return login_manager.unauthorized()
-
-    booking = db.query(Booking).filter_by(id=booking_id).one()
-    return render_template('booking_details.html', user=booking.user, bookings={'current': booking})
-
-
-@app.route('/admin/booking/<int:booking_id>/<action>', methods=['GET', 'POST'])
+@app.route('/admin/booking/<int:booking_id>/<action>', methods=['GET'])
 @login_required
 def edit_booking(booking_id: int, action: str):
     if not current_user.is_admin:
@@ -79,13 +68,10 @@ def edit_booking(booking_id: int, action: str):
         db.commit()
         return redirect(request.referrer) # ToDo: report success or failure
     else:
-        if request.method == 'POST':
-            #update
-            #commit
-            #return redirect
-            pass
-        #else: show form
-        return render_template('error.html', error=NotImplementedError('Macht Niklas'))
+        return render_template(
+            'error.html',
+            error=f'Unsupported action: {action}'
+        ), 400
 
 
 @app.route('/join', methods=['GET', 'POST'])
@@ -181,16 +167,18 @@ def export(export_type):
                            f"{booking.tables_needed};"
                            f"{os.linesep};")
 
-        csv_string += os.linesep
-        csv_string += (f"Benötigte Möbel am ersten Tag:;{furniture['first_day']['total_chairs']};"
+        csv_string += (f"{os.linesep}"
+                       f"Benötigte Möbel am ersten Tag:;{furniture['first_day']['total_chairs']};"
                        f"{"Stühle" if furniture['first_day']['total_chairs'] > 1 else "Stuhl"};"
                        f"{furniture['first_day']['total_tables']};"
                        f"{"Tische" if furniture['first_day']['total_tables'] > 1 else "Tisch"}"
-                       f"{os.linesep}")
-        csv_string += (f"Benötigte Möbel am zweiten Tag:;{furniture['second_day']['total_chairs']};"
+                       f"{os.linesep}"
+                       f"Benötigte Möbel am zweiten Tag:;{furniture['second_day']['total_chairs']};"
                        f"{"Stühle" if furniture['second_day']['total_chairs'] > 1 else "Stuhl"};"
                        f"{furniture['second_day']['total_tables']};"
-                       f"{"Tische" if furniture['second_day']['total_tables'] > 1 else "Tisch"}")
+                       f"{"Tische" if furniture['second_day']['total_tables'] > 1 else "Tisch"}"
+                       f"{os.linesep}"
+                       f"Anmeldungen:;{len(bookings)}")
 
         response = Response(csv_string, content_type="text/csv; charset=utf-8")
         response.headers["Content-Disposition"] = "attachment; filename=export.csv"
