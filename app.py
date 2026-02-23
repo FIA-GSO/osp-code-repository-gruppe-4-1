@@ -9,7 +9,7 @@ from flask_login import LoginManager, login_user, current_user, login_required
 from sqlalchemy.exc import NoResultFound
 
 from auth import Authenticated, generate_token
-from database.models import Token, User, Booking
+from database.models import Token, User, Booking, BookingStatus
 from db import db, get_bookings
 from input import validate_booking, transform_filters
 from triggers import notify_admins
@@ -45,7 +45,7 @@ bzw. aller aktuellen Buchungen f. Admins.
         template = 'admin_dashboard.html'
         bookings = get_bookings(**transform_filters(request.args), event_year=this_year)
     else:
-        template = 'user_dashboard.html'
+        template = 'booking_details.html'
         all_bookings = get_bookings(user_id=current_user.id)
         current = [b for b in all_bookings if b.event_year == this_year]
         bookings = {
@@ -53,6 +53,36 @@ bzw. aller aktuellen Buchungen f. Admins.
             "current": current.pop() if len(current) > 0 else None,
         }
     return render_template(template, user=current_user, bookings=bookings)
+
+
+@app.route('/admin/booking/<int:booking_id>', methods=['GET'])
+@login_required
+def show_booking(booking_id: int):
+    if not current_user.is_admin:
+        return login_manager.unauthorized()
+
+    booking = db.query(Booking).filter_by(id=booking_id).one()
+    return render_template('booking_details.html', user=booking.user, bookings={'current': booking})
+
+
+@app.route('/admin/booking/<int:booking_id>/<action>', methods=['GET', 'POST'])
+@login_required
+def edit_booking(booking_id: int, action: str):
+    if not current_user.is_admin:
+        return login_manager.unauthorized()
+
+    if action in ['confirm', 'reject']:
+        db.query(Booking).filter_by(id=booking_id).update({'status': BookingStatus.accepted if action == 'confirm' else BookingStatus.rejected})
+        db.commit()
+        return redirect(request.referrer) # ToDo: report success or failure
+    else:
+        if request.method == 'POST':
+            #update
+            #commit
+            #return redirect
+            pass
+        #else: show form
+        return render_template('error.html', error=NotImplementedError('Macht Niklas'))
 
 
 @app.route('/join', methods=['GET', 'POST'])
