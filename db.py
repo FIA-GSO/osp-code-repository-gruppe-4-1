@@ -40,7 +40,7 @@ def calculate_furniture_totals(**filters):
     :param filters: Optional filters für die Buchungsabfrage (z.B. event_year=2026)
     :return: Dictionary mit total_chairs und total_tables
     """
-    bookings = db.query(Booking).filter_by(**filters).all()
+    bookings = get_bookings(**filters)
 
     total_chairs = sum(booking.chairs_needed for booking in bookings)
     total_tables = sum(booking.tables_needed for booking in bookings)
