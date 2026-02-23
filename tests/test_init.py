@@ -103,3 +103,31 @@ def test_invalid_user_bogus_id_random_string():
 def test_invalid_user_bogus_id_none():
     """load_user must not throw but meekly return None"""
     assert load_user(None) is None
+
+def test_export_unauthorized_user(client):
+    """normal user is not authorized to export data"""
+    client.get('/login/166202eb-419c-4cef-af14-90b002347887')
+    response = client.post('/marketplace/export/csv')
+
+    assert response.status_code == 403
+    assert 'Unauthorized' in response.text
+
+
+def test_export_unsupported_format_admin(client):
+    """admin tries to export in an unsupported format (pdf)"""
+    client.get('/login/eb1696dd-a9b5-4527-8768-71b91151aa19')
+    response = client.post('/marketplace/export/pdf')
+
+    assert response.status_code == 501
+    assert 'noch nicht implementiert' in response.text
+
+
+def test_export_csv_success_admin(client):
+    """admin successfully exports data in csv format"""
+    # Als Admin einloggen
+    client.get('/login/eb1696dd-a9b5-4527-8768-71b91151aa19')
+    response = client.post('/marketplace/export/csv')
+
+    assert response.status_code == 200
+    assert response.content_type == "text/csv; charset=utf-8"
+    assert "attachment; filename=export.csv" in response.headers.get("Content-Disposition", "")
