@@ -45,6 +45,6 @@ def calculate_furniture_totals(bookings):
     :return: Dictionary mit total_chairs und total_tables
     """
     return {
-        'total_chairs': sum([booking.chairs_needed for booking in bookings]),
-        'total_tables': sum([booking.tables_needed for booking in bookings])
+        'total_chairs': sum(booking.chairs_needed for booking in bookings),
+        'total_tables': sum(booking.tables_needed for booking in bookings)
     }
