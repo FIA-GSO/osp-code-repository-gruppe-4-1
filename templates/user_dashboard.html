@@ -1,0 +1,115 @@
+{% extends "baseLayout.html" %}
+
+{% block title %}Georg-Simon-Ohm-Berufskolleg Köln – Marketplace: Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="full-width-banner">
+  <div class="banner-inner">
+    <h1>MARKETPLACE</h1>
+  </div>
+</div>
+
+<div class="dashboard-container">
+
+  <div class="dashboard-intro">
+      <h2 class="welcome-title">Firma: {{ user.name }}</h2>
+      {% if user.industry %}
+          <h4 class="welcome-sub">Branche: {{ user.industry }}</h4>
+      {% endif %}
+      <p class="welcome-sub">Willkommen in Ihrem Partner-Dashboard</p>
+  </div>
+
+  <div class="dashboard-cards">
+
+    <section class="dash-card current-booking-card">
+      <h3 class="card-title">Aktuelle Anmeldung</h3>
+
+      {% if bookings.current %}
+        <div class="booking-summary-grid">
+          <div class="info-item">
+            <span class="info-label">Jahr</span>
+            <span class="info-value highlight">{{ bookings.current.event_year }}</span>
+          </div>
+
+          <div class="info-item">
+            <span class="info-label">Status</span>
+            <span class="status-badge">{{ bookings.current.status.value }}</span>
+          </div>
+
+          <div class="info-item">
+            <span class="info-label">Vortrag</span>
+            <span class="info-value">{{ bookings.current.presentation }}</span>
+          </div>
+
+          <div class="info-item">
+            <span class="info-label">Dauer</span>
+            <span class="info-value">{{ bookings.current.duration }} Tag(e)</span>
+          </div>
+
+          <div class="info-item">
+            <span class="info-label">Ausstattung</span>
+            <span class="info-value">
+              {{ bookings.current.tables_needed }} Tische,
+              {{ bookings.current.chairs_needed }} Stühle
+            </span>
+          </div>
+
+          <div class="info-item full-width">
+            <span class="info-label">Bemerkung</span>
+            <span class="info-value">{{ bookings.current.remarks }}</span>
+          </div>
+      </div>
+    {% else %}
+      <div class="empty-state">
+          <p>Für das kommende Event liegt noch keine Anmeldung vor.</p>
+          <a href="/register" class="btn btn-cta">Zur Anmeldung</a>
+      </div>
+      {% endif %}
+    </section>
+
+    {% if bookings.past %}
+    <section class="dash-card history-card">
+      <h3 class="card-title">Vergangene Anmeldungen</h3>
+
+      <div class="table-responsive">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Jahr</th>
+              <th>Dauer</th>
+              <th>Ausstattung</th>
+              <th>Vortrag</th>
+              <th>Bemerkung</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for booking in bookings.past %}
+            <tr>
+              <td class="fw-bold">{{ booking.event_year }}</td>
+              <td>{{ booking.duration }} Tag(e)</td>
+              <td>{{ booking.tables_needed }} Tische / {{ booking.chairs_needed }} Stühle</td>
+              <td>
+                <span class="truncate-text" title="{{ booking.presentation }}">
+                  {{ booking.presentation if booking.presentation else "-" }}
+                </span>
+              </td>
+              <td>
+                <span class="truncate-text" title="{{ booking.remarks }}">
+                  {{ booking.remarks if booking.remarks else "-" }}
+                </span>
+              </td>
+              <td><span class="status-text">{{ booking.status.value }}</span></td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+    {% endif %}
+
+  </div>
+</div>
+
+{% endblock %}
