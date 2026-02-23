@@ -88,32 +88,20 @@
         {% for booking in booking_list %}
           <tr>
             <td data-label="Firma" class="fw-bold">{{ booking.user.name }}</td>
-
             <td data-label="Ansprechpartner">{{ booking.user.contact_person }}</td>
-
             <td data-label="Branche">{{ booking.user.industry if booking.user.industry else "-" }}</td>
-
             <td data-label="Dauer">{{ booking.duration }} Tag(e)</td>
-
             <td data-label="Status">
               <span class="status-badge status-{{ booking.status.name|lower }}">
                 {{ booking.status.value }}
               </span>
             </td>
-
             <td data-label="Aktionen" class="text-right action-cell no-print">
-              <a href="/admin/booking/{{ booking.id }}" class="btn-icon" title="Details ansehen">
-                👁️
-              </a>
-              <a href="/admin/booking/{{ booking.id }}/edit" class="btn-icon" title="Bearbeiten">
-                ✏️
-              </a>
               <form action="/admin/booking/{{ booking.id }}/confirm" method="POST" style="display:inline;">
                 <button type="submit" class="btn-icon btn-approve" title="Anmeldung bestätigen">
                     ✔️
                 </button>
               </form>
-
               <form action="/admin/booking/{{ booking.id }}/reject" method="POST" style="display:inline;" onsubmit="return confirm('Möchten Sie diese Anmeldung wirklich ablehnen?');">
                 <button type="submit" class="btn-icon btn-reject" title="Anmeldung ablehnen">
                     ❌
@@ -126,7 +114,6 @@
       </table>
     </div>
   </section>
-
 </div>
 
 <script src="{{ url_for('static', filename='js/dashboard_export.js') }}"></script>
