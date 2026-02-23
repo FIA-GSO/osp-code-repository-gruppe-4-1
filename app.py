@@ -140,6 +140,7 @@ def register_for_event():
 
 
 @app.route('/marketplace/export/<export_type>', methods=['POST'])
+@app.route('/dashboard/export/<export_type>', methods=['POST'])
 @login_required
 def export(export_type):
     """
