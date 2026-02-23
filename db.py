@@ -41,9 +41,12 @@ def calculate_furniture_totals(**filters):
     :return: Dictionary mit total_chairs und total_tables
     """
     bookings = get_bookings(**filters)
+    total_chairs = 0
+    total_tables = 0
 
-    total_chairs = sum(booking.chairs_needed for booking in bookings)
-    total_tables = sum(booking.tables_needed for booking in bookings)
+    for booking in bookings:
+        total_chairs += booking.chairs_needed
+        total_tables += booking.tables_needed
 
     return {
         'total_chairs': total_chairs,
