@@ -4,13 +4,14 @@ Marketplace GSO – Aussteller-Anmelde-Portal für die Jobmesse des Georg-Simon-
 from datetime import datetime
 from typing import Optional
 
-from flask import Flask, redirect, request, render_template, session
+from flask import Flask, Response, redirect, request, render_template, session
 from flask_login import LoginManager, login_user, current_user, login_required
 from sqlalchemy.exc import NoResultFound
 
+import os
 from auth import Authenticated, generate_token
 from database.models import Token, User, Booking, BookingStatus
-from db import db, get_bookings
+from db import db, get_bookings, calculate_furniture_totals
 from input import validate_booking, transform_filters
 from triggers import notify_admins
 from utils import NotificationType, Notification
@@ -135,6 +136,51 @@ def register_for_event():
     except Exception as e:
         return render_template('error.html', error=e)
 
+
+@app.route('/marketplace/export/<export_type>', methods=['POST'])
+@login_required
+def export(export_type):
+    """
+    Export-Logik für Admins
+    :param export_type: csv oder pdf
+    """
+    if not current_user.is_admin:
+        return render_template('error.html', error='Unauthorized'), 403
+
+    if export_type not in ['csv']:
+        return render_template('error.html', error=f'Export-Format {export_type} ist noch nicht implementiert'), 501
+
+    this_year = datetime.now().year
+    bookings = get_bookings(event_year=this_year, **transform_filters(request.args))
+
+    furniture = {
+        "first_day": calculate_furniture_totals([b for b in bookings if b.first]),
+        "second_day": calculate_furniture_totals([b for b in bookings if b.second])
+    }
+
+    response = None
+
+    if export_type == 'csv':
+        csv_string = f"Firma;Ansprechpartner;Branche;Anzahl Tage;Tag 1;Tag 2;Status;Stühle;Tische{os.linesep}"
+        for booking in bookings:
+            csv_string += booking.user.name + ';'
+            csv_string += booking.user.contact_person + ';'
+            csv_string += (booking.user.industry if booking.user.industry else '-') + ';'
+            csv_string += str(sum([booking.first, booking.second])) + ';'
+            csv_string += ("Ja" if booking.first else "Nein") + ';'
+            csv_string += ("Ja" if booking.second else "Nein") + ';'
+            csv_string += booking.status.value + ';'
+            csv_string += str(booking.chairs_needed) + ';'
+            csv_string += str(booking.tables_needed) + os.linesep
+
+        csv_string += os.linesep
+        csv_string += f"Benötigte Möbel am ersten Tag:;{furniture['first_day']['total_chairs']};{"Stühle" if furniture['first_day']['total_chairs'] > 1 else "Stuhl"};{furniture['first_day']['total_tables']};{"Tische" if furniture['first_day']['total_tables'] > 1 else "Tisch"}{os.linesep}"
+        csv_string += f"Benötigte Möbel am zweiten Tag:;{furniture['second_day']['total_chairs']};{"Stühle" if furniture['second_day']['total_chairs'] > 1 else "Stuhl"};{furniture['second_day']['total_tables']};{"Tische" if furniture['second_day']['total_tables'] > 1 else "Tisch"}"
+
+        response = Response(csv_string, content_type="text/csv; charset=utf-8")
+        response.headers["Content-Disposition"] = "attachment; filename=export.csv"
+
+    return response
 
 @app.route('/login', methods=['GET', 'POST'])
 def login_page():
