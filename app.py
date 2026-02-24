@@ -177,20 +177,20 @@ def export(export_type):
                            f"{booking.status.value};"
                            f"{booking.chairs_needed};"
                            f"{booking.tables_needed};"
-                           f"{os.linesep};")
+                           f"{os.linesep}")
 
         csv_string += (f"{os.linesep}"
                        f"Benötigte Möbel am ersten Tag:;{furniture['first_day']['total_chairs']};"
                        f"{"Stühle" if furniture['first_day']['total_chairs'] > 1 else "Stuhl"};"
                        f"{furniture['first_day']['total_tables']};"
-                       f"{"Tische" if furniture['first_day']['total_tables'] > 1 else "Tisch"}"
+                       f"{"Tische" if furniture['first_day']['total_tables'] > 1 else "Tisch"};;;;"
                        f"{os.linesep}"
                        f"Benötigte Möbel am zweiten Tag:;{furniture['second_day']['total_chairs']};"
                        f"{"Stühle" if furniture['second_day']['total_chairs'] > 1 else "Stuhl"};"
                        f"{furniture['second_day']['total_tables']};"
-                       f"{"Tische" if furniture['second_day']['total_tables'] > 1 else "Tisch"}"
+                       f"{"Tische" if furniture['second_day']['total_tables'] > 1 else "Tisch"};;;;"
                        f"{os.linesep}"
-                       f"Anmeldungen:;{len(bookings)}")
+                       f"Anmeldungen:;{len(bookings)};;;;;;;")
 
         response = Response(csv_string, content_type="text/csv; charset=utf-8")
         response.headers["Content-Disposition"] = "attachment; filename=export.csv"

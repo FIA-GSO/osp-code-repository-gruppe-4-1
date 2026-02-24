@@ -42,4 +42,6 @@ def transform_filters(qparams: MultiDict[str, str]) -> dict[str, Any]:
             db_filters['first'] = True
         if qparams['day'] != 'first':
             db_filters['second'] = True
+    if 'industry' in qparams and qparams['industry'] != 'all':
+        db_filters['industry'] = qparams['industry']
     return db_filters
