@@ -74,6 +74,18 @@ def edit_booking(booking_id: int, action: str):
         ), 400
 
 
+@app.route('/admin/floorplan', methods=['GET'])
+@login_required
+def show_floor_plan():
+    if not current_user.is_admin:
+        return login_manager.unauthorized()
+
+    from floor_plan import generate_floor_plan
+    # ToDo: filter days!
+    registrations = get_bookings(event_year=datetime.now().year)
+    return render_template('floor_plan.html', floor_plan=generate_floor_plan(registrations))
+
+
 @app.route('/join', methods=['GET', 'POST'])
 def register():
     """

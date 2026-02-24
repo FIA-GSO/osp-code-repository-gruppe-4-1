@@ -15,14 +15,14 @@ session = sessionmaker(bind=engine)
 db = session()
 
 
-def get_bookings(**filters):
+def get_bookings(**filters) -> list[Booking]:
     """
     Alle Buchungen, die den gegebenen Filtern genügen.
     CAVE: An dieser Stelle findet keine Berechtigungsprüfung statt!
     :param filters:
     :return:
     """
-    user_filters = dict()
+    user_filters = {}
     if filters.get('industry') is not None:
         user_filters['industry'] = filters.pop('industry')
     query = db.query(Booking).filter_by(**filters)

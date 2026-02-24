@@ -1,0 +1,93 @@
+{% extends "baseLayout.html" %}
+
+{% block title %}Admin: Hallenbelegung – GSO Marketplace{% endblock %}
+
+{% block content %}
+
+<div class="full-width-banner">
+  <div class="banner-inner">
+    <h1>Hallenbelegung</h1>
+  </div>
+</div>
+
+<div class="dashboard-container">
+
+  <div class="dashboard-intro">
+    <h2 class="welcome-title">Übersicht Hallenbelegung</h2>
+    <p class="welcome-sub">Hier können Sie die Belegung der Ausstellungsräume an den verschiedenen Ausstellungstagen einsehen.</p>
+  </div>
+
+  <section class="dash-card filter-card">
+
+    <form class="filter-grid" method="GET" action="#">
+
+      <div class="filter-group">
+        <label for="filter-day"><h3 class="card-title">Ausstellungstag</h3></label>
+        <select id="filter-day" name="day" class="admin-select" onchange="this.form.submit()">
+          <option value="all" {% if request.args.get('day') == 'all' or not request.args.get('day') %}selected{% endif %}>Alle Tage</option>
+          <option value="first" {% if request.args.get('day') == 'first' %}selected{% endif %}>Freitag (Tag 1)</option>
+          <option value="second" {% if request.args.get('day') == 'second' %}selected{% endif %}>Samstag (Tag 2)</option>
+        </select>
+      </div>
+
+      <div class="filter-actions">
+
+        <a href="#" class="btn-small-outline">
+            Reset
+        </a>
+      </div>
+    </form>
+  </section>
+
+  {% for day in floor_plan.days %}
+
+  <h2>{{ day.name }}</h2>
+
+  {% for hall in day.halls %}
+
+  <section class="dash-card results-card">
+    <div class="header-row">
+        <h3 class="card-title" style="margin-bottom:0; border:none;">{{ hall.hall.name|d('Halle ' + loop.index|string) }} ({{ hall.bookings|length }} Anmeldungen)</h3>
+      <button class="btn-small-outline">Export CSV</button>
+    </div>
+
+    <div class="table-responsive">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Firma</th>
+            <th>Ansprechpartner</th>
+            <th>Branche</th>
+            <th>Tage</th>
+            <th>Benötigte Stühle</th>
+            <th>Benötigte Tische</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for booking in hall.bookings %}
+          <tr>
+            <td data-label="Firma" class="fw-bold">{{ booking.user.name }}</td>
+
+            <td data-label="Ansprechpartner">{{ booking.user.contact_person }}</td>
+
+            <td data-label="Branche">{{ booking.user.industry|d('-') }}</td>
+
+            <td data-label="Dauer">{{ booking.duration }} Tag(e)</td>
+
+            <td data-label="Benötigte Stühle">{{ booking.chairs_needed|d('-') }}</td>
+
+            <td data-label="Benötigte Tische">{{ booking.tables_needed|d('-') }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  {% endfor %}
+
+  {% endfor %}
+
+</div>
+
+{% endblock %}
