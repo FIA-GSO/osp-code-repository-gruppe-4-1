@@ -20,8 +20,6 @@ class Day:
 class HallPlan:
     hall: Hall
     bookings: list[Booking]
-    chairs: int = 0
-    tables: int = 0
 
 @dataclass
 class Hall:
@@ -51,10 +49,15 @@ def generate_floor_plan(registrations: list[Booking], day_filters: dict = {}) ->
         while len(tba_for_day) > 0:
             hall = HallPlan(available_halls.pop(0), [])
             while len(hall.bookings) < hall.hall.size and len(tba_for_day) > 0:
-                hall.chairs += tba_for_day[0].chairs_needed
-                hall.tables += tba_for_day[0].tables_needed
                 hall.bookings.append(tba_for_day.pop(0))
             day_plan.halls.append(hall)
         result.days.append(day_plan)
 
-    return result
+    return decorate_hall_plans(result)
+
+def decorate_hall_plans(floor_plan: FloorPlan) -> FloorPlan:
+    for day in floor_plan.days:
+        for hall in day.halls:
+            hall.chairs = sum([b.chairs_needed for b in hall.bookings])
+            hall.tables = sum([b.tables_needed for b in hall.bookings])
+    return floor_plan
