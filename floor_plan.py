@@ -53,7 +53,7 @@ def generate_floor_plan(registrations: list[Booking], day_filters: dict = {}) ->
             day_plan.halls.append(hall)
         result.days.append(day_plan)
 
-    return decorate_hall_plans(result)
+    return result
 
 def decorate_hall_plans(floor_plan: FloorPlan) -> FloorPlan:
     for day in floor_plan.days:
