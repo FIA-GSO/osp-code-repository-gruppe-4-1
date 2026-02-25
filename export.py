@@ -3,7 +3,7 @@ from datetime import datetime
 import os
 
 from db import get_bookings
-from floor_plan import generate_floor_plan
+from floor_plan import decorate_hall_plans, generate_floor_plan
 from input import transform_filters
 
 
@@ -14,7 +14,7 @@ def export_floor_plan(form_data):
 
     this_year = datetime.now().year
     bookings = get_bookings(event_year=this_year)
-    floor_plan = generate_floor_plan(bookings, transform_filters(form_data))
+    floor_plan = decorate_hall_plans(generate_floor_plan(bookings, transform_filters(form_data)))
 
     csv_string = ""
 

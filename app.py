@@ -12,7 +12,7 @@ from auth import Authenticated, generate_token
 from database.models import Token, User, Booking, BookingStatus
 from db import db, get_bookings
 from export import create_export
-from floor_plan import generate_floor_plan
+from floor_plan import decorate_hall_plans, generate_floor_plan
 from input import validate_booking, transform_filters
 from triggers import notify_admins
 from utils import NotificationType, Notification
@@ -82,10 +82,8 @@ def show_floor_plan():
         return login_manager.unauthorized()
 
     registrations = get_bookings(event_year=datetime.now().year)
-    return render_template(
-        'floor_plan.html',
-        floor_plan=generate_floor_plan(registrations, transform_filters(request.args))
-    )
+    floor_plan = decorate_hall_plans(generate_floor_plan(registrations, transform_filters(request.args)))
+    return render_template('floor_plan.html', floor_plan=floor_plan)
 
 
 @app.route('/join', methods=['GET', 'POST'])
