@@ -8,10 +8,10 @@ from input import transform_filters
 
 
 def export_floor_plan(form_data):
-    # This function would contain the logic to export the floor plan data, 
-    # possibly as a CSV or Excel file. The implementation would depend on the 
+    # This function would contain the logic to export the floor plan data,
+    # possibly as a CSV or Excel file. The implementation would depend on the
     # specific requirements for the export format and the data structure.
-    
+
     this_year = datetime.now().year
     bookings = get_bookings(event_year=this_year)
     floor_plan = generate_floor_plan(bookings, transform_filters(form_data))
@@ -57,8 +57,6 @@ def export_registrations(form_data):
                         f"{booking.tables_needed};"
                         f"{os.linesep}")
 
-    
-    
     return csv_string
 
 def create_export(form_data):
@@ -66,5 +64,5 @@ def create_export(form_data):
 
     if report == 'floor_plan':
         return export_floor_plan(form_data)
-    else:
-        return export_registrations(form_data)
+
+    return export_registrations(form_data)
