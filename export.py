@@ -60,7 +60,7 @@ def export_registrations(form_data):
     return csv_string
 
 def create_export(form_data):
-    report = form_data.pop('report_type')
+    report = form_data.pop('report_type', 'bookings')
 
     if report == 'floor_plan':
         return export_floor_plan(form_data)
