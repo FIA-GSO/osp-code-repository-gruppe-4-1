@@ -23,7 +23,7 @@
     <h3 class="card-title">Filter</h3>
 
     <form class="filter-grid" method="GET" action="{{ url_for('dashboard') }}">
-
+      <input type="hidden" name="report_type" value="bookings">
       <div class="filter-group">
         <label for="filter-status">Status</label>
         <select id="filter-status" name="status" class="admin-select" onchange="this.form.submit()">
@@ -63,57 +63,59 @@
     </form>
   </section>
 
-  <section id="bookings" class="dash-card results-card">
-    <div class="header-row">
-      <h3 class="card-title" style="margin-bottom:0; border:none;">Anmeldungen ({{ booking_list|length }})</h3>
-      <div class="no-print">
-        <button class="btn-small-outline" onclick="printElement('bookings')">Drucken</button>
-        <button class="btn-small-outline" onclick="exportCSV()">Export CSV</button>
+  <div id="bookings">
+    <section class="dash-card results-card">
+      <div class="header-row">
+        <h3 class="card-title" style="margin-bottom:0; border:none;">Anmeldungen ({{ booking_list|length }})</h3>
+        <div class="no-print">
+          <button class="btn-small-outline" onclick="printElement('bookings')">Drucken</button>
+          <button class="btn-small-outline" onclick="exportCSV('bookings')">Export CSV</button>
+        </div>
       </div>
-    </div>
 
-    <div class="table-responsive">
-      <table class="admin-table">
-        <thead>
-          <tr>
-            <th>Firma</th>
-            <th>Ansprechpartner</th>
-            <th>Branche</th>
-            <th>Tage</th>
-            <th>Status</th>
-            <th class="text-right no-print">Aktionen</th>
-          </tr>
-        </thead>
-        <tbody>
-        {% for booking in booking_list %}
-          <tr>
-            <td data-label="Firma" class="fw-bold">{{ booking.user.name }}</td>
-            <td data-label="Ansprechpartner">{{ booking.user.contact_person }}</td>
-            <td data-label="Branche">{{ booking.user.industry if booking.user.industry else "-" }}</td>
-            <td data-label="Dauer">{{ booking.duration }} Tag(e)</td>
-            <td data-label="Status">
-              <span class="status-badge status-{{ booking.status.name|lower }}">
-                {{ booking.status.value }}
-              </span>
-            </td>
-            <td data-label="Aktionen" class="text-right action-cell no-print">
-              <form action="/admin/booking/{{ booking.id }}/confirm" method="POST" style="display:inline;">
-                <button type="submit" class="btn-icon btn-approve" title="Anmeldung bestätigen">
-                    ✔️
-                </button>
-              </form>
-              <form action="/admin/booking/{{ booking.id }}/reject" method="POST" style="display:inline;" onsubmit="return confirm('Möchten Sie diese Anmeldung wirklich ablehnen?');">
-                <button type="submit" class="btn-icon btn-reject" title="Anmeldung ablehnen">
-                    ❌
-                </button>
-              </form>
-            </td>
-          </tr>
-        {% endfor %}
-        </tbody>
-      </table>
-    </div>
-  </section>
+      <div class="table-responsive">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Firma</th>
+              <th>Ansprechpartner</th>
+              <th>Branche</th>
+              <th>Tage</th>
+              <th>Status</th>
+              <th class="text-right no-print">Aktionen</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for booking in booking_list %}
+            <tr>
+              <td data-label="Firma" class="fw-bold">{{ booking.user.name }}</td>
+              <td data-label="Ansprechpartner">{{ booking.user.contact_person }}</td>
+              <td data-label="Branche">{{ booking.user.industry if booking.user.industry else "-" }}</td>
+              <td data-label="Dauer">{{ booking.duration }} Tag(e)</td>
+              <td data-label="Status">
+                <span class="status-badge status-{{ booking.status.name|lower }}">
+                  {{ booking.status.value }}
+                </span>
+              </td>
+              <td data-label="Aktionen" class="text-right action-cell no-print">
+                <form action="/admin/booking/{{ booking.id }}/confirm" method="POST" style="display:inline;">
+                  <button type="submit" class="btn-icon btn-approve" title="Anmeldung bestätigen">
+                      ✔️
+                  </button>
+                </form>
+                <form action="/admin/booking/{{ booking.id }}/reject" method="POST" style="display:inline;" onsubmit="return confirm('Möchten Sie diese Anmeldung wirklich ablehnen?');">
+                  <button type="submit" class="btn-icon btn-reject" title="Anmeldung ablehnen">
+                      ❌
+                  </button>
+                </form>
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
 </div>
 
 <script src="{{ url_for('static', filename='js/dashboard_export.js') }}"></script>

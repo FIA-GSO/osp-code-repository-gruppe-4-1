@@ -18,11 +18,18 @@
   </div>
 
   <section class="dash-card filter-card">
+    <div class="header-row">
+      <h3 class="card-title" style="margin-bottom:0; border:none;">Austellungstag</h3>
+      <div class="no-print">
+        <button class="btn-small-outline" onclick="printElement('floorplan')">Drucken</button>
+        <button class="btn-small-outline" onclick="exportCSV('floor_plan')">Export CSV</button>
+      </div>
+    </div>
 
     <form class="filter-grid" method="GET" action="#">
+      <input type="hidden" name="report_type" value="floor_plan">
 
       <div class="filter-group">
-        <label for="filter-day"><h3 class="card-title">Ausstellungstag</h3></label>
         <select id="filter-day" name="day" class="admin-select" onchange="this.form.submit()">
           <option value="all" {% if request.args.get('day') == 'all' or not request.args.get('day') %}selected{% endif %}>Alle Tage</option>
           <option value="first" {% if request.args.get('day') == 'first' %}selected{% endif %}>Freitag (Tag 1)</option>
@@ -33,61 +40,64 @@
       <div class="filter-actions">
 
         <a href="#" class="btn-small-outline">
-            Reset
+          Reset
         </a>
       </div>
     </form>
   </section>
+  <div id="floorplan">
+    {% for day in floor_plan.days %}
 
-  {% for day in floor_plan.days %}
+    <h2>{{ day.name }}</h2>
 
-  <h2>{{ day.name }}</h2>
+    {% for hall in day.halls %}
 
-  {% for hall in day.halls %}
+    <section class="dash-card results-card">
+      <div class="header-row">
+      <h3 class="card-title" style="margin-bottom:0; border:none;">{{ hall.hall.name|d('Halle ' + loop.index|string) }} ({{ hall.bookings|length }} Anmeldungen)</h3>
+      </div>
 
-  <section class="dash-card results-card">
-    <div class="header-row">
-        <h3 class="card-title" style="margin-bottom:0; border:none;">{{ hall.hall.name|d('Halle ' + loop.index|string) }} ({{ hall.bookings|length }} Anmeldungen)</h3>
-      <button class="btn-small-outline">Export CSV</button>
-    </div>
+      <div class="table-responsive">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Firma</th>
+              <th>Ansprechpartner</th>
+              <th>Branche</th>
+              <th>Benötigte Stühle</th>
+              <th>Benötigte Tische</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for booking in hall.bookings %}
+            <tr>
+              <td data-label="Firma" class="fw-bold">{{ booking.user.name }}</td>
 
-    <div class="table-responsive">
-      <table class="admin-table">
-        <thead>
-          <tr>
-            <th>Firma</th>
-            <th>Ansprechpartner</th>
-            <th>Branche</th>
-            <th>Tage</th>
-            <th>Benötigte Stühle</th>
-            <th>Benötigte Tische</th>
-          </tr>
-        </thead>
-        <tbody>
-        {% for booking in hall.bookings %}
-          <tr>
-            <td data-label="Firma" class="fw-bold">{{ booking.user.name }}</td>
+              <td data-label="Ansprechpartner">{{ booking.user.contact_person }}</td>
 
-            <td data-label="Ansprechpartner">{{ booking.user.contact_person }}</td>
+              <td data-label="Branche">{{ booking.user.industry if booking.user.industry and booking.user.industry != 'None' else '-' }}</td>
 
-            <td data-label="Branche">{{ booking.user.industry|d('-') }}</td>
+              <td data-label="Benötigte Stühle">{{ booking.chairs_needed if booking.chairs_needed else '0' }}</td>
 
-            <td data-label="Dauer">{{ booking.duration }} Tag(e)</td>
+              <td data-label="Benötigte Tische">{{ booking.tables_needed if booking.tables_needed else '0' }}</td>
+            </tr>
+            {% endfor %}
+            <tr style="border-top: 3px solid #ccc;">
+              <td data-label="Firma" class="fw-bold">Gesamt</td>
+              <td data-label="Ansprechpartner"></td>
+              <td data-label="Branche"></td>
+              <td data-label="Benötigte Stühle">{{ hall.chairs }}</td>
+              <td data-label="Benötigte Tische">{{ hall.tables }}</td>
+          </tbody>
+        </table>
+      </div>
+    </section>
 
-            <td data-label="Benötigte Stühle">{{ booking.chairs_needed|d('-') }}</td>
+    {% endfor %}
 
-            <td data-label="Benötigte Tische">{{ booking.tables_needed|d('-') }}</td>
-          </tr>
-        {% endfor %}
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  {% endfor %}
-
-  {% endfor %}
-
+    {% endfor %}
+  </div>
 </div>
+<script src="{{ url_for('static', filename='js/dashboard_export.js') }}"></script>
 
 {% endblock %}
