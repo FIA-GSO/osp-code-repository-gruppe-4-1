@@ -40,8 +40,9 @@ def generate_floor_plan(registrations: list[Booking], day_filters: dict = {}) ->
     to_be_assigned.sort(key=lambda b: b.duration, reverse=True)
 
     result = FloorPlan([])
-    
-    # if day_filters is empty, all days are included, otherwise only those with filter first or second
+
+    # if day_filters is empty, all days are included
+    # otherwise only those with filter first or second
     days = [day for day in EVENT_DAYS if len(day_filters) == 0 or day[1] in day_filters]
     for day in days:
         day_plan = Day(day[0])

@@ -1,7 +1,6 @@
 """
 Marketplace GSO – Aussteller-Anmelde-Portal für die Jobmesse des Georg-Simon-Ohm-Berufskollegs
 """
-import os
 from datetime import datetime
 from typing import Optional
 
@@ -13,6 +12,7 @@ from auth import Authenticated, generate_token
 from database.models import Token, User, Booking, BookingStatus
 from db import db, get_bookings
 from export import create_export
+from floor_plan import generate_floor_plan
 from input import validate_booking, transform_filters
 from triggers import notify_admins
 from utils import NotificationType, Notification
@@ -68,11 +68,11 @@ def edit_booking(booking_id: int, action: str):
         )
         db.commit()
         return redirect(request.referrer) # ToDo: report success or failure
-    else:
-        return render_template(
-            'error.html',
-            error=f'Unsupported action: {action}'
-        ), 400
+
+    return render_template(
+        'error.html',
+        error=f'Unsupported action: {action}'
+    ), 400
 
 
 @app.route('/admin/floorplan', methods=['GET'])
@@ -81,9 +81,11 @@ def show_floor_plan():
     if not current_user.is_admin:
         return login_manager.unauthorized()
 
-    from floor_plan import generate_floor_plan
     registrations = get_bookings(event_year=datetime.now().year)
-    return render_template('floor_plan.html', floor_plan=generate_floor_plan(registrations, transform_filters(request.args)))
+    return render_template(
+        'floor_plan.html',
+        floor_plan=generate_floor_plan(registrations, transform_filters(request.args))
+    )
 
 
 @app.route('/join', methods=['GET', 'POST'])
