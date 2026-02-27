@@ -191,6 +191,13 @@ def login(token):
         ), 403
 
 
+@app.route('/logout')
+@login_required
+def logout():
+    session.clear()
+    return redirect('/login')
+
+
 @login_manager.user_loader
 def load_user(user_id) -> Optional[Authenticated[User]]:
     """
