@@ -39,6 +39,9 @@
   margin: 0 auto;
   padding: 0 20px;
   max-width: var(--content-width);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .admin-view .banner-inner {
@@ -168,6 +171,12 @@
   border-radius: 4px;
   font-size: 0.8rem;
   cursor: pointer;
+}
+
+.btn-white-background {
+  background-color: white;
+  color: var(--text-main);
+  border: 1px solid #ccc;
 }
 
 .btn-icon {
