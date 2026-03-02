@@ -10,7 +10,7 @@ User = TypeVar('User')
 
 class Authenticated(Generic[User]):
     """
-Ein schmaler Wrapper um einen Nutzerdatensatz, der flask_logins Anforderungen erfüllt
+    Ein schmaler Wrapper um einen Nutzerdatensatz, der flask_logins Anforderungen erfüllt
     """
     def __init__(self, user_record: User):
         self.record = user_record
@@ -35,7 +35,7 @@ Ein schmaler Wrapper um einen Nutzerdatensatz, der flask_logins Anforderungen er
 
 
 def generate_token():
-    """"
-Erzeugt ein neues, sicheres Token, mit dem sich Nutzer authentifizieren können.
+    """
+    Erzeugt ein neues, sicheres Token, mit dem sich Nutzer authentifizieren können.
     """
     return str(uuid.uuid4())
