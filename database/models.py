@@ -59,6 +59,7 @@ class Booking(Schema):
 
     chairs_needed = mapped_column(Integer, nullable=False, default=0)
     tables_needed = mapped_column(Integer, nullable=False, default=0)
+    sockets_needed = mapped_column(Integer, nullable=False, default=2)
     remarks = mapped_column(String, nullable=True)
     presentation = mapped_column(String, nullable=True)
 
