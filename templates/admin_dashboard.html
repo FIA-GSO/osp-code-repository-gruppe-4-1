@@ -5,6 +5,11 @@
 {% block content %}
 
 {% set booking_list = bookings|list %}
+{% set industry_names = {
+    'it': 'IT & Software',
+    'finance': 'Wirtschaft & Verwaltung',
+    'craft': 'Handwerk'
+} %}
 
 <div class="full-width-banner">
   <div class="banner-inner">
@@ -94,7 +99,13 @@
             <tr>
               <td data-label="Firma" class="fw-bold">{{ booking.user.name }}</td>
               <td data-label="Ansprechpartner">{{ booking.user.contact_person }}</td>
-              <td data-label="Branche">{{ booking.user.industry if booking.user.industry else "-" }}</td>
+              <td data-label="Branche">
+                {% if booking.user.industry %}
+                  {{ industry_names.get(booking.user.industry, booking.user.industry) }}
+                {% else %}
+                  -
+                {% endif %}
+              </td>
               <td data-label="Dauer">{{ booking.duration }} Tag(e)</td>
               <td data-label="Status">
                 <span class="status-badge status-{{ booking.status.name|lower }}">
