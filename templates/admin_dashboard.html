@@ -49,7 +49,6 @@
           <option value="all" {% if request.args.get('day') == 'all' or not request.args.get('day') %}selected{% endif %}>Alle Tage</option>
           <option value="first" {% if request.args.get('day') == 'first' %}selected{% endif %}>Freitag (Tag 1)</option>
           <option value="second" {% if request.args.get('day') == 'second' %}selected{% endif %}>Samstag (Tag 2)</option>
-          <option value="both" {% if request.args.get('day') == 'both' %}selected{% endif %}>Beide Tage</option>
         </select>
       </div>
 
