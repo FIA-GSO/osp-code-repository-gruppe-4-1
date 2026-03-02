@@ -27,16 +27,17 @@ def get_bookings(**filters) -> list[Booking]:
         user_filters['industry'] = filters.pop('industry')
     query = db.query(Booking).filter_by(**filters)
     query = query.join(Booking.user).filter_by(**user_filters)
-    query = query.join(Booking.correspondence, isouter=True).order_by(Correspondence.timestamp.desc()) # newest first
+    query = query.join(Booking.correspondence, isouter=True)
     return [decorate(booking) for booking in query.all()]
 
-def decorate(booking):
+def decorate(booking: Booking) -> Booking:
     """
     Berechnet die Dauer einer Buchung und hängt sie als Attribut an die Instanz an.
     :param booking:
     :return:
     """
     booking.duration = booking.first + booking.second
+    booking.needs_response = bool(len(booking.correspondence)) and not booking.correspondence[-1].from_admin
     return booking
 
 def calculate_furniture_totals(bookings):

@@ -63,19 +63,25 @@ bzw. aller aktuellen Buchungen f. Admins.
 def submit_request():
     this_year = datetime.now().year
     booking = get_bookings(user_id=current_user.id, event_year=this_year).pop()
-    message = Correspondence(
-        booking_id=booking.id,
-        from_admin=current_user.is_admin,
-        from_user=current_user.id,
-        message=request.form.get('message')
-    )
-    db.add(message)
-    db.commit()
+    message = send_message(booking.id, request.form.get('message'))
     notify_admins(message)
     return redirect('/dashboard')
 
 
-@app.route('/admin/booking/<int:booking_id>/<action>', methods=['GET'])
+def send_message(booking_id: int, message: str):
+    # ToDo: properly sanitize/validate!
+    data_object = Correspondence(
+        booking_id=booking_id,
+        from_admin=current_user.is_admin,
+        from_user=current_user.id,
+        message=message
+    )
+    db.add(data_object)
+    db.commit()
+    return data_object
+
+
+@app.route('/admin/booking/<int:booking_id>/<action>', methods=['GET', 'POST'])
 @login_required
 def edit_booking(booking_id: int, action: str):
     if not current_user.is_admin:
@@ -87,6 +93,10 @@ def edit_booking(booking_id: int, action: str):
         )
         db.commit()
         return redirect(request.referrer) # ToDo: report success or failure
+    else:
+        if action == 'respond':
+            send_message(booking_id, request.form.get('response'))
+            return redirect(request.referrer) # ToDo: report success or failure
 
     return render_template(
         'error.html',
