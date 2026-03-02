@@ -61,10 +61,32 @@
             </span>
           </div>
 
+          {% if bookings.current.remarks %}
           <div class="info-item full-width">
             <span class="info-label">Bemerkung</span>
             <span class="info-value">{{ bookings.current.remarks }}</span>
           </div>
+          {% endif %}
+
+          <div class="info-item full-width">
+            <span class="info-label">Anfragen</span>
+            {% for message in bookings.current.correspondence %}
+              <span class="info-value">[{{ message.timestamp }}] {{ message.sender.contact_person }} ({{ message.sender.name }}): {{ message.message }}</span>
+            {% endfor %}
+            <form action="/dashboard/message" method="POST" style="display:inline;" onsubmit="console.log(this); if (this.getAttribute('data-message-ready')) return true; else { this.children[0].style.display = 'block'; this.children[1].style.display = 'none'; this.setAttribute('data-message-ready', true); return false; }">
+              <label style="display: none; flex-direction: row;">
+                Ihre Nachricht:
+                <input type="text" name="message" />
+                <button type="submit" class="btn-icon btn-confirm" title="Anfrage abschicken">
+                    ➤
+                </button>
+              </label>
+              <button type="submit" class="btn-icon btn-confirm" title="Anfrage verfassen">
+                  🖉
+              </button>
+            </form>
+          </div>
+
       </div>
     {% else %}
       <div class="empty-state">

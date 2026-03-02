@@ -5,7 +5,7 @@ Ereignisse/Nebenwirkungen in der externen Umgebung
 import logging
 from logging.handlers import RotatingFileHandler, SysLogHandler
 
-from database.models import Booking, User
+from database.models import Booking, User, Correspondence
 from db import db
 
 
@@ -21,13 +21,13 @@ file_handler = RotatingFileHandler('logs/triggers.log')
 logger.addHandler(file_handler)
 
 
-def notify_admins(booking: Booking) -> None:
+def notify_admins(event: Booking|Correspondence) -> None:
     """
-    Benachrichtige alle Veranstaltungsverwalter über eine neue Anmeldung
-    :param booking: die neue Anmeldung
+    Benachrichtige alle Veranstaltungsverwalter über eine neue Anmeldung oder Anfrage eines Ausstellers
+    :param event: die neue Anmeldung oder Anfrage
     :return: None
     """
-    message = f'Neue Anmeldung: {booking}'
+    message = stringify(event)
 
     logger.info(message)
 
@@ -35,3 +35,10 @@ def notify_admins(booking: Booking) -> None:
     for admin in admins:
         # this should be an actual notification, here we just log instead
         logger.debug(f"Notifying admin '{admin.name}/{admin.contact_person}': {message}")
+
+
+def stringify(event: Booking|Correspondence) -> str:
+    if isinstance(event, Booking):
+        return f'Neue Anmeldung: {event}'
+    else:
+        return f'{event.sender.name}/{event.sender.contact_person} fragt an: {event.message}'

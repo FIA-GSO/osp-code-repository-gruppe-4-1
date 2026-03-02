@@ -5,7 +5,7 @@ Datenbank-Schicht mit Helfer-Funktionen
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from database.models import Schema, Booking, User
+from database.models import Schema, Booking, User, Correspondence
 
 # Datenbankverbindung
 engine = create_engine('sqlite:///database/marketplace.sqlite')
@@ -23,10 +23,11 @@ def get_bookings(**filters) -> list[Booking]:
     :return:
     """
     user_filters = {}
-    if filters.get('industry') is not None:
+    if 'industry' in filters:
         user_filters['industry'] = filters.pop('industry')
     query = db.query(Booking).filter_by(**filters)
-    query = query.join(User).filter_by(**user_filters)
+    query = query.join(Booking.user).filter_by(**user_filters)
+    query = query.join(Booking.correspondence, isouter=True).order_by(Correspondence.timestamp.desc()) # newest first
     return [decorate(booking) for booking in query.all()]
 
 def decorate(booking):

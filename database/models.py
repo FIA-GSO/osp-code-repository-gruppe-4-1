@@ -1,9 +1,11 @@
 import enum
 from datetime import datetime, timedelta
 from sqlalchemy import Integer, String, Boolean, DateTime, Enum, ForeignKey, UniqueConstraint
-from sqlalchemy.orm import mapped_column, declarative_base, relationship
+from sqlalchemy.orm import mapped_column, declarative_base, relationship, Mapped
+
 
 Schema = declarative_base()
+
 
 class User(Schema):
     __tablename__ = 'users'
@@ -23,6 +25,7 @@ class User(Schema):
     tokens = relationship("Token", back_populates="user")
     bookings = relationship("Booking", back_populates="user")
 
+
 class Token(Schema):
     __tablename__ = 'tokens'
 
@@ -32,10 +35,11 @@ class Token(Schema):
     valid_until = mapped_column(
         DateTime,
         nullable=False,
-        default=datetime.now() + timedelta(days=365.25 * 2)
+        default=lambda: datetime.now() + timedelta(days=365.25 * 2)
     )
 
     user = relationship("User", back_populates="tokens")
+
 
 class BookingStatus(enum.Enum):
     pending = "Wartend"
@@ -58,8 +62,27 @@ class Booking(Schema):
     remarks = mapped_column(String, nullable=True)
     presentation = mapped_column(String, nullable=True)
 
+    admin_note = mapped_column(String, nullable=True)
+
     user = relationship("User", back_populates="bookings")
+    correspondence = relationship("Correspondence", back_populates="booking")
     UniqueConstraint('user_id', 'event_year')
 
     def __str__(self):
         return ', '.join(f'{col.name}: {getattr(self, col.name)}' for col in self.__table__.columns)
+
+
+class Correspondence(Schema):
+    __tablename__ = 'issues'
+
+    id = mapped_column(Integer, primary_key=True)
+
+    booking_id = mapped_column(Integer, ForeignKey('bookings.id'), nullable=False)
+    from_admin = mapped_column(Boolean, nullable=False, default=False)
+    from_user = mapped_column(Integer, ForeignKey('users.id'), nullable=False)
+    timestamp = mapped_column(DateTime, nullable=False, default=datetime.now)
+
+    message = mapped_column(String, nullable=False)
+
+    booking = relationship("Booking", back_populates="correspondence")
+    sender = relationship("User")

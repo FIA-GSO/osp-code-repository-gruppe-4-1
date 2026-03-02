@@ -9,7 +9,7 @@ from flask_login import LoginManager, login_user, current_user, login_required
 from sqlalchemy.exc import NoResultFound
 
 from auth import Authenticated, generate_token
-from database.models import Token, User, Booking, BookingStatus
+from database.models import Token, User, Booking, BookingStatus, Correspondence
 from db import db, get_bookings
 from export import create_export
 from floor_plan import decorate_hall_plans, generate_floor_plan
@@ -56,7 +56,26 @@ bzw. aller aktuellen Buchungen f. Admins.
         }
     return render_template(template, user=current_user, bookings=bookings)
 
-@app.route('/admin/booking/<int:booking_id>/<action>', methods=['GET', 'POST'])
+
+@app.route('/marketplace/message', methods=['POST'])
+@app.route('/dashboard/message', methods=['POST'])
+@login_required
+def submit_request():
+    this_year = datetime.now().year
+    booking = get_bookings(user_id=current_user.id, event_year=this_year).pop()
+    message = Correspondence(
+        booking_id=booking.id,
+        from_admin=current_user.is_admin,
+        from_user=current_user.id,
+        message=request.form.get('message')
+    )
+    db.add(message)
+    db.commit()
+    notify_admins(message)
+    return redirect('/dashboard')
+
+
+@app.route('/admin/booking/<int:booking_id>/<action>', methods=['GET'])
 @login_required
 def edit_booking(booking_id: int, action: str):
     if not current_user.is_admin:
