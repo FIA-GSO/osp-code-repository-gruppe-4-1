@@ -95,6 +95,7 @@ def register():
     if request.method == 'POST':
         try:
             new_user = User(**request.form)
+            new_user.support_association = new_user.support_association == 'on'
             db.add(new_user)
             db.commit()
 
