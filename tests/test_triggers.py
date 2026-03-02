@@ -1,10 +1,18 @@
 import pytest
-import triggers
+
+from triggers import notify_admins, syslog_handler
+from database.models import Booking
 
 
-def test_notification():
-    triggers.notify_admins(None)
-    assert True #assert that this does nothing
+TEST_BOOKING = Booking(user_id=1, event_year=2025, first=True, second=True, chairs_needed=2, tables_needed=1, presentation='Erfolgreich TDD vortäuschen')
+
+
+def test_notification(mocker):
+    spy = mocker.spy(syslog_handler, 'emit')
+
+    notify_admins(TEST_BOOKING)
+
+    spy.assert_called()
 
 
 if __name__ == '__main__':

@@ -60,3 +60,6 @@ class Booking(Schema):
 
     user = relationship("User", back_populates="bookings")
     UniqueConstraint('user_id', 'event_year')
+
+    def __str__(self):
+        return ', '.join(f'{col.name}: {getattr(self, col.name)}' for col in self.__table__.columns)
