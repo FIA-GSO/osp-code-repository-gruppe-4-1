@@ -35,11 +35,11 @@ def test_transform_filters_only_filters_on_all():
 
 
 def test_transform_filters_actual_filters():
-    result = transform_filters({'status': 'accepted', 'day': 'both'})
-    assert result == {'status': 'accepted', 'first': True, 'second': True}
+    result = transform_filters({'status': 'accepted', 'day': 'first'})
+    assert result == {'status': 'accepted', 'first': True, 'second': False}
 
 
 def test_transform_filters_actual_filters_2():
-    result = transform_filters({'status': 'accepted', 'day': 'both', 'industry': 'cybersec'})
-    assert result == {'status': 'accepted', 'first': True, 'second': True, 'industry': 'cybersec'}
+    result = transform_filters({'status': 'accepted', 'day': 'second', 'industry': 'cybersec'})
+    assert result == {'status': 'accepted','first': False, 'second': True, 'industry': 'cybersec'}
 
