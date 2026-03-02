@@ -1,7 +1,7 @@
 import enum
 from datetime import datetime, timedelta
 from sqlalchemy import Integer, String, Boolean, DateTime, Enum, ForeignKey, UniqueConstraint
-from sqlalchemy.orm import mapped_column, declarative_base, relationship, Mapped
+from sqlalchemy.orm import mapped_column, declarative_base, relationship
 
 
 Schema = declarative_base()

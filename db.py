@@ -5,7 +5,7 @@ Datenbank-Schicht mit Helfer-Funktionen
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from database.models import Schema, Booking, User, Correspondence
+from database.models import Schema, Booking
 
 # Datenbankverbindung
 engine = create_engine('sqlite:///database/marketplace.sqlite')
@@ -37,7 +37,8 @@ def decorate(booking: Booking) -> Booking:
     :return:
     """
     booking.duration = booking.first + booking.second
-    booking.needs_response = bool(len(booking.correspondence)) and not booking.correspondence[-1].from_admin
+    booking.needs_response =(
+            bool(len(booking.correspondence)) and not booking.correspondence[-1].from_admin)
     return booking
 
 def calculate_furniture_totals(bookings):

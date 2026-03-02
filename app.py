@@ -93,10 +93,10 @@ def edit_booking(booking_id: int, action: str):
         )
         db.commit()
         return redirect(request.referrer) # ToDo: report success or failure
-    else:
-        if action == 'respond':
-            send_message(booking_id, request.form.get('response'))
-            return redirect(request.referrer) # ToDo: report success or failure
+
+    if action == 'respond':
+        send_message(booking_id, request.form.get('response'))
+        return redirect(request.referrer) # ToDo: report success or failure
 
     return render_template(
         'error.html',
