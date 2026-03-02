@@ -33,7 +33,7 @@
         <select id="filter-status" name="status" class="admin-select" onchange="this.form.submit()">
           <option value="all" {% if request.args.get('status') == 'all' or not request.args.get('status') %}selected{% endif %}>Alle anzeigen</option>
           <option value="open" {% if request.args.get('status') == 'open' %}selected{% endif %}>Offen (Wartend)</option>
-          <option value="confirmed" {% if request.args.get('status') == 'confirmed' %}selected{% endif %}>Bestätigt</option>
+          <option value="accepted" {% if request.args.get('status') == 'accepted' %}selected{% endif %}>Bestätigt</option>
           <option value="rejected" {% if request.args.get('status') == 'rejected' %}selected{% endif %}>Abgelehnt</option>
         </select>
       </div>
@@ -42,8 +42,8 @@
         <label for="filter-day">Teilnahmetag</label>
         <select id="filter-day" name="day" class="admin-select" onchange="this.form.submit()">
           <option value="all" {% if request.args.get('day') == 'all' or not request.args.get('day') %}selected{% endif %}>Alle Tage</option>
-          <option value="tag1" {% if request.args.get('day') == 'tag1' %}selected{% endif %}>Freitag (Tag 1)</option>
-          <option value="tag2" {% if request.args.get('day') == 'tag2' %}selected{% endif %}>Samstag (Tag 2)</option>
+          <option value="first" {% if request.args.get('day') == 'first' %}selected{% endif %}>Freitag (Tag 1)</option>
+          <option value="second" {% if request.args.get('day') == 'second' %}selected{% endif %}>Samstag (Tag 2)</option>
           <option value="both" {% if request.args.get('day') == 'both' %}selected{% endif %}>Beide Tage</option>
         </select>
       </div>
