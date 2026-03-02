@@ -60,7 +60,7 @@
   max-width: var(--content-width);
   margin: 0 auto;
   padding: 0 20px 40px 20px;
-  font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
+  font-family: "Fira Sans", "Helvetica Neue", Arial, sans-serif;
   color: var(--text-main);
 }
 
@@ -453,7 +453,7 @@
   .admin-table tbody tr:not(:last-child) {
     border-bottom: 1px solid #ccc;
   }
-  
+
   .admin-table thead tr{
     border-bottom: 3px solid #ccc;
   }
