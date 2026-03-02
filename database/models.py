@@ -46,6 +46,7 @@ class BookingStatus(enum.Enum):
     accepted = "Bestätigt"
     rejected = "Abgelehnt"
 
+
 class Booking(Schema):
     __tablename__ = 'bookings'
 

@@ -23,7 +23,7 @@ file_handler = RotatingFileHandler('logs/triggers.log')
 logger.addHandler(file_handler)
 
 
-def notify_admins(event: Booking|Correspondence) -> None:
+def notify_admins(event: Booking | Correspondence) -> None:
     """
     Benachrichtige alle Veranstaltungsverwalter über eine neue Anmeldung oder Anfrage
     eines Ausstellers
