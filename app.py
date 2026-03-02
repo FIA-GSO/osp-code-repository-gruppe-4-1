@@ -56,7 +56,7 @@ bzw. aller aktuellen Buchungen f. Admins.
         }
     return render_template(template, user=current_user, bookings=bookings)
 
-@app.route('/admin/booking/<int:booking_id>/<action>', methods=['GET'])
+@app.route('/admin/booking/<int:booking_id>/<action>', methods=['GET', 'POST'])
 @login_required
 def edit_booking(booking_id: int, action: str):
     if not current_user.is_admin:
@@ -95,6 +95,7 @@ def register():
     if request.method == 'POST':
         try:
             new_user = User(**request.form)
+            new_user.support_association = new_user.support_association == 'on'
             db.add(new_user)
             db.commit()
 

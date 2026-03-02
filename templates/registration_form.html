@@ -15,8 +15,13 @@
         </div>
 
         <div class="formGroup">
-            <label for="name">Branche</label>
-            <input type="text" name="name" id="industry" placeholder="Branche" />
+            <label for="industry">Branche</label>
+            <select name="industry" id="industry", class="admin-select">
+                <option value="" disabled selected>Branche wählen...</option>
+                <option value="it">IT & Software</option>
+                <option value="finance">Wirtschaft & Verwaltung</option>
+                <option value="craft">Handwerk</option>
+            </select>
         </div>
 
         <div class="formGroup">
