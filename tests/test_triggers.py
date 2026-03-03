@@ -1,5 +1,3 @@
-from unittest.mock import MagicMock
-
 import pytest
 
 from triggers import notify_admins, logger
@@ -11,8 +9,8 @@ TEST_BOOKING = Booking(user_id=1, event_year=2025, first=True, second=True, chai
 
 def test_notification(mocker):
     log = mocker.spy(logger, '_log')
-    info: MagicMock = mocker.spy(logger, 'info')
-    debug: MagicMock = mocker.spy(logger, 'debug')
+    info = mocker.spy(logger, 'info')
+    debug = mocker.spy(logger, 'debug')
 
     notify_admins(TEST_BOOKING)
 
