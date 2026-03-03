@@ -187,6 +187,16 @@
   border: 1px solid #ccc;
 }
 
+.btn-show-message {
+  align-self: flex-start;
+  margin-top: 5px;
+}
+
+.btn-submit-message {
+  margin-left: 5px;
+  padding: 0 20px
+}
+
 .btn-icon {
     text-decoration: none;
     font-size: 1.2rem;
@@ -364,6 +374,11 @@
   color: var(--status-rejected-text);
 }
 
+.message:not(:last-child) {
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 2px;
+  padding-bottom: 2px;
+}
 
 @media (min-width: 768px), print {
 
