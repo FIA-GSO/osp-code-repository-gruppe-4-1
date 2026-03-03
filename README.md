@@ -2,14 +2,16 @@
 
 Please notice that we generated all "base"-files so we have a starting point to implement our project
 
-## Docker Image erstellen
+## Docker Login für Github Container Registry
+Es muss ein Personal Access Token (PAT) mit den entsprechenden Berechtigungen für dieses Repository erstellt werden, um sich bei der Github Container Registry (ghcr.io) anzumelden.
 
+Sobald das PAT erstellt wurde, kann man sich mit dem folgenden Befehl bei der Registry anmelden:
 ```bash
-docker build -t marketplace-gso -f ./docker/Dockerfile .
+echo {{GITHUB_PAT}} | docker login ghcr.io -u {{GITHUB_USERNAME}} --password-stdin
 ```
 
 ## Docker Container starten im Hintergrund
 
 ```bash
-docker run -d -p 5000:5000 marketplace-gso
+docker run -d -p 5000:5000 ghcr.io/fia-gso/osp-code-repository-gruppe-4-1:main
 ```
