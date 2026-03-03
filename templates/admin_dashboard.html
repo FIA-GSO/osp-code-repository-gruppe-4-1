@@ -122,7 +122,23 @@
                       ❌
                   </button>
                 </form>
+                <button onclick="showNote({{ booking.id }})" class="btn-icon btn-reject" title="Notiz anzeigen/bearbeiten">
+                    📝
+                </button>
               </td>
+            </tr>
+            <tr id="note-{{ booking.id }}" class="note-row" style="display: none;">
+                <td colspan="6" aria-label="Notiz für {{ booking.user.name }}">
+                      <form action="/admin/booking/{{ booking.id }}/note" method="POST" style="display:inline;">
+                        <span class="info-label">Notiz für {{ booking.user.name }}</span>
+                        <div style="flex-direction: row; display: flex">
+                          <input type="text" name="note" value="{{ booking.admin_note if booking.admin_note else '' }}"/>
+                          <button type="submit" class="btn-small-outline btn-white-background btn-submit-message" title="Anfrage abschicken">
+                            Speichern
+                          </button>
+                        </div>
+                    </form>
+                </td>
             </tr>
             {% if booking.needs_response %}
             <tr>
@@ -133,7 +149,6 @@
                   {% endfor %}
                 </div>
                 <form action="/admin/booking/{{ booking.id }}/respond" method="POST" style="margin-top: 5px;">
-
                   <label>
                     Antwort senden
                     <div style="flex-direction: row; display: flex">
@@ -156,5 +171,6 @@
 </div>
 
 <script src="{{ url_for('static', filename='js/dashboard_export.js') }}"></script>
+<script src="{{ url_for('static', filename='js/admin_notes.js') }}"></script>
 
 {% endblock %}
