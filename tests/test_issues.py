@@ -22,7 +22,7 @@ def test_raise_issue(logged_in_client):
 
     booking = get_bookings(id=booking_id).pop()
     assert booking.needs_response
-    issue = booking.correspondence.pop()
+    issue = booking.correspondence[-1]
     assert not issue.from_admin
     assert issue.message == unsinn
 
