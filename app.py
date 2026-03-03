@@ -9,8 +9,8 @@ from flask_login import LoginManager, login_user, current_user, login_required
 from sqlalchemy.exc import NoResultFound
 
 from auth import Authenticated, generate_token
-from database.models import Token, User, Booking, BookingStatus, Correspondence
-from db import db, get_bookings
+from database.models import Token, User, Booking, BookingStatus
+from db import db, get_bookings, send_message, save_note
 from export import create_export
 from floor_plan import decorate_hall_plans, generate_floor_plan
 from input import validate_booking, transform_filters
@@ -63,22 +63,9 @@ bzw. aller aktuellen Buchungen f. Admins.
 def submit_request():
     this_year = datetime.now().year
     booking = get_bookings(user_id=current_user.id, event_year=this_year).pop()
-    message = send_message(booking.id, request.form.get('message'))
+    message = send_message(current_user, booking.id, request.form.get('message'))
     notify_admins(message)
     return redirect('/dashboard')
-
-
-def send_message(booking_id: int, message: str):
-    # ToDo: properly sanitize/validate!
-    data_object = Correspondence(
-        booking_id=booking_id,
-        from_admin=current_user.is_admin,
-        from_user=current_user.id,
-        message=message
-    )
-    db.add(data_object)
-    db.commit()
-    return data_object
 
 
 @app.route('/admin/booking/<int:booking_id>/<action>', methods=['GET', 'POST'])
@@ -92,11 +79,15 @@ def edit_booking(booking_id: int, action: str):
             {'status': BookingStatus.accepted if action == 'confirm' else BookingStatus.rejected}
         )
         db.commit()
-        return redirect(request.referrer) # ToDo: report success or failure
+        return redirect(request.referrer)  # ToDo: report success or failure
 
     if action == 'respond':
-        send_message(booking_id, request.form.get('response'))
-        return redirect(request.referrer) # ToDo: report success or failure
+        send_message(current_user, booking_id, request.form.get('response'))
+        return redirect(request.referrer)  # ToDo: report success or failure
+
+    if action == 'note':
+        save_note(booking_id, request.form.get('note'))
+        return redirect(request.referrer)  # ToDo: report success or failure
 
     return render_template(
         'error.html',
@@ -192,6 +183,7 @@ def export(export_type):
         response.headers["Content-Disposition"] = "attachment; filename=export.csv"
 
     return response
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login_page():
