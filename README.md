@@ -3,7 +3,9 @@
 Please notice that we generated all "base"-files so we have a starting point to implement our project
 
 ## Docker Login für Github Container Registry
+Es muss ein Personal Access Token (PAT) mit den entsprechenden Berechtigungen für dieses Repository erstellt werden, um sich bei der Github Container Registry (ghcr.io) anzumelden.
 
+Sobald das PAT erstellt wurde, kann man sich mit dem folgenden Befehl bei der Registry anmelden:
 ```bash
 echo {{GITHUB_PAT}} | docker login ghcr.io -u {{GITHUB_USERNAME}} --password-stdin
 ```
