@@ -124,6 +124,25 @@
                 </form>
               </td>
             </tr>
+            {% if booking.needs_response %}
+            <tr>
+              <td colspan="6" aria-label="Nachrichtenverlauf">
+                {% for message in booking.correspondence %}
+                [{{ message.timestamp }}] {{ message.sender.contact_person }} ({{ message.sender.name }}): {{ message.message }}
+                <br>
+                {% endfor %}
+                <form action="/admin/booking/{{ booking.id }}/respond" method="POST">
+                  <label>
+                    Ihre Antwort:
+                    <input type="text" name="response" />
+                  </label>
+                  <button type="submit" class="btn-icon btn-confirm" title="Antwort abschicken">
+                      ➤
+                  </button>
+                </form>
+              </td>
+            </tr>
+            {% endif %}
           {% endfor %}
           </tbody>
         </table>

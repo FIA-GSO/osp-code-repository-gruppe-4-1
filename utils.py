@@ -1,4 +1,6 @@
-""""""
+"""
+Allgemeine Helper-Datentypen zu Darstellungszwecken.
+"""
 
 from dataclasses import dataclass
 

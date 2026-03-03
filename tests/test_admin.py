@@ -57,6 +57,15 @@ def test_admin_reject_registration(admin_client):
     reset_booking()
 
 
+def test_admin_respond_to_issue(admin_client):
+    booking = get_booking()
+    num_msg = len(booking.correspondence)
+
+    admin_client.post(f'/admin/booking/{booking_id}/respond', data={ 'response': 'Geh weg, wir kaufen nix!' })
+
+    assert len(get_booking().correspondence) == num_msg + 1
+
+
 ### TESTS (EXPORTS) ###
 
 

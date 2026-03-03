@@ -9,7 +9,7 @@ from flask_login import LoginManager, login_user, current_user, login_required
 from sqlalchemy.exc import NoResultFound
 
 from auth import Authenticated, generate_token
-from database.models import Token, User, Booking, BookingStatus
+from database.models import Token, User, Booking, BookingStatus, Correspondence
 from db import db, get_bookings
 from export import create_export
 from floor_plan import decorate_hall_plans, generate_floor_plan
@@ -56,6 +56,31 @@ bzw. aller aktuellen Buchungen f. Admins.
         }
     return render_template(template, user=current_user, bookings=bookings)
 
+
+@app.route('/marketplace/message', methods=['POST'])
+@app.route('/dashboard/message', methods=['POST'])
+@login_required
+def submit_request():
+    this_year = datetime.now().year
+    booking = get_bookings(user_id=current_user.id, event_year=this_year).pop()
+    message = send_message(booking.id, request.form.get('message'))
+    notify_admins(message)
+    return redirect('/dashboard')
+
+
+def send_message(booking_id: int, message: str):
+    # ToDo: properly sanitize/validate!
+    data_object = Correspondence(
+        booking_id=booking_id,
+        from_admin=current_user.is_admin,
+        from_user=current_user.id,
+        message=message
+    )
+    db.add(data_object)
+    db.commit()
+    return data_object
+
+
 @app.route('/admin/booking/<int:booking_id>/<action>', methods=['GET', 'POST'])
 @login_required
 def edit_booking(booking_id: int, action: str):
@@ -67,6 +92,10 @@ def edit_booking(booking_id: int, action: str):
             {'status': BookingStatus.accepted if action == 'confirm' else BookingStatus.rejected}
         )
         db.commit()
+        return redirect(request.referrer) # ToDo: report success or failure
+
+    if action == 'respond':
+        send_message(booking_id, request.form.get('response'))
         return redirect(request.referrer) # ToDo: report success or failure
 
     return render_template(
