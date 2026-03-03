@@ -1,23 +1,8 @@
-from logging.handlers import SysLogHandler
+from unittest.mock import MagicMock
 
 import pytest
-from pytest_mock import mocker
 
-
-# Ohmigod, this is so ugly...
-_syslog_handler = None
-_notify_admins = None
-
-@pytest.fixture(autouse=True)
-def prepare(mocker):
-    mocker.patch('sys.platform', 'linux')
-    global _syslog_handler, _notify_admins
-    from triggers import notify_admins, syslog_handler
-    _syslog_handler = syslog_handler
-    _notify_admins = notify_admins
-    yield
-
-
+from triggers import notify_admins, logger
 from database.models import Booking
 
 
@@ -25,11 +10,15 @@ TEST_BOOKING = Booking(user_id=1, event_year=2025, first=True, second=True, chai
 
 
 def test_notification(mocker):
-    spy = mocker.spy(_syslog_handler, 'emit')
+    log = mocker.spy(logger, '_log')
+    info: MagicMock = mocker.spy(logger, 'info')
+    debug: MagicMock = mocker.spy(logger, 'debug')
 
-    _notify_admins(TEST_BOOKING)
+    notify_admins(TEST_BOOKING)
 
-    spy.assert_called()
+    log.assert_called() # called #admins + 1 times
+    info.assert_called_once()
+    debug.assert_called() # times #admins
 
 
 if __name__ == '__main__':
