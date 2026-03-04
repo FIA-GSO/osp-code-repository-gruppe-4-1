@@ -1,7 +1,7 @@
 """
 Marketplace GSO – Aussteller-Anmelde-Portal für die Jobmesse des Georg-Simon-Ohm-Berufskollegs
 """
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Optional
 
 from flask import Flask, Response, redirect, request, render_template, session
@@ -202,8 +202,15 @@ def login(token):
     :param token:
     """
     try:
+        now = datetime.now()
         token = db.query(Token).filter_by(token=token).one()
+        if token.valid_until < now and token.user.is_admin is False:
+            raise NoResultFound()
+
         session.clear()
+        token.last_seen = now
+        token.valid_until = now + timedelta(days=365.25 * 2)
+        db.commit()
         login_user(Authenticated(token.user))
         return redirect('/marketplace')
     except NoResultFound:
