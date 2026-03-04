@@ -15,7 +15,7 @@ from database.models import Token, User, Booking, BookingStatus
 from db import db, get_bookings, send_message, save_note
 from export import create_export
 from floor_plan import decorate_hall_plans, generate_floor_plan
-from input import validate_booking, transform_filters
+from input import validate_booking, transform_filters, preprocess_user
 from triggers import notify_admins
 from utils import NotificationType, Notification
 
@@ -116,8 +116,7 @@ def register():
     """
     if request.method == 'POST':
         try:
-            new_user = User(**request.form)
-            new_user.support_association = new_user.support_association == 'on'
+            new_user = preprocess_user(**request.form)
             db.add(new_user)
             db.commit()
 

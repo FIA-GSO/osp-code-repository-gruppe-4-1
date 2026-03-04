@@ -1,6 +1,5 @@
 import pytest
 
-from database.models import BookingStatus
 from db import get_bookings
 from tests import test_init
 
