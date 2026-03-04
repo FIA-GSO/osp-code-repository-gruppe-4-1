@@ -1,11 +1,13 @@
 """
 Marketplace GSO – Aussteller-Anmelde-Portal für die Jobmesse des Georg-Simon-Ohm-Berufskollegs
 """
+import os
 from datetime import datetime, timedelta
 from typing import Optional
 
 from flask import Flask, Response, redirect, request, render_template, session
 from flask_login import LoginManager, login_user, current_user, login_required
+from gevent.pywsgi import WSGIServer
 from sqlalchemy.exc import NoResultFound
 
 from auth import Authenticated, generate_token
@@ -243,4 +245,8 @@ def load_user(user_id) -> Optional[Authenticated[User]]:
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    if os.getenv('FLASK_MODE', default='development') == 'production':
+        http_server = WSGIServer(('0.0.0.0', 5000), app)
+        http_server.serve_forever()
+    else:
+        app.run(debug=True)
