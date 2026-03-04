@@ -1,7 +1,6 @@
 """
 Marketplace GSO – Aussteller-Anmelde-Portal für die Jobmesse des Georg-Simon-Ohm-Berufskollegs
 """
-from datetime import datetime
 from datetime import datetime, timedelta
 from typing import Optional
 
