@@ -1,6 +1,7 @@
 """
 Marketplace GSO – Aussteller-Anmelde-Portal für die Jobmesse des Georg-Simon-Ohm-Berufskollegs
 """
+import os
 from datetime import datetime, timedelta
 from typing import Optional
 
@@ -13,6 +14,7 @@ from database.models import Token, User, Booking, BookingStatus
 from db import db, get_bookings, send_message, save_note
 from export import create_export
 from floor_plan import decorate_hall_plans, generate_floor_plan
+from gevent.pywsgi import WSGIServer
 from input import validate_booking, transform_filters
 from triggers import notify_admins
 from utils import NotificationType, Notification
@@ -243,4 +245,8 @@ def load_user(user_id) -> Optional[Authenticated[User]]:
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    if os.getenv('FLASK_MODE', default='development') == 'production':
+        http_server = WSGIServer(('0.0.0.0', 5000), app)
+        http_server.serve_forever()
+    else:
+        app.run(debug=True)
