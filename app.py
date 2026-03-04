@@ -7,6 +7,7 @@ from typing import Optional
 
 from flask import Flask, Response, redirect, request, render_template, session
 from flask_login import LoginManager, login_user, current_user, login_required
+from gevent.pywsgi import WSGIServer
 from sqlalchemy.exc import NoResultFound
 
 from auth import Authenticated, generate_token
@@ -14,7 +15,6 @@ from database.models import Token, User, Booking, BookingStatus
 from db import db, get_bookings, send_message, save_note
 from export import create_export
 from floor_plan import decorate_hall_plans, generate_floor_plan
-from gevent.pywsgi import WSGIServer
 from input import validate_booking, transform_filters
 from triggers import notify_admins
 from utils import NotificationType, Notification
