@@ -92,8 +92,7 @@ def edit_booking(booking_id: int, action: str):
         save_note(booking_id, request.form.get('note'))
         return redirect(request.referrer)  # ToDo: report success or failure
 
-    push_notification(f'Nicht unterstützte Aktion: {action}', NotificationType.error)
-    return redirect(request.referrer), 400
+    return fail_with(f'Nicht unterstützte Aktion: {action}'), 400
 
 
 @app.route('/admin/floorplan', methods=['GET'])
@@ -123,14 +122,13 @@ def register():
             db.add(new_token)
             db.commit()
 
-            session['notifications'] = [Notification(NotificationType.info, f'Ihr Token ist {new_token.token}')]
+            push_notification(f'Ihr Token ist {new_token.token}')
             login_user(Authenticated(new_user))
             return redirect('/register')
 
         except Exception as e:
             db.rollback()
-            push_notification(f'Fehler beim Erstellen des Kontos: {e}', NotificationType.error)
-            return redirect(request.referrer)
+            return fail_with(f'Fehler beim Erstellen des Kontos: {e}'), 500
 
     return render_template('registration_form.html')
 
@@ -155,14 +153,16 @@ def register_for_event():
         return redirect('/dashboard')
 
     except Exception as e:
-        return render_template('error.html', error=e)
+        return fail_with(f'Ein Fehler ist aufgetreten: {e}'), 500
 
 
 @app.route('/confirm-receipt/<int:notif_index>')
-@login_required
 def mark_notification_as_read(notif_index: int):
     # ToDo: do this right. not like this. disgusting.
-    session['notifications'].remove(notif_index)
+    notification_list = [] if session.get('notifications') is None else session['notifications']
+    if notif_index < len(notification_list):
+        notification_list.pop(notif_index)
+    session['notifications'] = notification_list[:]
     return redirect(request.referrer)
 
 
@@ -175,13 +175,10 @@ def export(export_type):
     :param export_type: csv oder pdf
     """
     if not current_user.is_admin:
-        return render_template('error.html', error='Unauthorized'), 403
+        return fail_with(f'Sie haben keine Berechtigung, auf diese Funktion zuzugreifen.'), 403
 
     if export_type not in ['csv']:
-        return render_template(
-            'error.html',
-            error=f'Export-Format {export_type} ist noch nicht implementiert'
-        ), 501
+        return fail_with(f'Export-Format {export_type} ist noch nicht implementiert.'), 501
 
     response = None
 
@@ -222,10 +219,7 @@ def login(token):
         login_user(Authenticated(token.user))
         return redirect('/marketplace')
     except NoResultFound:
-        return render_template(
-            'error.html',
-            error='Nope, das war wohl nichts (ungültiges Token)'
-        ), 403
+        return fail_with(f'Zugang verweigert: Ihr Token ist ungültig.') #, 403
 
 
 @app.route('/logout')
@@ -256,9 +250,9 @@ def inject_constants():
 
 
 def push_notification(message: str, type: str = NotificationType.info):
-    if 'notifications' not in session:
-        session['notifications'] = []
-    session['notifications'].append(Notification(type=type, message=message))
+    notification_list = [] if session.get('notifications') is None else session['notifications']
+    new = Notification(type=type, message=message)
+    session['notifications'] = [new, *notification_list]
 
 
 def fail_with(error: str):

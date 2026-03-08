@@ -14,8 +14,10 @@
         </div>
     </div>
 
-    {% for notif in session['notifications'] %}
-      <section class="dash-card">
+    {% if 'notifications' in session and session['notifications'] %}
+    <div class="dashboard-container">
+      <section class="dash-card notification-container">
+        {% for notif in session['notifications'] %}
         <div class="notification notification-{{ notif.type }}">
             {{ notif.message }}
             <form action="/confirm-receipt/{{ loop.index0 }}" method="GET">
@@ -24,8 +26,10 @@
                 </button>
             </form>
         </div>
+        {% endfor %}
       </section>
-    {% endfor %}
+    </div>
+    {% endif %}
 
     <div class="mainContainer">
         {% block sub_content %}
