@@ -17,6 +17,3 @@ omit = ["tests/*","database/*"]
 [tool.pylint.main]
 fail-under = 8.6
 ignore-paths = ["tests|tests", "database|database"]
-recursive = true
-source-roots = ["."]
-
