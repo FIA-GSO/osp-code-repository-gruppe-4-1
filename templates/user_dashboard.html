@@ -1,26 +1,16 @@
-{% extends "baseLayout.html" %}
+{% extends "marketplace.html" %}
 
 {% block title %}Georg-Simon-Ohm-Berufskolleg Köln – Marketplace: Dashboard{% endblock %}
 
-{% block content %}
-{% set industry_names = {
-    'it': 'IT & Software',
-    'finance': 'Wirtschaft & Verwaltung',
-    'craft': 'Handwerk'
-} %}
-
-<div class="full-width-banner">
-  <div class="banner-inner">
-    <h1>MARKETPLACE</h1>
-    <form action="/logout"><button class="btn-small-outline btn-white-background">Logout</button></form>
-  </div>
-</div>
+{% block sub_content %}
 
 <div class="dashboard-container">
 
   {% if not user.support_association %}
   <section class="dash-card">
-    <div>Sie sind noch kein Mitglied im Förderverein, <a href="static/files/anmeldeforumal-Förderverein.pdf" download="Anmeldeformular-Foerderverein.pdf" type="application/pdf" class="download-link">hier</a> das Anmeldeformular herunterladen</div>
+    <div>
+      Sie sind noch kein Mitglied im Förderverein, <a href="static/files/anmeldeforumal-Förderverein.pdf" download="Anmeldeformular-Foerderverein.pdf" type="application/pdf" class="download-link">hier</a> können Sie das Anmeldeformular herunterladen.
+    </div>
   </section>
   {% endif %}
 
@@ -30,7 +20,7 @@
         <h4 class="welcome-sub">Branche: {{ industry_names.get(user.industry, user.industry) }}</h4>
     {% endif %}
     <p class="welcome-sub">Willkommen in Ihrem Partner-Dashboard</p>
-</div>
+  </div>
 
   <div class="dashboard-cards">
 

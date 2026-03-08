@@ -11,6 +11,7 @@ from gevent.pywsgi import WSGIServer
 from sqlalchemy.exc import NoResultFound
 
 from auth import Authenticated, generate_token
+from constants import industry_names
 from database.models import Token, User, Booking, BookingStatus
 from db import db, get_bookings, send_message, save_note
 from export import create_export
@@ -91,10 +92,8 @@ def edit_booking(booking_id: int, action: str):
         save_note(booking_id, request.form.get('note'))
         return redirect(request.referrer)  # ToDo: report success or failure
 
-    return render_template(
-        'error.html',
-        error=f'Unsupported action: {action}'
-    ), 400
+    push_notification(f'Nicht unterstützte Aktion: {action}', NotificationType.error)
+    return redirect(request.referrer), 400
 
 
 @app.route('/admin/floorplan', methods=['GET'])
@@ -129,9 +128,9 @@ def register():
             return redirect('/register')
 
         except Exception as e:
-
             db.rollback()
-            return render_template('error.html', error=e)
+            push_notification(f'Fehler beim Erstellen des Kontos: {e}', NotificationType.error)
+            return redirect(request.referrer)
 
     return render_template('registration_form.html')
 
@@ -157,6 +156,14 @@ def register_for_event():
 
     except Exception as e:
         return render_template('error.html', error=e)
+
+
+@app.route('/confirm-receipt/<int:notif_index>')
+@login_required
+def mark_notification_as_read(notif_index: int):
+    # ToDo: do this right. not like this. disgusting.
+    session['notifications'].remove(notif_index)
+    return redirect(request.referrer)
 
 
 @app.route('/marketplace/export/<export_type>', methods=['POST'])
@@ -241,6 +248,22 @@ def load_user(user_id) -> Optional[Authenticated[User]]:
     except Exception:
         print(f'[WARN] user id not found: {user_id}')
         return None
+
+
+@app.context_processor
+def inject_constants():
+    return { 'industry_names': industry_names }
+
+
+def push_notification(message: str, type: str = NotificationType.info):
+    if 'notifications' not in session:
+        session['notifications'] = []
+    session['notifications'].append(Notification(type=type, message=message))
+
+
+def fail_with(error: str):
+    push_notification(error, NotificationType.error)
+    return redirect(request.referrer)
 
 
 if __name__ == '__main__':
