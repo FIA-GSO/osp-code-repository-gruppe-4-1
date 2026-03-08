@@ -77,22 +77,27 @@ def edit_booking(booking_id: int, action: str):
     if not current_user.is_admin:
         return login_manager.unauthorized()
 
-    if action in ['confirm', 'reject']:
-        db.query(Booking).filter_by(id=booking_id).update(
-            {'status': BookingStatus.accepted if action == 'confirm' else BookingStatus.rejected}
-        )
-        db.commit()
-        return redirect(request.referrer)  # ToDo: report success or failure
+    try:
+        match action:
+            case 'confirm'|'reject':
+                db.query(Booking).filter_by(id=booking_id).update(
+                    {'status': BookingStatus.accepted if action == 'confirm' else BookingStatus.rejected}
+                )
+                db.commit()
 
-    if action == 'respond':
-        send_message(current_user, booking_id, request.form.get('response'))
-        return redirect(request.referrer)  # ToDo: report success or failure
+            case 'respond':
+                send_message(current_user, booking_id, request.form.get('response'))
 
-    if action == 'note':
-        save_note(booking_id, request.form.get('note'))
-        return redirect(request.referrer)  # ToDo: report success or failure
+            case 'note':
+                save_note(booking_id, request.form.get('note'))
 
-    return fail_with(f'Nicht unterstützte Aktion: {action}'), 400
+            case _:
+                return fail_with(f'Nicht unterstützte Aktion: {action}') # , 400
+
+        return redirect(request.referrer)
+
+    except Exception as e:
+        return fail_with(f'Ein Fehler ist aufgetreten: {e}')
 
 
 @app.route('/admin/floorplan', methods=['GET'])
@@ -175,10 +180,10 @@ def export(export_type):
     :param export_type: csv oder pdf
     """
     if not current_user.is_admin:
-        return fail_with(f'Sie haben keine Berechtigung, auf diese Funktion zuzugreifen.'), 403
+        return fail_with('Sie haben keine Berechtigung, auf diese Funktion zuzugreifen.') # , 403
 
     if export_type not in ['csv']:
-        return fail_with(f'Export-Format {export_type} ist noch nicht implementiert.'), 501
+        return fail_with(f'Export-Format {export_type} ist noch nicht implementiert.') # , 501
 
     response = None
 
@@ -219,7 +224,7 @@ def login(token):
         login_user(Authenticated(token.user))
         return redirect('/marketplace')
     except NoResultFound:
-        return fail_with(f'Zugang verweigert: Ihr Token ist ungültig.') #, 403
+        return fail_with('Zugang verweigert: Ihr Token ist ungültig.') #, 403
 
 
 @app.route('/logout')
