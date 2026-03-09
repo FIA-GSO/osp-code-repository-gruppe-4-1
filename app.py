@@ -180,7 +180,7 @@ def export(export_type):
     :param export_type: csv oder pdf
     """
     if not current_user.is_admin:
-        return fail_with('Sie haben keine Berechtigung, auf diese Funktion zuzugreifen.') # , 403
+        return fail_with('Sie haben keine Berechtigung, auf diese Funktion zuzugreifen.')
 
     if export_type not in ['csv']:
         return fail_with(f'Export-Format {export_type} ist noch nicht implementiert.') # , 501
@@ -262,7 +262,7 @@ def push_notification(message: str, type: str = NotificationType.info):
 
 def fail_with(error: str):
     push_notification(error, NotificationType.error)
-    return redirect(request.referrer)
+    return redirect(request.referrer if request.referrer is not None else '/marketplace')
 
 
 if __name__ == '__main__':
