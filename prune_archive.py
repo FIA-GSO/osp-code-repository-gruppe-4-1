@@ -7,6 +7,7 @@ from sqlalchemy import and_
 
 from database.models import Token, User, Booking
 from db import db
+from log import logger
 
 
 def prune_archive():
@@ -22,6 +23,9 @@ def prune_archive():
         active_user_count = db.query(Token).filter(same_user_filter).count()
 
         if active_user_count == 0:
+            message = f"Pruning user '{token.user.name}' (ID {token.user_id}) due to inactivity since {token.last_seen}"
+            logger.info(message)
+
             db.query(Token).filter(Token.user_id == token.user_id).delete()
             db.query(Booking).filter(Booking.user_id == token.user_id).delete()
             db.query(User).filter(User.id == token.user_id).delete()
