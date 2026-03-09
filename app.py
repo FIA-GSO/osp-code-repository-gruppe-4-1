@@ -133,7 +133,7 @@ def register():
 
         except Exception as e:
             db.rollback()
-            return fail_with(f'Fehler beim Erstellen des Kontos: {e}'), 500
+            return fail_with(f'Fehler beim Erstellen des Kontos: {e}')
 
     return render_template('registration_form.html')
 
