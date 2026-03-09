@@ -37,7 +37,8 @@ def preprocess_user(**fields) -> User:
     :raises: ConstraintViolation
     """
     # ToDo: validate properly
-    del fields['dsgvo']
+    if 'dsgvo' in fields:
+        del fields['dsgvo']
     fields['support_association'] = fields.get('support_association') == 'on'
 
     return User(**fields)

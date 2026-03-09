@@ -9,7 +9,7 @@
   {% if not user.support_association %}
   <section class="dash-card">
     <div>
-      Sie sind noch kein Mitglied im Förderverein, <a href="static/files/anmeldeforumal-Förderverein.pdf" download="Anmeldeformular-Foerderverein.pdf" type="application/pdf" class="download-link">hier</a> können Sie das Anmeldeformular herunterladen.
+      Sie sind noch kein Mitglied im Förderverein, <a href="{{ url_for('static', filename='files/anmeldeforumal-Förderverein.pdf') }}" download="Anmeldeformular-Foerderverein.pdf" type="application/pdf" class="download-link">hier</a> können Sie das Anmeldeformular herunterladen.
     </div>
   </section>
   {% endif %}

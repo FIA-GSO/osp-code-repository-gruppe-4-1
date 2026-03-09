@@ -75,7 +75,7 @@ def test_register_for_event_not_logged_in(client):
 
 def test_register_for_event_logged_in(client):
     _ = client.get('/login/166202eb-419c-4cef-af14-90b002347887')
-    response = client.post('/register', data=dict(tables_needed=1, chairs_needed=2))
+    response = client.post('/register', data=dict(tables_needed=1, chairs_needed=2, first_day='yes'))
     assert is_ok(response)
 
 
