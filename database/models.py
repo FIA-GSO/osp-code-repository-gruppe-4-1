@@ -53,7 +53,7 @@ class Booking(Schema):
     id = mapped_column(Integer, primary_key=True)
 
     user_id = mapped_column(Integer, ForeignKey('users.id'), nullable=False)
-    event_year = mapped_column(Integer, nullable=False, default=datetime.now().year)
+    event_year = mapped_column(Integer, nullable=False, default=lambda: datetime.now().year)
     first = mapped_column(Boolean, nullable=False, default=False)
     second = mapped_column(Boolean, nullable=False, default=False)
     status = mapped_column(Enum(BookingStatus), nullable=False, default=BookingStatus.pending)
