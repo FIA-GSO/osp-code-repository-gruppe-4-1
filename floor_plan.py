@@ -13,6 +13,7 @@ from database.models import Booking
 class FloorPlan:
     days: list[Day]
 
+
 @dataclass
 class Day:
     name: str
@@ -27,6 +28,7 @@ class Day:
 class HallPlan:
     hall: Hall
     bookings: list[Booking]
+
 
 @dataclass
 class Hall:
@@ -62,9 +64,11 @@ def generate_floor_plan(registrations: list[Booking], day_filters: dict = {}) ->
 
     return result
 
+
 def decorate_hall_plans(floor_plan: FloorPlan) -> FloorPlan:
     for day in floor_plan.days:
         for hall in day.hall_plans:
             hall.chairs = sum(b.chairs_needed for b in hall.bookings)
             hall.tables = sum(b.tables_needed for b in hall.bookings)
+            hall.sockets = sum(b.sockets_needed for b in hall.bookings)
     return floor_plan

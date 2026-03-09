@@ -65,6 +65,7 @@
               <th>Branche</th>
               <th>Benötigte Stühle</th>
               <th>Benötigte Tische</th>
+              <th>Benötigte Steckdosen</th>
             </tr>
           </thead>
           <tbody>
@@ -79,6 +80,8 @@
               <td data-label="Benötigte Stühle">{{ booking.chairs_needed if booking.chairs_needed else '0' }}</td>
 
               <td data-label="Benötigte Tische">{{ booking.tables_needed if booking.tables_needed else '0' }}</td>
+
+              <td data-label="Benötigte Steckdosen">{{ booking.sockets_needed if booking.sockets_needed else '0' }}</td>
             </tr>
             {% endfor %}
             <tr style="border-top: 3px solid #ccc;">
@@ -87,6 +90,7 @@
               <td data-label="Branche"></td>
               <td data-label="Benötigte Stühle">{{ hall_plan.chairs }}</td>
               <td data-label="Benötigte Tische">{{ hall_plan.tables }}</td>
+              <td data-label="Benötigte Steckdosen">{{ hall_plan.sockets }}</td>
           </tbody>
         </table>
       </div>
