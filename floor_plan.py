@@ -13,18 +13,22 @@ from database.models import Booking
 class FloorPlan:
     days: list[Day]
 
+
 @dataclass
 class Day:
     name: str
-    halls: list[HallPlan]
+    hall_plans: list[HallPlan]
+
     def __init__(self, name: str):
         self.name = name
-        self.halls = []
+        self.hall_plans = []
+
 
 @dataclass
 class HallPlan:
     hall: Hall
     bookings: list[Booking]
+
 
 @dataclass
 class Hall:
@@ -55,14 +59,16 @@ def generate_floor_plan(registrations: list[Booking], day_filters: dict = {}) ->
             hall = HallPlan(available_halls.pop(0), [])
             while len(hall.bookings) < hall.hall.size and len(tba_for_day) > 0:
                 hall.bookings.append(tba_for_day.pop(0))
-            day_plan.halls.append(hall)
+            day_plan.hall_plans.append(hall)
         result.days.append(day_plan)
 
     return result
 
+
 def decorate_hall_plans(floor_plan: FloorPlan) -> FloorPlan:
     for day in floor_plan.days:
-        for hall in day.halls:
+        for hall in day.hall_plans:
             hall.chairs = sum(b.chairs_needed for b in hall.bookings)
             hall.tables = sum(b.tables_needed for b in hall.bookings)
+            hall.sockets = sum(b.sockets_needed for b in hall.bookings)
     return floor_plan

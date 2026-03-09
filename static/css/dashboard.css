@@ -468,6 +468,7 @@
 @media print {
   .admin-table {
     min-width: auto !important;
+    font-size: 0.7rem;
   }
 
   .admin-table tbody tr:not(:last-child) {
