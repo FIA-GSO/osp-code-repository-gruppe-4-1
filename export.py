@@ -22,9 +22,6 @@ def export_floor_plan(form_data):
 
     for day in floor_plan.days:
         csv_string += f"{day.name}{os.linesep}"
-        for hall in day.halls:
-            csv_string += f"{hall.hall.name} ({len(hall.bookings)}){os.linesep}"
-            csv_string += (f"Firma;Ansprechpartner;Branche;Benötigte Stühle;Benötigte Tische"
         for hall_plan in day.hall_plans:
             csv_string += f"{hall_plan.hall.name} ({len(hall_plan.bookings)}){os.linesep}"
                         f"{os.linesep}")
