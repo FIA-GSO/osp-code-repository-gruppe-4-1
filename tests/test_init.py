@@ -44,8 +44,8 @@ def test_login_happy_user_follow2dashboard(client):
 
 
 def test_login_sad(client):
-    response = client.get('/login/expired-or-invalid-token')
-    assert response.status == '403 FORBIDDEN'
+    response = client.get('/login/expired-or-invalid-token', follow_redirects=True)
+    assert 'notification-error' in response.text
 
 
 def test_login_stupid(client):
@@ -75,7 +75,7 @@ def test_register_for_event_not_logged_in(client):
 
 def test_register_for_event_logged_in(client):
     _ = client.get('/login/166202eb-419c-4cef-af14-90b002347887')
-    response = client.post('/register', data=dict(tables_needed=1, chairs_needed=2))
+    response = client.post('/register', data=dict(tables_needed=1, chairs_needed=2, first_day='yes'))
     assert is_ok(response)
 
 
@@ -107,18 +107,16 @@ def test_invalid_user_bogus_id_none():
 def test_export_unauthorized_user(client):
     """normal user is not authorized to export data"""
     client.get('/login/166202eb-419c-4cef-af14-90b002347887')
-    response = client.post('/marketplace/export/csv')
+    response = client.post('/marketplace/export/csv', follow_redirects=True)
 
-    assert response.status_code == 403
-    assert 'Unauthorized' in response.text
+    assert 'Berechtigung' in response.text and 'notification-error' in response.text
 
 
 def test_export_unsupported_format_admin(client):
     """admin tries to export in an unsupported format (pdf)"""
     client.get('/login/eb1696dd-a9b5-4527-8768-71b91151aa19')
-    response = client.post('/marketplace/export/pdf')
+    response = client.post('/marketplace/export/pdf', follow_redirects=True)
 
-    assert response.status_code == 501
     assert 'noch nicht implementiert' in response.text
 
 

@@ -1,3 +1,8 @@
+"""
+Erstellung eines Hallenbelegungsplans, gegliedert nach Veranstaltungstagen, so dass bei
+zwei Veranstaltungstagen keine Teilnehmer bei Schließung einer Halle umziehen müssen.
+"""
+
 from calendar import Day
 from dataclasses import dataclass
 
@@ -58,6 +63,6 @@ def generate_floor_plan(registrations: list[Booking], day_filters: dict = {}) ->
 def decorate_hall_plans(floor_plan: FloorPlan) -> FloorPlan:
     for day in floor_plan.days:
         for hall in day.halls:
-            hall.chairs = sum([b.chairs_needed for b in hall.bookings])
-            hall.tables = sum([b.tables_needed for b in hall.bookings])
+            hall.chairs = sum(b.chairs_needed for b in hall.bookings)
+            hall.tables = sum(b.tables_needed for b in hall.bookings)
     return floor_plan

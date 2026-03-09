@@ -1,4 +1,6 @@
-
+"""
+Exportfunktionen für Hallenbelegungspläne und Anmeldungslisten
+"""
 from datetime import datetime
 import os
 

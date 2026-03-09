@@ -3,11 +3,37 @@
 {% block title %}Georg-Simon-Ohm-Berufskolleg Köln - Marketplace{% endblock %}
 
 {% block content %}
-  <div class="headlineBox headline">Marketplace</div>
+    <div class="full-width-banner">
+        <div class="banner-inner">
+            <h1>{% block page_title %}Marketplace{% endblock %}</h1>
+            {% if current_user.is_authenticated %}
+            <form action="/logout">
+                <button class="btn-small-outline btn-white-background">Logout</button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
 
-  <div class="mainContainer">
-     {% block sub_content %}
-     {% endblock %}
-  </div>
+    {% if 'notifications' in session and session['notifications'] %}
+    <div class="dashboard-container">
+      <section class="dash-card notification-container">
+        {% for notif in session['notifications'] %}
+        <div class="notification notification-{{ notif.type }}">
+            {{ notif.message }}
+            <form action="/confirm-receipt/{{ loop.index0 }}" method="GET">
+                <button type="submit" class="btn-small-outline btn-white-background btn-submit-message" title="Benachrichtigung quittieren">
+                    ✓
+                </button>
+            </form>
+        </div>
+        {% endfor %}
+      </section>
+    </div>
+    {% endif %}
+
+    <div class="mainContainer">
+        {% block sub_content %}
+        {% endblock %}
+    </div>
 {% endblock %}
 

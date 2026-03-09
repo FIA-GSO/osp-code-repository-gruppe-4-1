@@ -11,6 +11,7 @@ from gevent.pywsgi import WSGIServer
 from sqlalchemy.exc import NoResultFound
 
 from auth import Authenticated, generate_token
+from constants import industry_names
 from database.models import Token, User, Booking, BookingStatus
 from db import db, get_bookings, send_message, save_note
 from export import create_export
@@ -76,25 +77,27 @@ def edit_booking(booking_id: int, action: str):
     if not current_user.is_admin:
         return login_manager.unauthorized()
 
-    if action in ['confirm', 'reject']:
-        db.query(Booking).filter_by(id=booking_id).update(
-            {'status': BookingStatus.accepted if action == 'confirm' else BookingStatus.rejected}
-        )
-        db.commit()
-        return redirect(request.referrer)  # ToDo: report success or failure
+    try:
+        match action:
+            case 'confirm'|'reject':
+                db.query(Booking).filter_by(id=booking_id).update(
+                    {'status': BookingStatus.accepted if action == 'confirm' else BookingStatus.rejected}
+                )
+                db.commit()
 
-    if action == 'respond':
-        send_message(current_user, booking_id, request.form.get('response'))
-        return redirect(request.referrer)  # ToDo: report success or failure
+            case 'respond':
+                send_message(current_user, booking_id, request.form.get('response'))
 
-    if action == 'note':
-        save_note(booking_id, request.form.get('note'))
-        return redirect(request.referrer)  # ToDo: report success or failure
+            case 'note':
+                save_note(booking_id, request.form.get('note'))
 
-    return render_template(
-        'error.html',
-        error=f'Unsupported action: {action}'
-    ), 400
+            case _:
+                return fail_with(f'Nicht unterstützte Aktion: {action}') # , 400
+
+        return redirect(request.referrer)
+
+    except Exception as e:
+        return fail_with(f'Ein Fehler ist aufgetreten: {e}')
 
 
 @app.route('/admin/floorplan', methods=['GET'])
@@ -124,14 +127,13 @@ def register():
             db.add(new_token)
             db.commit()
 
-            session['notifications'] = [Notification(NotificationType.info, f'Ihr Token ist {new_token.token}')]
+            push_notification(f'Ihr Token ist {new_token.token}')
             login_user(Authenticated(new_user))
             return redirect('/register')
 
         except Exception as e:
-
             db.rollback()
-            return render_template('error.html', error=e)
+            return fail_with(f'Fehler beim Erstellen des Kontos: {e}'), 500
 
     return render_template('registration_form.html')
 
@@ -156,7 +158,17 @@ def register_for_event():
         return redirect('/dashboard')
 
     except Exception as e:
-        return render_template('error.html', error=e)
+        return fail_with(f'Ein Fehler ist aufgetreten: {e}'), 500
+
+
+@app.route('/confirm-receipt/<int:notif_index>')
+def mark_notification_as_read(notif_index: int):
+    # ToDo: do this right. not like this. disgusting.
+    notification_list = [] if session.get('notifications') is None else session['notifications']
+    if notif_index < len(notification_list):
+        notification_list.pop(notif_index)
+    session['notifications'] = notification_list[:]
+    return redirect(request.referrer)
 
 
 @app.route('/marketplace/export/<export_type>', methods=['POST'])
@@ -168,13 +180,10 @@ def export(export_type):
     :param export_type: csv oder pdf
     """
     if not current_user.is_admin:
-        return render_template('error.html', error='Unauthorized'), 403
+        return fail_with('Sie haben keine Berechtigung, auf diese Funktion zuzugreifen.')
 
     if export_type not in ['csv']:
-        return render_template(
-            'error.html',
-            error=f'Export-Format {export_type} ist noch nicht implementiert'
-        ), 501
+        return fail_with(f'Export-Format {export_type} ist noch nicht implementiert.') # , 501
 
     response = None
 
@@ -215,10 +224,7 @@ def login(token):
         login_user(Authenticated(token.user))
         return redirect('/marketplace')
     except NoResultFound:
-        return render_template(
-            'error.html',
-            error='Nope, das war wohl nichts (ungültiges Token)'
-        ), 403
+        return fail_with('Zugang verweigert: Ihr Token ist ungültig.') #, 403
 
 
 @app.route('/logout')
@@ -241,6 +247,22 @@ def load_user(user_id) -> Optional[Authenticated[User]]:
     except Exception:
         print(f'[WARN] user id not found: {user_id}')
         return None
+
+
+@app.context_processor
+def inject_constants():
+    return { 'industry_names': industry_names }
+
+
+def push_notification(message: str, type: str = NotificationType.info):
+    notification_list = [] if session.get('notifications') is None else session['notifications']
+    new = Notification(type=type, message=message)
+    session['notifications'] = [new, *notification_list]
+
+
+def fail_with(error: str):
+    push_notification(error, NotificationType.error)
+    return redirect(request.referrer if request.referrer is not None else '/marketplace')
 
 
 if __name__ == '__main__':
