@@ -2,25 +2,9 @@
 Ereignisse/Nebenwirkungen in der externen Umgebung
 """
 
-import logging
-from logging.handlers import RotatingFileHandler, SysLogHandler
-from os import makedirs
-from sys import platform
-
 from database.models import Booking, User, Correspondence
 from db import db
-
-
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-
-if platform.startswith('linux'):
-    syslog_handler = SysLogHandler(address='/dev/log')
-    logger.addHandler(syslog_handler)
-
-makedirs('logs', exist_ok=True)
-file_handler = RotatingFileHandler('logs/triggers.log')
-logger.addHandler(file_handler)
+from log import logger
 
 
 def notify_admins(event: Booking | Correspondence) -> None:
