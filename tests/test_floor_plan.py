@@ -25,11 +25,11 @@ def pytest_generate_tests(metafunc):
 def does_not_need_to_move(booking: Booking, plan: FloorPlan):
     days = plan.days[:]
     first_day_hall = \
-    [hall_assignment.hall for hall_assignment in days.pop(0).halls if booking in hall_assignment.bookings][0]
+    [hall_assignment.hall for hall_assignment in days.pop(0).hall_plans if booking in hall_assignment.bookings][0]
     for other_day in days:
-        if not any(hall_assignment.hall == first_day_hall for hall_assignment in other_day.halls if
+        if not any(hall_assignment.hall == first_day_hall for hall_assignment in other_day.hall_plans if
                    booking in hall_assignment.bookings) or \
-               any(hall_assignment.hall != first_day_hall for hall_assignment in other_day.halls if
+               any(hall_assignment.hall != first_day_hall for hall_assignment in other_day.hall_plans if
                        booking in hall_assignment.bookings):
             return False
     return True

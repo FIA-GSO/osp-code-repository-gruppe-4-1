@@ -49,11 +49,11 @@
 
     <h2>{{ day.name }}</h2>
 
-    {% for hall in day.halls %}
+    {% for hall_plan in day.hall_plans %}
 
     <section class="dash-card results-card">
       <div class="header-row">
-      <h3 class="card-title" style="margin-bottom:0; border:none;">{{ hall.hall.name|d('Halle ' + loop.index|string) }} ({{ hall.bookings|length }} Anmeldungen)</h3>
+      <h3 class="card-title" style="margin-bottom:0; border:none;">{{ hall_plan.hall.name|d('Halle ' + loop.index|string) }} ({{ hall_plan.bookings|length }} Anmeldungen)</h3>
       </div>
 
       <div class="table-responsive">
@@ -68,7 +68,7 @@
             </tr>
           </thead>
           <tbody>
-            {% for booking in hall.bookings %}
+            {% for booking in hall_plan.bookings %}
             <tr>
               <td data-label="Firma" class="fw-bold">{{ booking.user.name }}</td>
 
@@ -87,6 +87,8 @@
               <td data-label="Branche"></td>
               <td data-label="Benötigte Stühle">{{ hall.chairs }}</td>
               <td data-label="Benötigte Tische">{{ hall.tables }}</td>
+              <td data-label="Benötigte Stühle">{{ hall_plan.chairs }}</td>
+              <td data-label="Benötigte Tische">{{ hall_plan.tables }}</td>
           </tbody>
         </table>
       </div>
